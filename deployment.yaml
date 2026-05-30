@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radcliffe-web
+  namespace: radcliffe
+  labels:
+    app: radcliffe-web
+    app.kubernetes.io/name: radcliffe-web
+    app.kubernetes.io/part-of: radcliffe
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: radcliffe-web
+  template:
+    metadata:
+      labels:
+        app: radcliffe-web
+        app.kubernetes.io/name: radcliffe-web
+        app.kubernetes.io/part-of: radcliffe
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: radcliffe-web
+          # Replace with your registry path, e.g. ghcr.io/<org>/radcliffe-web:1.0.0
+          image: container-registry.traderyolo.com/radcliffe-web
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3007
+          #env:
+          #  - name: NODE_ENV
+          #    value: "production"
+          #  - name: PORT
+          #    value: "3000"
+          #  - name: HOST
+          #    value: "0.0.0.0"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          #readinessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          #  initialDelaySeconds: 5
+          #  periodSeconds: 10
+          #  timeoutSeconds: 3
+          #  failureThreshold: 3
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          #  initialDelaySeconds: 20
+          #  periodSeconds: 20
+          #  timeoutSeconds: 3
+          #  failureThreshold: 3
+          #securityContext:
+          #  allowPrivilegeEscalation: false
+          #  readOnlyRootFilesystem: false
+          #  capabilities:
+          #    drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radcliffe-web
+  namespace: radcliffe
+  labels:
+    app: radcliffe-web
+spec:
+  type: NodePort
+  selector:
+    app: radcliffe-web
+  ports:
+    - name: "3007"
+      nodePort: 30070
+      port: 3007
+      targetPort: 3007
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: radcliffe-web
+  namespace: radcliffe
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: radcliffe.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: radcliffe-web
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - radcliffe.example.com
+      secretName: radcliffe-web-tls
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: radcliffe-web
+  namespace: radcliffe
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: radcliffe-web
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

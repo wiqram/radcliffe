@@ -1,0 +1,20 @@
+services:
+  qcx-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    image: ${REGISTRY_HOST}/radcliffe-web
+    container_name: radcliffe-web
+    ports:
+      - "3007:3007"
+    environment:
+      NODE_ENV: production
+      PORT: "3007"
+      #HOST: "0.0.0.0"
+    restart: always
+    env_file: ./.env.production
+    #healthcheck:
+    #  test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+    #  interval: 30s
+    #  timeout: 5s
+    #  retries: 3
