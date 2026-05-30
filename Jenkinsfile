@@ -71,7 +71,7 @@ pipeline {
 //                    sh 'kubectl apply -f compiled-services.yaml'
 //                    sh 'kubectl apply -f publisher-deleter-cronjob.yaml'
                     def error_exists = sh(
-                            script: "kubectl get ns qcx", returnStatus: true)
+                            script: "kubectl get ns radcliffe", returnStatus: true)
                     //echo "namespace Yolo Doesnt exist - Error is non zero ==> - $error_exists"
                     if (error_exists == 0) {
                         echo "namespace is present doing rolling restart of deployment"
@@ -88,7 +88,7 @@ pipeline {
                         //sh 'kubectl apply -f loader-scripts-quant-model-loader-job.yaml'
                         return
                     } else {
-                        echo "namespace QCX is not present"
+                        echo "namespace radcliffe is not present"
                         sh 'kubectl create -f namespace.yaml --dry-run=client -o yaml | kubectl apply -f -'
                         sh 'kubectl apply -f deployment.yaml'
                         //sh 'kubectl apply -f webui-deployment.yaml'

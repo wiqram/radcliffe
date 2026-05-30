@@ -1,10 +1,6 @@
-FROM python:3.13-alpine
+FROM nginx:1.27-alpine
 
-WORKDIR /app
-
-COPY . .
-RUN cp Homepage.html index.html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY . /usr/share/nginx/html
 
 EXPOSE 3007
-
-CMD ["python", "-m", "http.server", "3007", "--bind", "0.0.0.0"]
