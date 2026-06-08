@@ -28,6 +28,26 @@
 
   // 3) Reveal on scroll (JS-gated — content is visible by default in CSS)
   document.documentElement.classList.add('js-reveal');
+
+  // 3a) Auto-stagger: let the children of common grids/lists cascade in
+  //     sequence rather than popping as one block.
+  const STAGGER_SEL = [
+    '.entries', '.enter-grid', '.journal-list', '.practice-list', '.partner-grid',
+    '.partner-roles', '.cv-list', '.other-list', '.agenda-block',
+    '.audience-list', '.meta-row', '.hero-facts'
+  ].join(', ');
+  document.querySelectorAll(STAGGER_SEL).forEach((group) => {
+    const kids = Array.from(group.children);
+    if (kids.length < 2) return;
+    group.classList.add('reveal', 'reveal-stagger');
+    kids.forEach((c, i) => {
+      // The parent now drives the cascade — drop any per-child reveal so the
+      // two hidden-states don't fight each other.
+      c.classList.remove('reveal');
+      c.style.setProperty('--si', Math.min(i, 8));
+    });
+  });
+
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
