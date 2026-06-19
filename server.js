@@ -505,6 +505,10 @@ app.get('/admin/login', (req, res) => {
   if (verifyToken(parseCookies(req)[COOKIE_NAME])) return res.redirect('/admin');
   return res.sendFile(path.join(ROOT, 'admin', 'login.html'));
 });
+app.get('/admin/assets/admin.css', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-cache');
+  return res.sendFile(path.join(ROOT, 'admin', 'assets', 'admin.css'));
+});
 
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;

@@ -107,9 +107,11 @@ p { color: var(--muted); line-height: 1.5; }
 }
 .admin-logo {
   display: block;
-  width: auto;
-  height: 30px;
-  max-width: 110px;
+  inline-size: 110px;
+  block-size: auto;
+  max-inline-size: 110px;
+  max-block-size: 31px;
+  flex: 0 0 110px;
   object-fit: contain;
   background: #fff;
 }
@@ -444,9 +446,10 @@ label.check input {
 }
 .login-logo {
   display: block;
-  width: auto;
-  height: 34px;
-  max-width: 126px;
+  inline-size: 126px;
+  block-size: auto;
+  max-inline-size: 126px;
+  max-block-size: 35px;
   object-fit: contain;
   margin-bottom: 18px;
 }
