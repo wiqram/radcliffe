@@ -39,6 +39,10 @@ The upgraded application uses a small Node/Express server instead of nginx. It s
   - `PUT /api/admin/content/:key`
   - `GET /api/admin/media`
   - `POST /api/admin/media/:key`
+  - `DELETE /api/admin/media/:key`
+  - `GET /api/admin/sections`
+  - `PUT /api/admin/sections/:key`
+  - `DELETE /api/admin/sections/:key`
   - `GET /api/admin/messages`
 
 Content is stored in PostgreSQL:
@@ -65,14 +69,14 @@ If the CMS API or database is unavailable, the static hard-coded HTML remains vi
 
 The public top navigation includes an `Admin` link to `/admin`.
 
-The admin portal has four management areas:
+The admin portal is page-first and has four editor-facing areas:
 
-- `Content` - edit or add arbitrary text/HTML keys.
-- `Images` - upload or add arbitrary image keys stored in PostgreSQL.
-- `Sections` - configure all seeded page sections and add new CMS-authored sections.
+- `Pages` - choose a public page, then manage that page's visible sections and editable text in one place.
+- `Media Library` - replace images, upload images for new sections, or restore the original static website image.
 - `Messages` - view recent contact form submissions.
+- `Settings` - edit global announcement and contact routing content.
 
-Deleting a static section hides it for visitors by setting `enabled=false`; the HTML remains in the file as fallback. Deleting a CMS-authored section removes it from the database.
+Normal editors do not need to work with keys, page slugs, image keys, or sort values. Those implementation details remain available only in collapsed advanced panels. Hiding a built-in section sets `enabled=false`; deleting an admin-added section removes it from the database.
 
 ## Admin Credentials
 

@@ -385,10 +385,12 @@ The admin portal is available at `/admin`.
 
 Admin can manage:
 
-- page text and HTML content
-- images
-- page sections
-- contact form messages
+- Pages - choose a website page, then see its sections and editable text in one place.
+- Media Library - replace images, upload images for new sections, or restore the original website image.
+- Messages - view recent contact form enquiries.
+- Settings - edit global announcement and contact routing values.
+
+Editors do not need to know internal keys, page slugs, sort numbers, or image keys for normal use. Technical identifiers remain available only inside collapsed advanced details.
 
 The public top navigation includes an `Admin` link.
 

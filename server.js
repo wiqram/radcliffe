@@ -610,6 +610,23 @@ app.post('/api/admin/media/:key', requireAdmin, upload.single('image'), async (r
   return res.json(result.rows[0]);
 });
 
+app.delete('/api/admin/media/:key', requireAdmin, async (req, res) => {
+  const result = await pool.query(
+    `
+    UPDATE cms_media
+    SET filename = NULL,
+        mime_type = NULL,
+        data = NULL,
+        updated_at = now()
+    WHERE key = $1
+    RETURNING key, page, label, filename, mime_type, alt_text, updated_at, data IS NOT NULL AS has_data
+  `,
+    [req.params.key]
+  );
+  if (!result.rows[0]) return res.sendStatus(404);
+  return res.json(result.rows[0]);
+});
+
 app.get('/api/admin/sections', requireAdmin, async (_req, res) => {
   const result = await pool.query(
     `SELECT key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
