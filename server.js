@@ -144,6 +144,38 @@ const mediaSeeds = [
   { key: 'articles.hero.photo', page: 'Articles', label: 'Articles hero photo' },
 ];
 
+const sectionSeeds = [
+  { key: 'home.hero', pageSlug: 'home', page: 'Homepage', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'home.rooms', pageSlug: 'home', page: 'Homepage', label: 'Six rooms index', sortOrder: 20, isStatic: true },
+  { key: 'home.testimonials', pageSlug: 'home', page: 'Homepage', label: 'Testimonials', sortOrder: 30, isStatic: true },
+  { key: 'practice.hero', pageSlug: 'practice', page: 'Practice', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'practice.intro', pageSlug: 'practice', page: 'Practice', label: 'Intro prose', sortOrder: 20, isStatic: true },
+  { key: 'practice.areas', pageSlug: 'practice', page: 'Practice', label: 'Practice areas', sortOrder: 30, isStatic: true },
+  { key: 'practice.other', pageSlug: 'practice', page: 'Practice', label: 'Other rooms', sortOrder: 40, isStatic: true },
+  { key: 'who.hero', pageSlug: 'who', page: 'Who', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'who.profile', pageSlug: 'who', page: 'Who', label: 'Profile', sortOrder: 20, isStatic: true },
+  { key: 'who.other', pageSlug: 'who', page: 'Who', label: 'Other rooms', sortOrder: 30, isStatic: true },
+  { key: 'city.hero', pageSlug: 'city', page: 'The City', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'city.intro', pageSlug: 'city', page: 'The City', label: 'Intro prose', sortOrder: 20, isStatic: true },
+  { key: 'city.quantum', pageSlug: 'city', page: 'The City', label: 'Quantum future', sortOrder: 30, isStatic: true },
+  { key: 'city.other', pageSlug: 'city', page: 'The City', label: 'Other rooms', sortOrder: 40, isStatic: true },
+  { key: 'summit.hero', pageSlug: 'summit', page: 'Summit', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'summit.feature', pageSlug: 'summit', page: 'Summit', label: 'Feature', sortOrder: 20, isStatic: true },
+  { key: 'summit.audience', pageSlug: 'summit', page: 'Summit', label: 'Audience', sortOrder: 30, isStatic: true },
+  { key: 'summit.collaborators', pageSlug: 'summit', page: 'Summit', label: 'Collaborators', sortOrder: 40, isStatic: true },
+  { key: 'summit.gallery', pageSlug: 'summit', page: 'Summit', label: 'Gallery', sortOrder: 50, isStatic: true },
+  { key: 'summit.other', pageSlug: 'summit', page: 'Summit', label: 'Other rooms', sortOrder: 60, isStatic: true },
+  { key: 'agenda.hero', pageSlug: 'agenda', page: 'Agenda', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'agenda.programme', pageSlug: 'agenda', page: 'Agenda', label: 'Programme', sortOrder: 20, isStatic: true },
+  { key: 'articles.hero', pageSlug: 'articles', page: 'Articles', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'articles.journal', pageSlug: 'articles', page: 'Articles', label: 'Journal', sortOrder: 20, isStatic: true },
+  { key: 'articles.other', pageSlug: 'articles', page: 'Articles', label: 'Other rooms', sortOrder: 30, isStatic: true },
+  { key: 'ethics.hero', pageSlug: 'ethics', page: 'Ethics', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'ethics.principles', pageSlug: 'ethics', page: 'Ethics', label: 'Principles', sortOrder: 20, isStatic: true },
+  { key: 'ethics.commitments', pageSlug: 'ethics', page: 'Ethics', label: 'Commitments', sortOrder: 30, isStatic: true },
+  { key: 'ethics.other', pageSlug: 'ethics', page: 'Ethics', label: 'Other rooms', sortOrder: 40, isStatic: true },
+];
+
 app.disable('x-powered-by');
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -211,6 +243,23 @@ async function initDatabase() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+
+    CREATE TABLE IF NOT EXISTS cms_sections (
+      key TEXT PRIMARY KEY,
+      page_slug TEXT NOT NULL,
+      page TEXT NOT NULL,
+      label TEXT NOT NULL,
+      eyebrow TEXT NOT NULL DEFAULT '',
+      title TEXT NOT NULL DEFAULT '',
+      body_html TEXT NOT NULL DEFAULT '',
+      image_key TEXT NOT NULL DEFAULT '',
+      layout TEXT NOT NULL DEFAULT 'text',
+      sort_order INTEGER NOT NULL DEFAULT 100,
+      enabled BOOLEAN NOT NULL DEFAULT true,
+      is_static BOOLEAN NOT NULL DEFAULT false,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
   `);
 
   for (const item of contentSeeds) {
@@ -234,6 +283,22 @@ async function initDatabase() {
       [item.key, item.page, item.label]
     );
   }
+
+  for (const item of sectionSeeds) {
+    await pool.query(
+      `
+      INSERT INTO cms_sections (key, page_slug, page, label, sort_order, is_static, enabled)
+      VALUES ($1, $2, $3, $4, $5, $6, true)
+      ON CONFLICT (key) DO UPDATE
+        SET page_slug = EXCLUDED.page_slug,
+            page = EXCLUDED.page,
+            label = EXCLUDED.label,
+            sort_order = EXCLUDED.sort_order,
+            is_static = EXCLUDED.is_static
+    `,
+      [item.key, item.pageSlug, item.page, item.label, item.sortOrder, item.isStatic]
+    );
+  }
 }
 
 async function queryContent() {
@@ -244,7 +309,13 @@ async function queryContent() {
     `SELECT key, page, label, filename, mime_type, alt_text, updated_at, data IS NOT NULL AS has_data
      FROM cms_media ORDER BY page, label`
   );
-  return { content: content.rows, media: media.rows };
+  const sections = await pool.query(
+    `SELECT key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
+            sort_order, enabled, is_static, updated_at
+     FROM cms_sections
+     ORDER BY page_slug, sort_order, label`
+  );
+  return { content: content.rows, media: media.rows, sections: sections.rows };
 }
 
 app.get('/api/content', async (_req, res) => {
@@ -253,6 +324,7 @@ app.get('/api/content', async (_req, res) => {
     res.json({
       content: Object.fromEntries(rows.content.map((row) => [row.key, row])),
       media: Object.fromEntries(rows.media.filter((row) => row.has_data).map((row) => [row.key, row])),
+      sections: rows.sections,
     });
   } catch (error) {
     res.status(503).json({ error: 'CMS content is unavailable' });
@@ -368,6 +440,89 @@ app.post('/api/admin/media/:key', requireAdmin, upload.single('image'), async (r
     [req.params.key, page, label, req.file.originalname, req.file.mimetype, req.file.buffer, altText]
   );
   return res.json(result.rows[0]);
+});
+
+app.get('/api/admin/sections', requireAdmin, async (_req, res) => {
+  const result = await pool.query(
+    `SELECT key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
+            sort_order, enabled, is_static, updated_at
+     FROM cms_sections
+     ORDER BY page_slug, sort_order, label`
+  );
+  res.json(result.rows);
+});
+
+app.put('/api/admin/sections/:key', requireAdmin, async (req, res) => {
+  const {
+    pageSlug = 'home',
+    page = 'Homepage',
+    label = req.params.key,
+    eyebrow = '',
+    title = '',
+    bodyHtml = '',
+    imageKey = '',
+    layout = 'text',
+    sortOrder = 100,
+    enabled = true,
+  } = req.body;
+
+  const result = await pool.query(
+    `
+    INSERT INTO cms_sections (
+      key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
+      sort_order, enabled, is_static
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, false)
+    ON CONFLICT (key) DO UPDATE
+      SET page_slug = EXCLUDED.page_slug,
+          page = EXCLUDED.page,
+          label = EXCLUDED.label,
+          eyebrow = EXCLUDED.eyebrow,
+          title = EXCLUDED.title,
+          body_html = EXCLUDED.body_html,
+          image_key = EXCLUDED.image_key,
+          layout = EXCLUDED.layout,
+          sort_order = EXCLUDED.sort_order,
+          enabled = EXCLUDED.enabled,
+          updated_at = now()
+    RETURNING key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
+              sort_order, enabled, is_static, updated_at
+  `,
+    [
+      req.params.key,
+      pageSlug,
+      page,
+      label,
+      eyebrow,
+      title,
+      bodyHtml,
+      imageKey,
+      layout,
+      Number(sortOrder) || 100,
+      Boolean(enabled),
+    ]
+  );
+  res.json(result.rows[0]);
+});
+
+app.delete('/api/admin/sections/:key', requireAdmin, async (req, res) => {
+  const existing = await pool.query('SELECT is_static FROM cms_sections WHERE key = $1', [req.params.key]);
+  if (!existing.rows[0]) return res.sendStatus(404);
+
+  if (existing.rows[0].is_static) {
+    const result = await pool.query(
+      `UPDATE cms_sections
+       SET enabled = false, updated_at = now()
+       WHERE key = $1
+       RETURNING key, page_slug, page, label, eyebrow, title, body_html, image_key, layout,
+                 sort_order, enabled, is_static, updated_at`,
+      [req.params.key]
+    );
+    return res.json(result.rows[0]);
+  }
+
+  await pool.query('DELETE FROM cms_sections WHERE key = $1', [req.params.key]);
+  return res.json({ deleted: true, key: req.params.key });
 });
 
 const publicFiles = new Set([

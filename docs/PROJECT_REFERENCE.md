@@ -43,14 +43,32 @@ Content is stored in PostgreSQL:
 
 - `cms_content` stores editable text/HTML values.
 - `cms_media` stores uploaded image bytes, MIME type, filename, alt text, and labels.
+- `cms_sections` stores page section controls:
+  - Existing static sections are seeded with stable keys and can be enabled/disabled.
+  - CMS-authored sections can be added, edited, reordered, enabled/disabled, and deleted.
+  - Dynamic sections support text, text plus image, and dark band layouts.
 
 The frontend enhancement script `cms-client.js` fetches CMS values after page load and applies them to elements marked with:
 
 - `data-cms-key="some.key"` for text or HTML.
 - `data-cms-mode="html"` when the value should be applied with `innerHTML`.
 - `data-cms-image="some.image.key"` for image overrides from the database.
+- `data-cms-section="page.section"` for existing sections that can be hidden from the CMS.
+- `data-cms-sections` for the insertion point where CMS-authored sections are rendered.
 
 If the CMS API or database is unavailable, the static hard-coded HTML remains visible.
+
+## Admin Portal
+
+The public top navigation includes an `Admin` link to `/admin`.
+
+The admin portal has three management areas:
+
+- `Content` - edit or add arbitrary text/HTML keys.
+- `Images` - upload or add arbitrary image keys stored in PostgreSQL.
+- `Sections` - configure all seeded page sections and add new CMS-authored sections.
+
+Deleting a static section hides it for visitors by setting `enabled=false`; the HTML remains in the file as fallback. Deleting a CMS-authored section removes it from the database.
 
 ## Admin Credentials
 
@@ -107,5 +125,6 @@ To make a new static element editable:
    `<h1 data-cms-key="practice.hero.title" data-cms-mode="html">Chair &amp; CEO Counsel</h1>`
 2. Add a seed row for the key in `server.js` so it appears in the admin portal by default.
 3. For images, add `data-cms-image="some.image.key"` to the `img` element and add a media seed in `server.js`.
+4. For whole static sections, add `data-cms-section="page.section"` to the section and add a section seed in `server.js`.
 
 Keep CMS keys stable. Changing keys disconnects existing database content from the page.

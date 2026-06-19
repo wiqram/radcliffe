@@ -21,13 +21,14 @@
     <nav class="tabs" aria-label="CMS sections">
       <button class="tab is-active" data-tab="content" type="button">Content</button>
       <button class="tab" data-tab="images" type="button">Images</button>
+      <button class="tab" data-tab="sections" type="button">Sections</button>
     </nav>
 
     <section class="panel is-active" id="content-panel" aria-labelledby="content-tab">
       <div class="panel-head">
         <div>
           <h2>Editable Text</h2>
-          <p>These values override matching `data-cms-key` elements on the public site.</p>
+          <p>These values override matching data-cms-key elements on every public page.</p>
         </div>
         <button id="addContent" class="secondary" type="button">Add key</button>
       </div>
@@ -38,11 +39,22 @@
       <div class="panel-head">
         <div>
           <h2>Editable Images</h2>
-          <p>Uploaded files are stored in PostgreSQL and override matching `data-cms-image` elements.</p>
+          <p>Uploaded files are stored in PostgreSQL and override matching data-cms-image elements.</p>
         </div>
         <button id="addImage" class="secondary" type="button">Add image key</button>
       </div>
       <div id="imageList" class="stack"></div>
+    </section>
+
+    <section class="panel" id="sections-panel" aria-labelledby="sections-tab">
+      <div class="panel-head">
+        <div>
+          <h2>Page Sections</h2>
+          <p>Hide existing sections, add new CMS-authored sections, reorder them, or delete CMS-created sections.</p>
+        </div>
+        <button id="addSection" class="secondary" type="button">Add section</button>
+      </div>
+      <div id="sectionList" class="stack"></div>
     </section>
   </main>
 
@@ -81,6 +93,51 @@
       <div class="record-actions">
         <span class="status"></span>
         <button class="save" type="button">Save image</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="sectionTemplate">
+    <article class="record">
+      <div class="record-grid section-grid">
+        <label><span>Key</span><input class="key" /></label>
+        <label>
+          <span>Page slug</span>
+          <select class="pageSlug">
+            <option value="home">home</option>
+            <option value="practice">practice</option>
+            <option value="who">who</option>
+            <option value="city">city</option>
+            <option value="summit">summit</option>
+            <option value="agenda">agenda</option>
+            <option value="articles">articles</option>
+            <option value="ethics">ethics</option>
+          </select>
+        </label>
+        <label><span>Page label</span><input class="page" /></label>
+        <label><span>Admin label</span><input class="label" /></label>
+        <label><span>Sort order</span><input class="sortOrder" type="number" step="1" /></label>
+        <label>
+          <span>Layout</span>
+          <select class="layoutMode">
+            <option value="text">Text</option>
+            <option value="feature">Text + image</option>
+            <option value="dark">Dark band</option>
+          </select>
+        </label>
+      </div>
+      <div class="record-grid section-grid">
+        <label><span>Eyebrow</span><input class="eyebrow" /></label>
+        <label><span>Title</span><input class="title" /></label>
+        <label><span>Image key</span><input class="imageKey" /></label>
+        <label class="check"><input class="enabled" type="checkbox" /><span>Enabled</span></label>
+      </div>
+      <label><span>Body HTML</span><textarea class="bodyHtml" rows="7"></textarea></label>
+      <div class="section-note"></div>
+      <div class="record-actions">
+        <span class="status"></span>
+        <button class="danger delete" type="button">Delete</button>
+        <button class="save" type="button">Save section</button>
       </div>
     </article>
   </template>

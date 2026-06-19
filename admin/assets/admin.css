@@ -74,6 +74,11 @@ button.secondary {
   color: var(--ink);
   border: 1px solid var(--line);
 }
+button.danger {
+  background: #fff1f1;
+  color: var(--danger);
+  border: 1px solid rgba(157, 43, 43, 0.25);
+}
 
 .tab {
   background: transparent;
@@ -114,6 +119,9 @@ button.secondary {
   gap: 14px;
   margin-bottom: 14px;
 }
+.record-grid.section-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 
 label {
   display: grid;
@@ -130,6 +138,22 @@ input, textarea, select {
   color: var(--ink);
   font: inherit;
   padding: 10px 12px;
+}
+input[readonly] {
+  color: var(--muted);
+  background: #f0f4f8;
+}
+
+label.check {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding-top: 25px;
+}
+label.check input {
+  width: 18px;
+  height: 18px;
 }
 
 textarea {
@@ -155,6 +179,11 @@ textarea {
 .status.error { color: var(--danger); }
 
 .media-meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 10px;
+}
+.section-note {
   color: var(--muted);
   font-size: 13px;
   margin-top: 10px;
@@ -185,5 +214,6 @@ textarea {
     flex-direction: column;
   }
   .layout { padding: 22px; }
-  .record-grid { grid-template-columns: 1fr; }
+  .record-grid,
+  .record-grid.section-grid { grid-template-columns: 1fr; }
 }
