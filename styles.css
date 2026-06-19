@@ -112,6 +112,7 @@ body.is-scrolled .header { top: 0; }
   border-bottom-color: var(--rule);
 }
 .header-inner {
+  height: 100%;
   width: 100%;
   display: flex; align-items: center; justify-content: space-between;
   gap: clamp(22px, 3vw, 40px);
@@ -123,11 +124,9 @@ body.is-scrolled .header { top: 0; }
 }
 .brand-logo {
   display: block;
-  width: clamp(124px, 12vw, 168px);
-  max-height: 50px;
-  height: auto;
+  height: clamp(38px, 3.5vw, 46px);
+  width: auto;
   object-fit: contain;
-  transform: translateY(4px);
 }
 .brand-name {
   font-family: var(--serif);
@@ -146,9 +145,7 @@ body.is-scrolled .header { top: 0; }
 }
 .header.scrolled .brand-name { font-size: 19px; }
 .header.scrolled .brand-logo {
-  width: clamp(116px, 10.5vw, 150px);
-  max-height: 42px;
-  transform: none;
+  height: clamp(34px, 3vw, 38px);
 }
 
 .nav {
