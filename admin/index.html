@@ -7,72 +7,147 @@
 <link rel="stylesheet" href="/admin/assets/admin.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <p class="eyebrow">Redcliffe Advisory</p>
-      <h1>Content Management</h1>
-    </div>
-    <form method="post" action="/admin/logout">
-      <button class="secondary" type="submit">Sign out</button>
-    </form>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-block" href="/admin" aria-label="Redcliffe CMS home">
+        <span class="brand-mark">R</span>
+        <span>
+          <strong>Redcliffe</strong>
+          <em>Content Studio</em>
+        </span>
+      </a>
 
-  <main class="layout">
-    <nav class="tabs" aria-label="CMS sections">
-      <button class="tab is-active" data-tab="content" type="button">Content</button>
-      <button class="tab" data-tab="images" type="button">Images</button>
-      <button class="tab" data-tab="sections" type="button">Sections</button>
-    </nav>
+      <nav class="side-nav" aria-label="CMS workspace">
+        <button class="tab is-active" data-tab="content" type="button">
+          <span class="nav-icon">Aa</span>
+          <span>Content</span>
+          <strong id="contentCount">0</strong>
+        </button>
+        <button class="tab" data-tab="sections" type="button">
+          <span class="nav-icon">§</span>
+          <span>Sections</span>
+          <strong id="sectionCount">0</strong>
+        </button>
+        <button class="tab" data-tab="images" type="button">
+          <span class="nav-icon">▧</span>
+          <span>Images</span>
+          <strong id="imageCount">0</strong>
+        </button>
+      </nav>
 
-    <section class="panel is-active" id="content-panel" aria-labelledby="content-tab">
-      <div class="panel-head">
-        <div>
-          <h2>Editable Text</h2>
-          <p>These values override matching data-cms-key elements on every public page.</p>
-        </div>
-        <button id="addContent" class="secondary" type="button">Add key</button>
+      <div class="sidebar-card">
+        <span>Editing</span>
+        <strong id="currentScope">All pages</strong>
+        <small>Use the filters to focus the workspace.</small>
       </div>
-      <div id="contentList" class="stack"></div>
-    </section>
 
-    <section class="panel" id="images-panel" aria-labelledby="images-tab">
-      <div class="panel-head">
+      <a class="site-link" href="/" target="_blank" rel="noreferrer">View public site</a>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
         <div>
-          <h2>Editable Images</h2>
-          <p>Uploaded files are stored in PostgreSQL and override matching data-cms-image elements.</p>
+          <p class="eyebrow">Redcliffe Advisory</p>
+          <h1>Content Management</h1>
+          <p class="topbar-copy">Manage copy, media, and page sections from a single editorial workspace.</p>
         </div>
-        <button id="addImage" class="secondary" type="button">Add image key</button>
-      </div>
-      <div id="imageList" class="stack"></div>
-    </section>
+        <form method="post" action="/admin/logout">
+          <button class="secondary" type="submit">Sign out</button>
+        </form>
+      </header>
 
-    <section class="panel" id="sections-panel" aria-labelledby="sections-tab">
-      <div class="panel-head">
-        <div>
-          <h2>Page Sections</h2>
-          <p>Hide existing sections, add new CMS-authored sections, reorder them, or delete CMS-created sections.</p>
+      <section class="summary-grid" aria-label="CMS summary">
+        <div class="metric">
+          <span>Text keys</span>
+          <strong id="metricContent">0</strong>
         </div>
-        <button id="addSection" class="secondary" type="button">Add section</button>
-      </div>
-      <div id="sectionList" class="stack"></div>
-    </section>
-  </main>
+        <div class="metric">
+          <span>Managed sections</span>
+          <strong id="metricSections">0</strong>
+        </div>
+        <div class="metric">
+          <span>Media keys</span>
+          <strong id="metricImages">0</strong>
+        </div>
+        <div class="metric">
+          <span>Enabled sections</span>
+          <strong id="metricEnabled">0</strong>
+        </div>
+      </section>
 
-  <template id="contentTemplate">
-    <article class="record">
-      <div class="record-grid">
-        <label><span>Key</span><input class="key" /></label>
-        <label><span>Page</span><input class="page" /></label>
-        <label><span>Label</span><input class="label" /></label>
-        <label>
-          <span>Mode</span>
-          <select class="type">
-            <option value="text">Text</option>
-            <option value="html">HTML</option>
+      <section class="toolbar" aria-label="Workspace filters">
+        <label class="search-field">
+          <span>Search</span>
+          <input id="workspaceSearch" placeholder="Search labels, keys, pages, or values" />
+        </label>
+        <label class="filter-field">
+          <span>Page</span>
+          <select id="pageFilter">
+            <option value="">All pages</option>
           </select>
         </label>
+      </section>
+
+      <section class="panel is-active" id="content-panel" aria-labelledby="content-tab">
+        <div class="panel-head">
+          <div>
+            <h2>Editable Text</h2>
+            <p>Override public page text and HTML values without touching static files.</p>
+          </div>
+          <button id="addContent" type="button">Add text key</button>
+        </div>
+        <div id="contentList" class="record-grid-list"></div>
+      </section>
+
+      <section class="panel" id="sections-panel" aria-labelledby="sections-tab">
+        <div class="panel-head">
+          <div>
+            <h2>Page Sections</h2>
+            <p>Add sections, reorder page flow, hide static sections, and delete CMS-created sections.</p>
+          </div>
+          <button id="addSection" type="button">Add section</button>
+        </div>
+        <div id="sectionList" class="record-grid-list"></div>
+      </section>
+
+      <section class="panel" id="images-panel" aria-labelledby="images-tab">
+        <div class="panel-head">
+          <div>
+            <h2>Image Library</h2>
+            <p>Upload managed images to PostgreSQL and attach them to CMS image keys.</p>
+          </div>
+          <button id="addImage" type="button">Add image key</button>
+        </div>
+        <div id="imageList" class="record-grid-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <template id="contentTemplate">
+    <article class="record" data-kind="content">
+      <div class="record-head">
+        <div>
+          <span class="record-kicker page-badge"></span>
+          <h3 class="record-title"></h3>
+          <code class="record-key"></code>
+        </div>
+        <span class="pill type-pill"></span>
       </div>
-      <label><span>Value</span><textarea class="value" rows="5"></textarea></label>
+      <div class="record-body">
+        <div class="record-fields">
+          <label><span>Key</span><input class="key" /></label>
+          <label><span>Page</span><input class="page" /></label>
+          <label><span>Label</span><input class="label" /></label>
+          <label>
+            <span>Mode</span>
+            <select class="type">
+              <option value="text">Text</option>
+              <option value="html">HTML</option>
+            </select>
+          </label>
+        </div>
+        <label><span>Value</span><textarea class="value" rows="5"></textarea></label>
+      </div>
       <div class="record-actions">
         <span class="status"></span>
         <button class="save" type="button">Save</button>
@@ -81,15 +156,25 @@
   </template>
 
   <template id="imageTemplate">
-    <article class="record">
-      <div class="record-grid">
-        <label><span>Key</span><input class="key" /></label>
-        <label><span>Page</span><input class="page" /></label>
-        <label><span>Label</span><input class="label" /></label>
-        <label><span>Alt text</span><input class="alt" /></label>
+    <article class="record" data-kind="images">
+      <div class="record-head">
+        <div>
+          <span class="record-kicker page-badge"></span>
+          <h3 class="record-title"></h3>
+          <code class="record-key"></code>
+        </div>
+        <span class="pill media-pill"></span>
       </div>
-      <label><span>Image file</span><input class="file" type="file" accept="image/*" /></label>
-      <div class="media-meta"></div>
+      <div class="record-body">
+        <div class="record-fields">
+          <label><span>Key</span><input class="key" /></label>
+          <label><span>Page</span><input class="page" /></label>
+          <label><span>Label</span><input class="label" /></label>
+          <label><span>Alt text</span><input class="alt" /></label>
+        </div>
+        <label><span>Image file</span><input class="file" type="file" accept="image/*" /></label>
+        <div class="media-meta"></div>
+      </div>
       <div class="record-actions">
         <span class="status"></span>
         <button class="save" type="button">Save image</button>
@@ -98,42 +183,55 @@
   </template>
 
   <template id="sectionTemplate">
-    <article class="record">
-      <div class="record-grid section-grid">
-        <label><span>Key</span><input class="key" /></label>
-        <label>
-          <span>Page slug</span>
-          <select class="pageSlug">
-            <option value="home">home</option>
-            <option value="practice">practice</option>
-            <option value="who">who</option>
-            <option value="city">city</option>
-            <option value="summit">summit</option>
-            <option value="agenda">agenda</option>
-            <option value="articles">articles</option>
-            <option value="ethics">ethics</option>
-          </select>
-        </label>
-        <label><span>Page label</span><input class="page" /></label>
-        <label><span>Admin label</span><input class="label" /></label>
-        <label><span>Sort order</span><input class="sortOrder" type="number" step="1" /></label>
-        <label>
-          <span>Layout</span>
-          <select class="layoutMode">
-            <option value="text">Text</option>
-            <option value="feature">Text + image</option>
-            <option value="dark">Dark band</option>
-          </select>
-        </label>
+    <article class="record" data-kind="sections">
+      <div class="record-head">
+        <div>
+          <span class="record-kicker page-badge"></span>
+          <h3 class="record-title"></h3>
+          <code class="record-key"></code>
+        </div>
+        <div class="pill-row">
+          <span class="pill enabled-pill"></span>
+          <span class="pill origin-pill"></span>
+        </div>
       </div>
-      <div class="record-grid section-grid">
-        <label><span>Eyebrow</span><input class="eyebrow" /></label>
-        <label><span>Title</span><input class="title" /></label>
-        <label><span>Image key</span><input class="imageKey" /></label>
-        <label class="check"><input class="enabled" type="checkbox" /><span>Enabled</span></label>
+      <div class="record-body">
+        <div class="record-fields section-fields">
+          <label><span>Key</span><input class="key" /></label>
+          <label>
+            <span>Page slug</span>
+            <select class="pageSlug">
+              <option value="home">home</option>
+              <option value="practice">practice</option>
+              <option value="who">who</option>
+              <option value="city">city</option>
+              <option value="summit">summit</option>
+              <option value="agenda">agenda</option>
+              <option value="articles">articles</option>
+              <option value="ethics">ethics</option>
+            </select>
+          </label>
+          <label><span>Page label</span><input class="page" /></label>
+          <label><span>Admin label</span><input class="label" /></label>
+          <label><span>Sort</span><input class="sortOrder" type="number" step="1" /></label>
+          <label>
+            <span>Layout</span>
+            <select class="layoutMode">
+              <option value="text">Text</option>
+              <option value="feature">Text + image</option>
+              <option value="dark">Dark band</option>
+            </select>
+          </label>
+        </div>
+        <div class="record-fields">
+          <label><span>Eyebrow</span><input class="eyebrow" /></label>
+          <label><span>Title</span><input class="title" /></label>
+          <label><span>Image key</span><input class="imageKey" /></label>
+          <label class="check"><input class="enabled" type="checkbox" /><span>Enabled</span></label>
+        </div>
+        <label><span>Body HTML</span><textarea class="bodyHtml" rows="7"></textarea></label>
+        <div class="section-note"></div>
       </div>
-      <label><span>Body HTML</span><textarea class="bodyHtml" rows="7"></textarea></label>
-      <div class="section-note"></div>
       <div class="record-actions">
         <span class="status"></span>
         <button class="danger delete" type="button">Delete</button>

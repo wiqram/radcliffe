@@ -4,6 +4,9 @@ const sectionList = document.getElementById('sectionList');
 const contentTemplate = document.getElementById('contentTemplate');
 const imageTemplate = document.getElementById('imageTemplate');
 const sectionTemplate = document.getElementById('sectionTemplate');
+const pageFilter = document.getElementById('pageFilter');
+const workspaceSearch = document.getElementById('workspaceSearch');
+const currentScope = document.getElementById('currentScope');
 
 const pageLabels = {
   home: 'Homepage',
@@ -14,16 +17,32 @@ const pageLabels = {
   agenda: 'Agenda',
   articles: 'Articles',
   ethics: 'Ethics',
+  Global: 'Global',
+};
+const labelToPageSlug = Object.fromEntries(
+  Object.entries(pageLabels).map(([slug, label]) => [label, slug])
+);
+
+const state = {
+  activeTab: 'content',
+  content: [],
+  media: [],
+  sections: [],
 };
 
 document.querySelectorAll('.tab').forEach((tab) => {
   tab.addEventListener('click', () => {
+    state.activeTab = tab.dataset.tab;
     document.querySelectorAll('.tab').forEach((item) => item.classList.remove('is-active'));
     document.querySelectorAll('.panel').forEach((panel) => panel.classList.remove('is-active'));
     tab.classList.add('is-active');
     document.getElementById(`${tab.dataset.tab}-panel`).classList.add('is-active');
+    applyFilters();
   });
 });
+
+pageFilter.addEventListener('change', applyFilters);
+workspaceSearch.addEventListener('input', applyFilters);
 
 function setStatus(el, message, isError = false) {
   el.textContent = message;
@@ -34,6 +53,66 @@ async function request(url, options = {}) {
   const res = await fetch(url, options);
   if (!res.ok) throw new Error(await res.text());
   return res.json();
+}
+
+function textForSearch(...values) {
+  return values.filter(Boolean).join(' ').toLowerCase();
+}
+
+function pageValue(record) {
+  return record.page_slug || labelToPageSlug[record.page] || record.page || 'Global';
+}
+
+function pageLabel(value) {
+  return pageLabels[value] || value || 'Global';
+}
+
+function updateRecordChrome(node, record, options = {}) {
+  const title = node.querySelector('.record-title');
+  const key = node.querySelector('.record-key');
+  const pageBadge = node.querySelector('.page-badge');
+  const typePill = node.querySelector('.type-pill');
+  const mediaPill = node.querySelector('.media-pill');
+  const enabledPill = node.querySelector('.enabled-pill');
+  const originPill = node.querySelector('.origin-pill');
+
+  if (title) title.textContent = record.label || record.title || record.key || options.fallbackTitle || 'Untitled';
+  if (key) key.textContent = record.key || '';
+  if (pageBadge) pageBadge.textContent = pageLabel(pageValue(record));
+  if (typePill) typePill.textContent = record.type === 'html' ? 'HTML' : 'Text';
+  if (mediaPill) {
+    mediaPill.textContent = record.has_data ? 'Uploaded' : 'Empty';
+    mediaPill.classList.toggle('is-success', Boolean(record.has_data));
+    mediaPill.classList.toggle('is-muted', !record.has_data);
+  }
+  if (enabledPill) {
+    enabledPill.textContent = record.enabled === false ? 'Hidden' : 'Visible';
+    enabledPill.classList.toggle('is-success', record.enabled !== false);
+    enabledPill.classList.toggle('is-danger', record.enabled === false);
+  }
+  if (originPill) {
+    originPill.textContent = record.is_static ? 'Static' : 'CMS';
+    originPill.classList.toggle('is-muted', Boolean(record.is_static));
+  }
+
+  node.dataset.page = pageValue(record);
+  node.dataset.search = textForSearch(
+    record.key,
+    record.page,
+    record.page_slug,
+    record.label,
+    record.title,
+    record.value,
+    record.alt_text,
+    record.body_html
+  );
+}
+
+function bindChromeRefresh(node, getRecord) {
+  node.querySelectorAll('input, textarea, select').forEach((field) => {
+    field.addEventListener('input', () => updateRecordChrome(node, getRecord()));
+    field.addEventListener('change', () => updateRecordChrome(node, getRecord()));
+  });
 }
 
 function renderContentRecord(record = {}) {
@@ -51,11 +130,22 @@ function renderContentRecord(record = {}) {
   type.value = record.type || 'text';
   value.value = record.value || '';
 
+  const currentRecord = () => ({
+    key: key.value.trim(),
+    page: page.value.trim() || 'Global',
+    label: label.value.trim(),
+    type: type.value,
+    value: value.value,
+  });
+
+  bindChromeRefresh(node, currentRecord);
+  updateRecordChrome(node, currentRecord(), { fallbackTitle: 'New text key' });
+
   node.querySelector('.save').addEventListener('click', async () => {
     if (!key.value.trim()) return setStatus(status, 'Key is required.', true);
     setStatus(status, 'Saving...');
     try {
-      await request(`/api/admin/content/${encodeURIComponent(key.value.trim())}`, {
+      const saved = await request(`/api/admin/content/${encodeURIComponent(key.value.trim())}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -65,6 +155,7 @@ function renderContentRecord(record = {}) {
           value: value.value,
         }),
       });
+      updateRecordChrome(node, saved);
       setStatus(status, 'Saved.');
     } catch {
       setStatus(status, 'Save failed.', true);
@@ -92,6 +183,17 @@ function renderImageRecord(record = {}) {
     ? `Current file: ${record.filename || 'uploaded image'}`
     : 'No database image uploaded yet. The static image remains visible.';
 
+  const currentRecord = () => ({
+    key: key.value.trim(),
+    page: page.value.trim() || 'Global',
+    label: label.value.trim(),
+    alt_text: alt.value.trim(),
+    has_data: Boolean(record.has_data),
+  });
+
+  bindChromeRefresh(node, currentRecord);
+  updateRecordChrome(node, currentRecord(), { fallbackTitle: 'New image key' });
+
   node.querySelector('.save').addEventListener('click', async () => {
     if (!key.value.trim()) return setStatus(status, 'Key is required.', true);
     setStatus(status, 'Saving...');
@@ -106,9 +208,11 @@ function renderImageRecord(record = {}) {
         method: 'POST',
         body: form,
       });
+      record.has_data = saved.has_data;
       meta.textContent = saved.has_data
         ? `Current file: ${saved.filename || 'uploaded image'}`
         : 'Metadata saved. No image file uploaded.';
+      updateRecordChrome(node, saved);
       setStatus(status, 'Saved.');
     } catch {
       setStatus(status, 'Save failed.', true);
@@ -137,7 +241,7 @@ function renderSectionRecord(record = {}) {
 
   key.value = record.key || '';
   pageSlug.value = record.page_slug || 'home';
-  page.value = record.page || pageLabels[pageSlug.value] || 'Homepage';
+  page.value = record.page || pageLabel(pageSlug.value);
   label.value = record.label || '';
   sortOrder.value = record.sort_order ?? 100;
   layout.value = record.layout || 'text';
@@ -150,23 +254,41 @@ function renderSectionRecord(record = {}) {
   const isStatic = Boolean(record.is_static);
   key.readOnly = isStatic;
   note.textContent = isStatic
-    ? 'Existing static section: delete hides it from visitors; save can re-enable it.'
-    : 'CMS-created section: delete removes it from the database.';
+    ? 'Existing static section: Delete hides it from visitors; turn Enabled back on and save to restore it.'
+    : 'CMS-created section: Delete removes it from the database.';
+
+  const currentRecord = () => ({
+    key: key.value.trim(),
+    page_slug: pageSlug.value,
+    page: page.value.trim() || pageLabel(pageSlug.value),
+    label: label.value.trim(),
+    eyebrow: eyebrow.value,
+    title: title.value,
+    body_html: bodyHtml.value,
+    image_key: imageKey.value.trim(),
+    layout: layout.value,
+    sort_order: Number(sortOrder.value) || 100,
+    enabled: enabled.checked,
+    is_static: isStatic,
+  });
 
   pageSlug.addEventListener('change', () => {
-    page.value = pageLabels[pageSlug.value] || page.value;
+    page.value = pageLabel(pageSlug.value);
   });
+
+  bindChromeRefresh(node, currentRecord);
+  updateRecordChrome(node, currentRecord(), { fallbackTitle: 'New section' });
 
   node.querySelector('.save').addEventListener('click', async () => {
     if (!key.value.trim()) return setStatus(status, 'Key is required.', true);
     setStatus(status, 'Saving...');
     try {
-      await request(`/api/admin/sections/${encodeURIComponent(key.value.trim())}`, {
+      const saved = await request(`/api/admin/sections/${encodeURIComponent(key.value.trim())}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           pageSlug: pageSlug.value,
-          page: page.value.trim() || pageLabels[pageSlug.value] || 'Homepage',
+          page: page.value.trim() || pageLabel(pageSlug.value),
           label: label.value.trim() || key.value.trim(),
           eyebrow: eyebrow.value,
           title: title.value,
@@ -177,6 +299,8 @@ function renderSectionRecord(record = {}) {
           enabled: enabled.checked,
         }),
       });
+      updateRecordChrome(node, saved);
+      updateMetrics();
       setStatus(status, 'Saved.');
     } catch {
       setStatus(status, 'Save failed.', true);
@@ -189,14 +313,16 @@ function renderSectionRecord(record = {}) {
     if (!window.confirm(`Are you sure you want to ${action}?`)) return;
     setStatus(status, isStatic ? 'Hiding...' : 'Deleting...');
     try {
-      await request(`/api/admin/sections/${encodeURIComponent(key.value.trim())}`, {
+      const result = await request(`/api/admin/sections/${encodeURIComponent(key.value.trim())}`, {
         method: 'DELETE',
       });
       if (isStatic) {
         enabled.checked = false;
+        updateRecordChrome(node, result);
         setStatus(status, 'Hidden.');
       } else {
         node.remove();
+        updateMetrics();
       }
     } catch {
       setStatus(status, 'Delete failed.', true);
@@ -206,26 +332,90 @@ function renderSectionRecord(record = {}) {
   sectionList.appendChild(node);
 }
 
+function populatePageFilter(data) {
+  const values = new Map();
+  [...data.content, ...data.media, ...data.sections].forEach((item) => {
+    values.set(pageValue(item), pageLabel(pageValue(item)));
+  });
+  pageFilter.replaceChildren(new Option('All pages', ''));
+  [...values.entries()]
+    .sort((a, b) => a[1].localeCompare(b[1]))
+    .forEach(([value, label]) => pageFilter.appendChild(new Option(label, value)));
+}
+
+function applyFilters() {
+  const query = workspaceSearch.value.trim().toLowerCase();
+  const page = pageFilter.value;
+  currentScope.textContent = page ? pageLabel(page) : 'All pages';
+
+  document.querySelectorAll('.record-grid-list').forEach((list) => {
+    let visible = 0;
+    list.querySelectorAll('.record').forEach((record) => {
+      const kindMatches = record.dataset.kind === state.activeTab;
+      const pageMatches = !page || record.dataset.page === page;
+      const queryMatches = !query || record.dataset.search.includes(query);
+      const show = kindMatches && pageMatches && queryMatches;
+      record.hidden = !show;
+      if (show) visible += 1;
+    });
+    list.classList.toggle('is-empty', list.closest('.panel')?.classList.contains('is-active') && visible === 0);
+  });
+}
+
+function updateMetrics() {
+  const contentTotal = contentList.querySelectorAll('.record').length;
+  const imageTotal = imageList.querySelectorAll('.record').length;
+  const sectionRecords = sectionList.querySelectorAll('.record');
+  const sectionTotal = sectionRecords.length;
+  const enabledTotal = [...sectionRecords].filter((record) => {
+    const enabled = record.querySelector('.enabled');
+    return enabled ? enabled.checked : false;
+  }).length;
+
+  document.getElementById('contentCount').textContent = contentTotal;
+  document.getElementById('imageCount').textContent = imageTotal;
+  document.getElementById('sectionCount').textContent = sectionTotal;
+  document.getElementById('metricContent').textContent = contentTotal;
+  document.getElementById('metricImages').textContent = imageTotal;
+  document.getElementById('metricSections').textContent = sectionTotal;
+  document.getElementById('metricEnabled').textContent = enabledTotal;
+}
+
 async function load() {
   try {
     const data = await request('/api/admin/content');
+    state.content = data.content;
+    state.media = data.media;
+    state.sections = data.sections;
     contentList.replaceChildren();
     imageList.replaceChildren();
     sectionList.replaceChildren();
+    populatePageFilter(data);
     data.content.forEach(renderContentRecord);
-    data.media.forEach(renderImageRecord);
     data.sections.forEach(renderSectionRecord);
+    data.media.forEach(renderImageRecord);
+    updateMetrics();
+    applyFilters();
   } catch {
     contentList.textContent = 'Unable to load CMS content.';
   }
 }
 
-document.getElementById('addContent').addEventListener('click', () => renderContentRecord());
-document.getElementById('addImage').addEventListener('click', () => renderImageRecord());
+document.getElementById('addContent').addEventListener('click', () => {
+  renderContentRecord({ key: `custom.text.${Date.now()}`, page: 'Global', label: 'New text key' });
+  updateMetrics();
+  applyFilters();
+});
+
+document.getElementById('addImage').addEventListener('click', () => {
+  renderImageRecord({ key: `custom.image.${Date.now()}`, page: 'Global', label: 'New image key' });
+  updateMetrics();
+  applyFilters();
+});
+
 document.getElementById('addSection').addEventListener('click', () => {
-  const id = `custom.${Date.now()}`;
   renderSectionRecord({
-    key: id,
+    key: `custom.section.${Date.now()}`,
     page_slug: 'home',
     page: 'Homepage',
     label: 'New section',
@@ -234,6 +424,8 @@ document.getElementById('addSection').addEventListener('click', () => {
     is_static: false,
     layout: 'text',
   });
+  updateMetrics();
+  applyFilters();
 });
 
 load();
