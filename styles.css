@@ -117,8 +117,13 @@ body.is-scrolled .header { top: 0; }
   gap: 32px;
 }
 .brand {
-  display: inline-flex; align-items: baseline; gap: 9px;
+  display: inline-flex; align-items: center; gap: 9px;
   text-decoration: none;
+}
+.brand-logo {
+  display: block;
+  width: clamp(150px, 15vw, 210px);
+  height: auto;
 }
 .brand-name {
   font-family: var(--serif);
@@ -136,6 +141,7 @@ body.is-scrolled .header { top: 0; }
   transform: translateY(-3px);
 }
 .header.scrolled .brand-name { font-size: 19px; }
+.header.scrolled .brand-logo { width: clamp(132px, 13vw, 178px); }
 
 .nav { display: flex; align-items: center; gap: 36px; }
 .nav a {

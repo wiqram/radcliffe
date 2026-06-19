@@ -94,15 +94,11 @@ p { color: var(--muted); line-height: 1.5; }
   padding: 8px 8px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  background: #f6f8fb;
-  color: var(--sidebar);
-  font-weight: 800;
-  font-family: Georgia, serif;
+.admin-logo {
+  display: block;
+  width: 112px;
+  height: auto;
+  background: #fff;
 }
 .brand-block strong,
 .brand-block em {
@@ -432,6 +428,12 @@ label.check input {
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   padding: 30px;
+}
+.login-logo {
+  display: block;
+  width: 180px;
+  height: auto;
+  margin-bottom: 22px;
 }
 .login-card h1 { margin-bottom: 22px; }
 .login-card form {
