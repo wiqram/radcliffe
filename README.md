@@ -394,6 +394,76 @@ Editors do not need to know internal keys, page slugs, sort numbers, or image ke
 
 The public top navigation includes an `Admin` link.
 
+### How To Use The Admin Portal
+
+1. Open `/admin`.
+
+   Use the configured admin username and password. The first deployment may still use the default credentials shown above, but production credentials must be changed before public launch.
+
+2. Start from `Pages`.
+
+   The `Pages` screen is the main editing area. Each card represents one public website page and shows how many sections, images, and editable text fields are attached to that page.
+
+3. Edit an existing page.
+
+   Select `Edit page` on a page card. The page editor shows:
+
+   - `Page sections` - the visible order of the page.
+   - `Text on this page` - editable headlines, paragraphs, and page-specific text.
+   - `View page` - opens the live public page in a new tab.
+
+4. Hide or show a built-in section.
+
+   In `Page sections`, use `Hide` or `Show`. Built-in sections are part of the original static page, so hiding them turns them off for visitors without deleting the underlying fallback HTML.
+
+5. Add a new section.
+
+   Select `Add section`, then fill in:
+
+   - `Page`
+   - `Section name`
+   - `Style`
+   - `Small heading`
+   - `Main heading`
+   - `Body text`
+   - optional `Image`
+   - `Visible on website`
+
+   Select `Save section`. The CMS creates the internal identifier automatically.
+
+6. Edit or reorder an admin-added section.
+
+   Admin-added sections show as `Added` in the page outline. Use:
+
+   - `Edit` to change the section content.
+   - `Up` or `Down` to change its order.
+   - `Delete` inside the edit drawer to remove it.
+
+7. Edit page text.
+
+   Use `Text on this page`. Change the visible text directly and select `Save` for that text block. Some formatted fields allow inline formatting because they are stored as HTML behind the scenes.
+
+8. Manage images.
+
+   Open `Media Library`.
+
+   - `Replace image` uploads a new image for that website image slot.
+   - `Save image` stores display name, alt text, and any uploaded replacement.
+   - `Restore original` removes the uploaded replacement and returns to the original static website image.
+   - `Upload image` creates an image entry that can be selected when adding a new section.
+
+9. Review enquiries.
+
+   Open `Messages` to view contact form submissions. If SMTP is configured, delivery status indicates whether the message was sent by email. Messages are still stored in PostgreSQL even when SMTP is not configured.
+
+10. Update global settings.
+
+   Open `Settings` to edit the announcement bar and contact routing values. Use this area for site-wide text rather than page-specific content.
+
+11. Use advanced details only for technical support.
+
+   `Advanced technical details` contains internal keys and order values. Normal editors should leave these collapsed. Developers may use them when debugging CMS records or mapping content to static HTML attributes.
+
 ## Contact Form
 
 All enquiry/contact links route to `Contact.html`.
