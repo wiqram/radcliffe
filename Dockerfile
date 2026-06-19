@@ -1,6 +1,12 @@
-FROM nginxinc/nginx-unprivileged:1.27-alpine
+FROM node:20-alpine
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY . /usr/share/nginx/html
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY . .
 
 EXPOSE 3007
+
+CMD ["npm", "start"]

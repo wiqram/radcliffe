@@ -1,3 +1,7 @@
 .git
 .idea
-Dockerfile
+node_modules
+npm-debug.log
+.env
+.env.*
+!.env.production

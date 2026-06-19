@@ -44,7 +44,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'docker compose -f docker-compose-prod.yml push'
+                    sh 'docker compose -f docker-compose-prod.yml push radcliffe-web'
                 }
             }
         }
@@ -77,7 +77,7 @@ pipeline {
                         echo "namespace is present doing rolling restart of deployment"
                         sh 'kubectl create -f namespace.yaml --dry-run=client -o yaml | kubectl apply -f -'
                         sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl rollout restart deployment -n qcx qcx-web'
+                        sh 'kubectl rollout restart deployment -n radcliffe radcliffe-web'
                         //sh 'kubectl apply -f webui-deployment.yaml'
                         //sh 'kubectl rollout restart deployment -n ollama userinterface'
                         // Apply configmap first

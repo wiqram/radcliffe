@@ -1,0 +1,19 @@
+{
+  "name": "radcliffe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Redcliffe Advisory website with a lightweight CMS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.0.2",
+    "pg": "^8.12.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

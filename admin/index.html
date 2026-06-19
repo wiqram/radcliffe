@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Redcliffe CMS</title>
+<link rel="stylesheet" href="/admin/assets/admin.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Redcliffe Advisory</p>
+      <h1>Content Management</h1>
+    </div>
+    <form method="post" action="/admin/logout">
+      <button class="secondary" type="submit">Sign out</button>
+    </form>
+  </header>
+
+  <main class="layout">
+    <nav class="tabs" aria-label="CMS sections">
+      <button class="tab is-active" data-tab="content" type="button">Content</button>
+      <button class="tab" data-tab="images" type="button">Images</button>
+    </nav>
+
+    <section class="panel is-active" id="content-panel" aria-labelledby="content-tab">
+      <div class="panel-head">
+        <div>
+          <h2>Editable Text</h2>
+          <p>These values override matching `data-cms-key` elements on the public site.</p>
+        </div>
+        <button id="addContent" class="secondary" type="button">Add key</button>
+      </div>
+      <div id="contentList" class="stack"></div>
+    </section>
+
+    <section class="panel" id="images-panel" aria-labelledby="images-tab">
+      <div class="panel-head">
+        <div>
+          <h2>Editable Images</h2>
+          <p>Uploaded files are stored in PostgreSQL and override matching `data-cms-image` elements.</p>
+        </div>
+        <button id="addImage" class="secondary" type="button">Add image key</button>
+      </div>
+      <div id="imageList" class="stack"></div>
+    </section>
+  </main>
+
+  <template id="contentTemplate">
+    <article class="record">
+      <div class="record-grid">
+        <label><span>Key</span><input class="key" /></label>
+        <label><span>Page</span><input class="page" /></label>
+        <label><span>Label</span><input class="label" /></label>
+        <label>
+          <span>Mode</span>
+          <select class="type">
+            <option value="text">Text</option>
+            <option value="html">HTML</option>
+          </select>
+        </label>
+      </div>
+      <label><span>Value</span><textarea class="value" rows="5"></textarea></label>
+      <div class="record-actions">
+        <span class="status"></span>
+        <button class="save" type="button">Save</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="imageTemplate">
+    <article class="record">
+      <div class="record-grid">
+        <label><span>Key</span><input class="key" /></label>
+        <label><span>Page</span><input class="page" /></label>
+        <label><span>Label</span><input class="label" /></label>
+        <label><span>Alt text</span><input class="alt" /></label>
+      </div>
+      <label><span>Image file</span><input class="file" type="file" accept="image/*" /></label>
+      <div class="media-meta"></div>
+      <div class="record-actions">
+        <span class="status"></span>
+        <button class="save" type="button">Save image</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="/admin/assets/admin.js"></script>
+</body>
+</html>
