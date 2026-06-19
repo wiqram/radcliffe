@@ -1,9 +1,11 @@
 const contentList = document.getElementById('contentList');
 const imageList = document.getElementById('imageList');
 const sectionList = document.getElementById('sectionList');
+const messageList = document.getElementById('messageList');
 const contentTemplate = document.getElementById('contentTemplate');
 const imageTemplate = document.getElementById('imageTemplate');
 const sectionTemplate = document.getElementById('sectionTemplate');
+const messageTemplate = document.getElementById('messageTemplate');
 const pageFilter = document.getElementById('pageFilter');
 const workspaceSearch = document.getElementById('workspaceSearch');
 const currentScope = document.getElementById('currentScope');
@@ -17,7 +19,9 @@ const pageLabels = {
   agenda: 'Agenda',
   articles: 'Articles',
   ethics: 'Ethics',
+  contact: 'Contact',
   Global: 'Global',
+  Messages: 'Messages',
 };
 const labelToPageSlug = Object.fromEntries(
   Object.entries(pageLabels).map(([slug, label]) => [label, slug])
@@ -28,6 +32,7 @@ const state = {
   content: [],
   media: [],
   sections: [],
+  messages: [],
 };
 
 document.querySelectorAll('.tab').forEach((tab) => {
@@ -60,6 +65,7 @@ function textForSearch(...values) {
 }
 
 function pageValue(record) {
+  if (record.id && record.message && record.email) return 'Messages';
   return record.page_slug || labelToPageSlug[record.page] || record.page || 'Global';
 }
 
@@ -75,6 +81,7 @@ function updateRecordChrome(node, record, options = {}) {
   const mediaPill = node.querySelector('.media-pill');
   const enabledPill = node.querySelector('.enabled-pill');
   const originPill = node.querySelector('.origin-pill');
+  const messagePill = node.querySelector('.message-pill');
 
   if (title) title.textContent = record.label || record.title || record.key || options.fallbackTitle || 'Untitled';
   if (key) key.textContent = record.key || '';
@@ -94,6 +101,11 @@ function updateRecordChrome(node, record, options = {}) {
     originPill.textContent = record.is_static ? 'Static' : 'CMS';
     originPill.classList.toggle('is-muted', Boolean(record.is_static));
   }
+  if (messagePill) {
+    messagePill.textContent = record.delivery_status || 'stored';
+    messagePill.classList.toggle('is-success', record.delivery_status === 'sent');
+    messagePill.classList.toggle('is-muted', record.delivery_status !== 'sent');
+  }
 
   node.dataset.page = pageValue(record);
   node.dataset.search = textForSearch(
@@ -104,7 +116,11 @@ function updateRecordChrome(node, record, options = {}) {
     record.title,
     record.value,
     record.alt_text,
-    record.body_html
+    record.body_html,
+    record.email,
+    record.organisation,
+    record.topic,
+    record.message
   );
 }
 
@@ -332,9 +348,40 @@ function renderSectionRecord(record = {}) {
   sectionList.appendChild(node);
 }
 
+function renderMessageRecord(record = {}) {
+  const node = messageTemplate.content.firstElementChild.cloneNode(true);
+  const title = node.querySelector('.record-title');
+  const key = node.querySelector('.record-key');
+  const meta = node.querySelector('.message-meta');
+  const body = node.querySelector('.message-body');
+
+  title.textContent = record.name || 'Anonymous enquiry';
+  key.textContent = `#${record.id} · ${record.email || 'no email'}`;
+  [
+    record.topic,
+    record.organisation,
+    record.recipient_email ? `To: ${record.recipient_email}` : '',
+    record.created_at ? new Date(record.created_at).toLocaleString() : '',
+  ]
+    .filter(Boolean)
+    .forEach((value) => {
+      const item = document.createElement('span');
+      item.textContent = value;
+      meta.appendChild(item);
+    });
+  body.textContent = record.message || '';
+  updateRecordChrome(node, {
+    ...record,
+    key: `message.${record.id}`,
+    page: 'Messages',
+    label: record.name || 'Contact message',
+  });
+  messageList.appendChild(node);
+}
+
 function populatePageFilter(data) {
   const values = new Map();
-  [...data.content, ...data.media, ...data.sections].forEach((item) => {
+  [...data.content, ...data.media, ...data.sections, ...(data.messages || [])].forEach((item) => {
     values.set(pageValue(item), pageLabel(pageValue(item)));
   });
   pageFilter.replaceChildren(new Option('All pages', ''));
@@ -366,6 +413,7 @@ function updateMetrics() {
   const contentTotal = contentList.querySelectorAll('.record').length;
   const imageTotal = imageList.querySelectorAll('.record').length;
   const sectionRecords = sectionList.querySelectorAll('.record');
+  const messageTotal = messageList.querySelectorAll('.record').length;
   const sectionTotal = sectionRecords.length;
   const enabledTotal = [...sectionRecords].filter((record) => {
     const enabled = record.querySelector('.enabled');
@@ -375,10 +423,12 @@ function updateMetrics() {
   document.getElementById('contentCount').textContent = contentTotal;
   document.getElementById('imageCount').textContent = imageTotal;
   document.getElementById('sectionCount').textContent = sectionTotal;
+  document.getElementById('messageCount').textContent = messageTotal;
   document.getElementById('metricContent').textContent = contentTotal;
   document.getElementById('metricImages').textContent = imageTotal;
   document.getElementById('metricSections').textContent = sectionTotal;
   document.getElementById('metricEnabled').textContent = enabledTotal;
+  document.getElementById('metricMessages').textContent = messageTotal;
 }
 
 async function load() {
@@ -387,13 +437,16 @@ async function load() {
     state.content = data.content;
     state.media = data.media;
     state.sections = data.sections;
+    state.messages = data.messages || [];
     contentList.replaceChildren();
     imageList.replaceChildren();
     sectionList.replaceChildren();
+    messageList.replaceChildren();
     populatePageFilter(data);
     data.content.forEach(renderContentRecord);
     data.sections.forEach(renderSectionRecord);
     data.media.forEach(renderImageRecord);
+    state.messages.forEach(renderMessageRecord);
     updateMetrics();
     applyFilters();
   } catch {

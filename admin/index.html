@@ -35,6 +35,11 @@
           <span>Images</span>
           <strong id="imageCount">0</strong>
         </button>
+        <button class="tab" data-tab="messages" type="button">
+          <span class="nav-icon">@</span>
+          <span>Messages</span>
+          <strong id="messageCount">0</strong>
+        </button>
       </nav>
 
       <div class="sidebar-card">
@@ -74,6 +79,10 @@
         <div class="metric">
           <span>Enabled sections</span>
           <strong id="metricEnabled">0</strong>
+        </div>
+        <div class="metric">
+          <span>Messages</span>
+          <strong id="metricMessages">0</strong>
         </div>
       </section>
 
@@ -121,6 +130,17 @@
           <button id="addImage" type="button">Add image key</button>
         </div>
         <div id="imageList" class="record-grid-list"></div>
+      </section>
+
+      <section class="panel" id="messages-panel" aria-labelledby="messages-tab">
+        <div class="panel-head">
+          <div>
+            <h2>Contact Messages</h2>
+            <p>Recent enquiries submitted through the public contact form.</p>
+          </div>
+          <a class="button-link" href="/Contact.html" target="_blank" rel="noreferrer">Open contact page</a>
+        </div>
+        <div id="messageList" class="record-grid-list"></div>
       </section>
     </main>
   </div>
@@ -211,6 +231,7 @@
               <option value="agenda">agenda</option>
               <option value="articles">articles</option>
               <option value="ethics">ethics</option>
+              <option value="contact">contact</option>
             </select>
           </label>
           <label><span>Page label</span><input class="page" /></label>
@@ -238,6 +259,23 @@
         <span class="status"></span>
         <button class="danger delete" type="button">Delete</button>
         <button class="save" type="button">Save section</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="messageTemplate">
+    <article class="record" data-kind="messages">
+      <div class="record-head">
+        <div>
+          <span class="record-kicker page-badge">Message</span>
+          <h3 class="record-title"></h3>
+          <code class="record-key"></code>
+        </div>
+        <span class="pill message-pill"></span>
+      </div>
+      <div class="record-body">
+        <div class="message-meta"></div>
+        <p class="message-body"></p>
       </div>
     </article>
   </template>

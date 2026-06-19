@@ -3,9 +3,11 @@ const path = require('path');
 
 const express = require('express');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 const { Pool } = require('pg');
 
 const app = express();
+app.set('trust proxy', 1);
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: Number(process.env.MAX_UPLOAD_BYTES || 8 * 1024 * 1024) },
@@ -131,6 +133,49 @@ const contentSeeds = [
     type: 'html',
     value: 'Ethics &amp;<br /><em>independence</em>',
   },
+  {
+    key: 'contact.recipient.email',
+    page: 'Contact',
+    label: 'Contact form recipient email',
+    type: 'text',
+    value: 'karina.robinson@redcliffeadvisory.com',
+  },
+  {
+    key: 'contact.hero.title',
+    page: 'Contact',
+    label: 'Contact page title',
+    type: 'html',
+    value: 'Contact <em>Redcliffe</em>',
+  },
+  {
+    key: 'contact.hero.lede',
+    page: 'Contact',
+    label: 'Contact page lede',
+    type: 'html',
+    value:
+      'For advisory enquiries, Summit attendance, media requests, or private introductions, send a note through the form below.',
+  },
+  {
+    key: 'contact.details.email',
+    page: 'Contact',
+    label: 'Displayed email address',
+    type: 'text',
+    value: 'karina.robinson@redcliffeadvisory.com',
+  },
+  {
+    key: 'contact.details.location',
+    page: 'Contact',
+    label: 'Displayed location',
+    type: 'text',
+    value: 'London & Madrid',
+  },
+  {
+    key: 'contact.details.response',
+    page: 'Contact',
+    label: 'Response note',
+    type: 'text',
+    value: 'Messages are reviewed by Redcliffe Advisory. We respond where the enquiry is relevant to the practice.',
+  },
 ];
 
 const mediaSeeds = [
@@ -174,6 +219,8 @@ const sectionSeeds = [
   { key: 'ethics.principles', pageSlug: 'ethics', page: 'Ethics', label: 'Principles', sortOrder: 20, isStatic: true },
   { key: 'ethics.commitments', pageSlug: 'ethics', page: 'Ethics', label: 'Commitments', sortOrder: 30, isStatic: true },
   { key: 'ethics.other', pageSlug: 'ethics', page: 'Ethics', label: 'Other rooms', sortOrder: 40, isStatic: true },
+  { key: 'contact.hero', pageSlug: 'contact', page: 'Contact', label: 'Hero', sortOrder: 10, isStatic: true },
+  { key: 'contact.form', pageSlug: 'contact', page: 'Contact', label: 'Contact form', sortOrder: 20, isStatic: true },
 ];
 
 app.disable('x-powered-by');
@@ -220,6 +267,10 @@ function requireAdmin(req, res, next) {
   return res.redirect('/admin/login');
 }
 
+function isSecureRequest(req) {
+  return req.secure || req.get('x-forwarded-proto') === 'https';
+}
+
 async function initDatabase() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS cms_content (
@@ -259,6 +310,18 @@ async function initDatabase() {
       is_static BOOLEAN NOT NULL DEFAULT false,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id BIGSERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      organisation TEXT NOT NULL DEFAULT '',
+      topic TEXT NOT NULL DEFAULT '',
+      message TEXT NOT NULL,
+      recipient_email TEXT NOT NULL DEFAULT '',
+      delivery_status TEXT NOT NULL DEFAULT 'stored',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
 
@@ -318,6 +381,58 @@ async function queryContent() {
   return { content: content.rows, media: media.rows, sections: sections.rows };
 }
 
+async function getContentValue(key, fallback = '') {
+  const result = await pool.query('SELECT value FROM cms_content WHERE key = $1', [key]);
+  return result.rows[0]?.value || fallback;
+}
+
+async function queryMessages() {
+  const result = await pool.query(
+    `SELECT id, name, email, organisation, topic, message, recipient_email, delivery_status, created_at
+     FROM contact_messages
+     ORDER BY created_at DESC
+     LIMIT 100`
+  );
+  return result.rows;
+}
+
+function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+async function maybeSendContactEmail(message) {
+  if (!process.env.SMTP_HOST) return 'stored';
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 587),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: process.env.SMTP_USER
+      ? {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD || '',
+        }
+      : undefined,
+  });
+
+  await transporter.sendMail({
+    from: process.env.CONTACT_FROM_EMAIL || message.recipientEmail,
+    to: message.recipientEmail,
+    replyTo: message.email,
+    subject: `Redcliffe website enquiry: ${message.topic || message.name}`,
+    text: [
+      `Name: ${message.name}`,
+      `Email: ${message.email}`,
+      `Organisation: ${message.organisation || '-'}`,
+      `Topic: ${message.topic || '-'}`,
+      '',
+      message.message,
+    ].join('\n'),
+  });
+
+  return 'sent';
+}
+
 app.get('/api/content', async (_req, res) => {
   try {
     const rows = await queryContent();
@@ -342,6 +457,50 @@ app.get('/api/media/:key', async (req, res) => {
   res.send(row.data);
 });
 
+app.post('/api/contact', async (req, res) => {
+  const name = String(req.body.name || '').trim();
+  const email = String(req.body.email || '').trim();
+  const organisation = String(req.body.organisation || '').trim();
+  const topic = String(req.body.topic || '').trim();
+  const message = String(req.body.message || '').trim();
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Name, email, and message are required.' });
+  }
+  if (!isEmail(email)) {
+    return res.status(400).json({ error: 'Enter a valid email address.' });
+  }
+
+  const recipientEmail = await getContentValue(
+    'contact.recipient.email',
+    'karina.robinson@redcliffeadvisory.com'
+  );
+  let deliveryStatus = 'stored';
+  try {
+    deliveryStatus = await maybeSendContactEmail({
+      name,
+      email,
+      organisation,
+      topic,
+      message,
+      recipientEmail,
+    });
+  } catch (error) {
+    deliveryStatus = 'stored_email_failed';
+  }
+
+  await pool.query(
+    `
+    INSERT INTO contact_messages
+      (name, email, organisation, topic, message, recipient_email, delivery_status)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+  `,
+    [name, email, organisation, topic, message, recipientEmail, deliveryStatus]
+  );
+
+  res.json({ ok: true, deliveryStatus });
+});
+
 app.get('/admin/login', (req, res) => {
   if (verifyToken(parseCookies(req)[COOKIE_NAME])) return res.redirect('/admin');
   return res.sendFile(path.join(ROOT, 'admin', 'login.html'));
@@ -356,7 +515,7 @@ app.post('/admin/login', (req, res) => {
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: isSecureRequest(req),
     maxAge: 1000 * 60 * 60 * 12,
   });
   return res.redirect('/admin');
@@ -374,7 +533,12 @@ app.use('/admin/assets', requireAdmin, express.static(path.join(ROOT, 'admin', '
 
 app.get('/api/admin/content', requireAdmin, async (_req, res) => {
   const rows = await queryContent();
+  rows.messages = await queryMessages();
   res.json(rows);
+});
+
+app.get('/api/admin/messages', requireAdmin, async (_req, res) => {
+  res.json(await queryMessages());
 });
 
 app.put('/api/admin/content/:key', requireAdmin, async (req, res) => {
@@ -528,6 +692,7 @@ app.delete('/api/admin/sections/:key', requireAdmin, async (req, res) => {
 const publicFiles = new Set([
   'Agenda.html',
   'Articles.html',
+  'Contact.html',
   'Ethics.html',
   'Homepage.html',
   'Practice.html',
@@ -538,6 +703,7 @@ const publicFiles = new Set([
   'styles.css',
   'site.js',
   'cms-client.js',
+  'contact.js',
 ]);
 
 app.use('/images', express.static(path.join(ROOT, 'images'), { index: false }));

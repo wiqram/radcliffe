@@ -30,6 +30,7 @@ The upgraded application uses a small Node/Express server instead of nginx. It s
 - Public CMS API:
   - `GET /api/content`
   - `GET /api/media/:key`
+  - `POST /api/contact`
 - Admin portal:
   - `GET /admin`
   - `POST /admin/login`
@@ -38,6 +39,7 @@ The upgraded application uses a small Node/Express server instead of nginx. It s
   - `PUT /api/admin/content/:key`
   - `GET /api/admin/media`
   - `POST /api/admin/media/:key`
+  - `GET /api/admin/messages`
 
 Content is stored in PostgreSQL:
 
@@ -47,6 +49,7 @@ Content is stored in PostgreSQL:
   - Existing static sections are seeded with stable keys and can be enabled/disabled.
   - CMS-authored sections can be added, edited, reordered, enabled/disabled, and deleted.
   - Dynamic sections support text, text plus image, and dark band layouts.
+- `contact_messages` stores public contact form submissions.
 
 The frontend enhancement script `cms-client.js` fetches CMS values after page load and applies them to elements marked with:
 
@@ -62,11 +65,12 @@ If the CMS API or database is unavailable, the static hard-coded HTML remains vi
 
 The public top navigation includes an `Admin` link to `/admin`.
 
-The admin portal has three management areas:
+The admin portal has four management areas:
 
 - `Content` - edit or add arbitrary text/HTML keys.
 - `Images` - upload or add arbitrary image keys stored in PostgreSQL.
 - `Sections` - configure all seeded page sections and add new CMS-authored sections.
+- `Messages` - view recent contact form submissions.
 
 Deleting a static section hides it for visitors by setting `enabled=false`; the HTML remains in the file as fallback. Deleting a CMS-authored section removes it from the database.
 
@@ -128,3 +132,24 @@ To make a new static element editable:
 4. For whole static sections, add `data-cms-section="page.section"` to the section and add a section seed in `server.js`.
 
 Keep CMS keys stable. Changing keys disconnects existing database content from the page.
+
+## Contact Form
+
+All former `mailto:` enquiry links now route to `Contact.html`.
+
+The contact page uses CMS keys for editable details:
+
+- `contact.recipient.email` - backend recipient email used for stored submissions and optional SMTP delivery.
+- `contact.details.email` - public email text shown on the contact page.
+- `contact.details.location` - public location text.
+- `contact.details.response` - public response note.
+- `contact.hero.title` and `contact.hero.lede` - page hero copy.
+
+Submissions are always stored in `contact_messages`. SMTP delivery is optional and enabled only when these environment variables are configured:
+
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_SECURE`
+- `SMTP_USER`
+- `SMTP_PASSWORD`
+- `CONTACT_FROM_EMAIL`
