@@ -107,8 +107,10 @@ p { color: var(--muted); line-height: 1.5; }
 }
 .admin-logo {
   display: block;
-  width: 112px;
-  height: auto;
+  width: auto;
+  height: 30px;
+  max-width: 110px;
+  object-fit: contain;
   background: #fff;
 }
 .brand-block strong,
@@ -442,9 +444,11 @@ label.check input {
 }
 .login-logo {
   display: block;
-  width: 180px;
-  height: auto;
-  margin-bottom: 22px;
+  width: auto;
+  height: 34px;
+  max-width: 126px;
+  object-fit: contain;
+  margin-bottom: 18px;
 }
 .login-card h1 { margin-bottom: 22px; }
 .login-card form {
