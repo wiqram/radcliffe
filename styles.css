@@ -124,9 +124,11 @@ body.is-scrolled .header { top: 0; }
 }
 .brand-logo {
   display: block;
-  height: clamp(26px, 2.6vw, 34px);
-  max-width: clamp(96px, 10vw, 136px);
-  width: auto;
+  inline-size: 132px;
+  block-size: auto;
+  max-inline-size: 132px;
+  max-block-size: 37px;
+  flex: 0 0 132px;
   object-fit: contain;
 }
 .brand-name {
@@ -146,8 +148,10 @@ body.is-scrolled .header { top: 0; }
 }
 .header.scrolled .brand-name { font-size: 19px; }
 .header.scrolled .brand-logo {
-  height: clamp(24px, 2.2vw, 30px);
-  max-width: clamp(90px, 9vw, 120px);
+  inline-size: 118px;
+  max-inline-size: 118px;
+  max-block-size: 33px;
+  flex-basis: 118px;
 }
 
 .nav {
