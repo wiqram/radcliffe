@@ -2,10 +2,13 @@
 
 This package contains the Redcliffe Advisory website, a lightweight Node/Express CMS, PostgreSQL-backed content storage, a public contact form, and deployment manifests for Docker Compose, Kubernetes, Vercel and Netlify.
 
-> **Deploying to Vercel or Netlify?** Connect this repository to either platform
-> and it deploys with no build settings to fill in — see
-> [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md). The rest of this document covers the
-> Docker Compose and Kubernetes paths.
+> **The simplest way to get this website online is Vercel or Netlify.** Connect
+> the repository to either one and it deploys with no build settings to fill in.
+> [**docs/DEPLOYMENT.md**](docs/DEPLOYMENT.md) walks through it step by step in
+> plain English: getting the site online, switching on the `/admin` editor,
+> sending contact-form emails, and moving redcliffeadvisory.com across. No prior
+> deployment experience needed, everything done in a browser, about 15 minutes.
+> The rest of this document covers the Docker Compose and Kubernetes paths.
 
 ## What Is Included
 
