@@ -1,6 +1,245 @@
-# Redcliffe Advisory Website Handover
+# Redcliffe Advisory Website
+
+<!-- wp-guide:start -->
+
+# Putting the website live on WordPress
+
+**This is the guide for the deployment team. Follow it top to bottom.**
+
+You do not need to be a developer, write any code, or install anything on your
+computer. Everything happens inside WordPress in a web browser, and it takes
+about twenty minutes.
+
+---
+
+## What you have been given
+
+| File or folder | What it is |
+| --- | --- |
+| `1-theme-to-upload/redcliffe-advisory.zip` | **The file you upload to WordPress.** Do not unzip it |
+| `2-theme-files/redcliffe-advisory/` | The same thing already unzipped, in case your host wants files uploaded by FTP instead |
+| `START-HERE.md` | This guide |
+
+## What you need before you start
+
+1. **The login for the WordPress site.** Your account must be an
+   **Administrator** — a lesser role cannot install a theme.
+2. **On WordPress.com only:** the site must be on the **Business plan or
+   higher**. Uploading a theme is not possible on the Free, Personal or Premium
+   plans. If in doubt, check under *Upgrades → Plans*.
+3. **About twenty minutes.**
+
+You do **not** need a database, a server, or any settings from the old website.
+Everything the site needs is inside the theme file.
+
+---
+
+## What will happen when you do this
+
+Worth knowing, so nothing comes as a surprise.
+
+The moment you activate the theme in Step 3, WordPress builds the entire
+website by itself:
+
+- **Nine pages are created** — Home, Chair Advisory, Who's Who, The City of
+  London, Summit, Agenda, Articles, Ethics, Contact
+- **The homepage is set** as the site's front page
+- **The top menu is built** with all the links in the right order
+- **The contact form starts working**, and messages appear in WordPress under
+  **Enquiries**
+
+You do not have to create any of that by hand. If you have run it before, doing
+it again is safe: existing pages are reused, never duplicated.
+
+---
+
+# Step 1 — Log in to WordPress
+
+Go to your site's admin address and log in:
+
+```
+https://your-site-address/wp-admin
+```
+
+On WordPress.com you can also go to **wordpress.com** → **My Sites** → and open
+the site's dashboard.
+
+**You should see:** the WordPress dashboard, with a dark menu down the left-hand
+side.
+
+---
+
+# Step 2 — Upload the theme
+
+1. In the left-hand menu, click **Appearance**, then **Themes**.
+2. Click the **Add New Theme** button at the top (on some versions it just says
+   **Add New**).
+3. Click **Upload Theme** at the top of the next screen.
+4. Click **Choose File** and select **`redcliffe-advisory.zip`** from the
+   `1-theme-to-upload` folder you were given.
+
+   > Select the **zip file itself**. Do not unzip it first, and do not select
+   > the folder from `2-theme-files`.
+
+5. Click **Install Now**.
+6. Wait a few seconds.
+
+**You should see:** a message saying *Theme installed successfully*, with links
+underneath saying **Live Preview** and **Activate**.
+
+> **If there is no "Upload Theme" button** on WordPress.com, the site is not on
+> the Business plan. Upgrade the plan, then come back to this step.
+
+---
+
+# Step 3 — Activate the theme
+
+Click **Activate**.
+
+This is the step that builds the website. It takes a couple of seconds.
+
+**You should see:** a green message at the top of the screen saying *The
+Redcliffe Advisory website is set up*, with links to view the site and to edit
+its words and pictures.
+
+---
+
+# Step 4 — Look at the website
+
+In the left-hand menu, hover over the site name at the very top and click
+**Visit Site**.
+
+Check each of these:
+
+- [ ] The homepage loads, with the portrait photograph and the gold announcement
+      strip across the top
+- [ ] The menu along the top shows: Chair Advisory, Who's Who, The City of
+      London, Summit, Articles, Ethics, and an **Enquire** button
+- [ ] Clicking each menu item opens a page that looks finished and properly
+      styled
+- [ ] The Contact page shows a form with Name, Email, Organisation, Topic and
+      Message
+
+If pages look plain and unstyled, see [If something looks
+wrong](#if-something-looks-wrong) at the end.
+
+---
+
+# Step 5 — Set the email address for enquiries
+
+Contact form messages are emailed to one address. Set it now.
+
+1. In the left-hand menu, click **Appearance**, then **Customize**.
+2. Click **Redcliffe Advisory** in the list.
+3. Click **Contact page**.
+4. Find **Send enquiries to** and enter the correct email address.
+5. Click **Publish** at the top.
+
+**Then test it:** open the Contact page on the live website, fill in the form
+and send it. You should see *"Thank you. Your message has been received."*
+
+Check two things afterwards:
+
+- The email arrives (**look in the spam folder too**)
+- The message appears in WordPress under **Enquiries** in the left-hand menu
+
+> Every message is saved under **Enquiries** whether or not the email goes out,
+> so an enquiry can never be lost. If the **Emailed** column says *No*, the
+> website is fine — it is the email sending that needs attention. See the last
+> section.
+
+---
+
+# Step 6 — Point redcliffeadvisory.com at the site
+
+**Do this last, once Steps 4 and 5 are confirmed working.**
+
+Until you do this, the old website is still the one the public sees. That is
+your safety net.
+
+**On WordPress.com:** go to **Upgrades → Domains → Add a domain → Use a domain I
+own**, enter `redcliffeadvisory.com`, and follow the instructions it gives you.
+WordPress.com will either transfer the domain or give you DNS records to enter
+at your current provider.
+
+**On self-hosted WordPress:** point the domain's DNS at your host as your
+hosting company instructs, and set the correct address under **Settings →
+General**.
+
+Either way:
+
+- Make **`www.redcliffeadvisory.com`** the primary address, so the version
+  without `www` redirects to it. That matches how the site works today.
+- The padlock (HTTPS) is set up automatically. There is nothing to buy.
+- DNS changes take anywhere from a few minutes to a few hours to take effect.
+
+---
+
+# How to change the website from now on
+
+## Words and pictures
+
+**Appearance → Customize → Redcliffe Advisory.**
+
+There is one section per page. Inside each you can change the headline and the
+opening text, swap the photographs, and switch whole sections of a page on or
+off. Click **Publish** to save.
+
+Two useful things to know:
+
+- **Clearing a box puts the original wording back.** Nothing can be left blank
+  by accident.
+- The pages under **Pages** in the menu look empty when you open them. That is
+  normal and correct — the design lives in the theme, and the editable words
+  live in the Customizer. **Do not delete these pages**, or the menu links will
+  stop working.
+
+## The menu
+
+**Appearance → Menus.** Reorder, rename or remove links here.
+
+To make a link look like the gold **Enquire** button, open **Screen Options** at
+the top right, tick **CSS Classes**, then type `cta` into the CSS Classes box
+for that link.
+
+## Enquiries
+
+**Enquiries** in the left-hand menu. Every contact form message is listed here
+with the sender's name, email and topic. Pressing **Reply** on the email
+notification writes back to the person who sent it.
+
+---
+
+# If something looks wrong
+
+| What you see | What it means | What to do |
+| --- | --- | --- |
+| No **Upload Theme** button | The WordPress.com plan is too low | Upgrade to Business, then retry Step 2 |
+| *The package could not be installed* | The wrong file was chosen | Choose `redcliffe-advisory.zip` itself, not a folder and not a file from inside it |
+| Pages look plain, with no styling | The theme is installed but not activated | Appearance → Themes → **Activate** on Redcliffe Advisory |
+| The menu at the top is empty | The menu was edited or removed | Appearance → Menus → assign a menu to the **Primary menu** location |
+| A menu link leads to the homepage | That page was deleted | Pages → check the page exists; restore it from Trash if not |
+| The homepage shows a list of blog posts | The front page setting was changed | Settings → Reading → *Your homepage displays: A static page* → Homepage: **Home** |
+| Contact form messages arrive but no email does | The site cannot send email | On WordPress.com this is included; on self-hosted, ask your host to enable email or install an SMTP plugin. Messages are still safe under **Enquiries** |
+| Photographs you uploaded do not appear | The change was not published | Reopen the Customizer and click **Publish** |
+
+**Nothing here can break the design.** If an edit goes wrong, clear the box you
+changed and the original wording comes back.
+
+<!-- wp-guide:end -->
+
+---
+
+# Everything else in this repository
+
+The sections below are for developers. The deployment team does not need them.
 
 This package contains the Redcliffe Advisory website, a lightweight Node/Express CMS, PostgreSQL-backed content storage, a public contact form, and deployment manifests for Docker Compose, Kubernetes, Vercel and Netlify.
+
+> **The WordPress theme** lives in `wordpress/redcliffe-advisory/`. It is
+> generated from the same HTML by `npm run build:wp`, and packaged for handover
+> with `npm run package:wp`. See `docs/WORDPRESS-THEME.md` for how it is put
+> together.
 
 > **The simplest way to get this website online is Vercel or Netlify.** Connect
 > the repository to either one and it deploys with no build settings to fill in.

@@ -11,3 +11,6 @@ dist/
 # Local-only secrets (.env and .env.production are committed build config)
 .env.local
 .env.*.local
+
+# WordPress handover package — regenerate with `npm run package:wp`.
+dist-wordpress/

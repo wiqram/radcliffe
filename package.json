@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build": "node scripts/build-static.js"
+    "build": "node scripts/build-static.js",
+    "build:wp": "node scripts/build-wordpress-theme.js",
+    "package:wp": "npm run build:wp && node scripts/package-wordpress.js"
   },
   "dependencies": {
     "express": "^4.19.2",
