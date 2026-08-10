@@ -67,11 +67,12 @@ Text fields pass through `wp_kses_post()` on both save and output, which keeps
 the `<em>`, `<span>` and `<br />` the design relies on and drops anything else.
 
 Images store an attachment ID and fall back to the file shipped in the theme.
-One default (`articles.hero.photo`) is an external Unsplash URL, as on the
-current site — `rad_image_url()` detects absolute URLs and returns them
-untouched. Four further Unsplash images are hardcoded in the templates exactly as
-they are today; consider uploading them to the Media Library at some point so the
-site does not depend on hotlinking.
+Every image the site uses is shipped with it — the five stock photographs that
+the original pages hotlinked from Unsplash were downloaded into `images/` at the
+dimensions the design requests, so the site makes no third-party image requests
+and cannot be broken by someone else's CDN. `rad_image_url()` still returns
+absolute URLs untouched, so an external address remains a valid default if one
+is ever wanted.
 
 ## Contact form
 

@@ -42,7 +42,7 @@ return array(
 		'city.feature.photo' => 'images/quantum-future-stage.jpeg',
 		'summit.hero.medallion' => 'images/summit-medallion.webp',
 		'summit.feature.photo' => 'images/summit-karina-podium.webp',
-		'articles.hero.photo' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80',
+		'articles.hero.photo' => 'images/city-skyline.webp',
 	),
 	'image_alt' => array(
 		'home.hero.portrait' => 'Portrait of Karina Robinson, CEO of Redcliffe Advisory',

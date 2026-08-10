@@ -69,7 +69,7 @@
             <div class="e-dek">Counsel for the principals who have the final say — and the bridge between Deep Tech, Finance and Defence.</div>
             <span class="e-open"><span>Open</span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=1100&amp;auto=format&amp;fit=crop&amp;q=80" alt="A City of London interior" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/city-interior.webp' ) ); ?>" alt="A City of London interior" loading="lazy" /></div>
         </a>
 
         <a class="entry portrait reveal" href="<?php echo esc_url( rad_url( 'who' ) ); ?>">
@@ -91,7 +91,7 @@
             <div class="e-dek">Of the City of London by temperament — and the point at which the Square Mile meets the laboratory.</div>
             <span class="e-open"><span>Open</span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1100&amp;auto=format&amp;fit=crop&amp;q=80" alt="The City of London at dusk" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/city-at-dusk.webp' ) ); ?>" alt="The City of London at dusk" loading="lazy" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'articles' ) ); ?>">
@@ -102,7 +102,7 @@
             <div class="e-dek">Karina&rsquo;s Column, The Quantum Insider and on-the-record conversations, published under the Redcliffe Advisory name.</div>
             <span class="e-open"><span>Open</span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1100&amp;auto=format&amp;fit=crop&amp;q=80" alt="A working desk with papers" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/working-desk.webp' ) ); ?>" alt="A working desk with papers" loading="lazy" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>">
@@ -113,7 +113,7 @@
             <div class="e-dek">The principles by which the practice is held — discretion, independence and stewardship.</div>
             <span class="e-open"><span>Open</span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="https://images.unsplash.com/photo-1551038247-3d9af20df552?w=1100&amp;auto=format&amp;fit=crop&amp;q=80" alt="Architectural detail" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/architectural-detail.webp' ) ); ?>" alt="Architectural detail" loading="lazy" /></div>
         </a>
 
       </div>
