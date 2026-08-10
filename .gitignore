@@ -12,5 +12,6 @@ dist/
 .env.local
 .env.*.local
 
-# WordPress handover package — regenerate with `npm run package:wp`.
-dist-wordpress/
+# dist-wordpress/ is deliberately committed: the deployment team takes the
+# packaged theme straight from the repository. Rebuild it with
+# `npm run package:wp` after changing anything under wordpress/.
