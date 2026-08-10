@@ -1,16 +1,22 @@
 # Redcliffe Advisory Website Handover
 
-This package contains the Redcliffe Advisory website, a lightweight Node/Express CMS, PostgreSQL-backed content storage, a public contact form, and deployment manifests for Docker Compose and Kubernetes.
+This package contains the Redcliffe Advisory website, a lightweight Node/Express CMS, PostgreSQL-backed content storage, a public contact form, and deployment manifests for Docker Compose, Kubernetes, Vercel and Netlify.
+
+> **Deploying to Vercel or Netlify?** Connect this repository to either platform
+> and it deploys with no build settings to fill in — see
+> [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md). The rest of this document covers the
+> Docker Compose and Kubernetes paths.
 
 ## What Is Included
 
 - Static public pages: `Homepage.html`, `Practice.html`, `Whos-Who.html`, `The-City.html`, `Summit.html`, `Agenda.html`, `Articles.html`, `Ethics.html`, `Contact.html`, `The City Quantum & AI Summit.html`
 - Public assets: `styles.css`, `site.js`, `cms-client.js`, `contact.js`, `images/`
-- Backend/CMS: `server.js`
+- Backend/CMS: `app.js` (the Express application) and `server.js` (the long-running process entry point)
 - Admin portal: `admin/`
 - Docker build files: `Dockerfile.production`, `docker-compose-prod.yml`
 - Kubernetes manifests: `namespace.yaml`, `deployment.yaml`
-- Technical reference: `docs/PROJECT_REFERENCE.md`
+- Vercel/Netlify config: `vercel.json`, `netlify.toml`, `api/index.js`, `netlify/functions/server.js`, `scripts/build-static.js`
+- Technical reference: `docs/PROJECT_REFERENCE.md`, `docs/DEPLOYMENT.md`
 
 ## Runtime Overview
 
@@ -88,6 +94,12 @@ Required:
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 - `SESSION_SECRET`
+
+With `NODE_ENV=production`, `ADMIN_PASSWORD` and `SESSION_SECRET` have no
+built-in defaults: if either is missing the admin portal refuses to start and
+answers with a "CMS is not configured" page, rather than running on publicly
+known credentials. The public website is unaffected. Likewise, if `DATABASE_URL`
+is unset the site serves its built-in content and the CMS stays switched off.
 
 Database container variables:
 
@@ -378,6 +390,26 @@ Bootstrap checklist:
    - `https://example.com/admin`
 
 For a more cloud-native setup later, move PostgreSQL to a managed database and deploy the same Docker image to ECS, Cloud Run, Azure Container Apps, App Service, or Kubernetes.
+
+### Scenario D: Vercel Or Netlify (No Servers To Run)
+
+Connect this GitHub repository to either platform. `vercel.json` / `netlify.toml`
+already carry the build command, the publish directory and the routing, so there
+are no build settings to enter.
+
+- The public pages, CSS and images are published as static files to the CDN
+  (built into `dist/` by `npm run build`).
+- `/api/*` and `/admin` run the same Express application as a serverless
+  function.
+- With no environment variables set, the deploy still succeeds and the public
+  website is fully live on its built-in content; the CMS and contact form switch
+  on once `DATABASE_URL`, `ADMIN_PASSWORD` and `SESSION_SECRET` are added.
+- The in-cluster `radcliffe-db` PostgreSQL is not reachable from these
+  platforms — use a managed database (Neon, Supabase, Vercel Postgres) and
+  restore a dump into it if the existing CMS content should carry over.
+
+Full instructions, environment variables, DNS steps and verification commands
+are in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Admin Portal
 
