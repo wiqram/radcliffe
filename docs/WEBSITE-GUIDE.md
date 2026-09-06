@@ -33,8 +33,8 @@ the WordPress username and password. If you have forgotten the password, click
 **Lost your password?** on that screen and follow the email.
 
 **You should see:** the WordPress dashboard, with a dark menu down the
-left-hand side. Near the bottom of that menu is **Website guide**, which is this
-document.
+left-hand side. Near the top of that menu, just under **Dashboard**, is
+**Website guide**, which is this document.
 
 ---
 
@@ -175,8 +175,8 @@ replace.
    click **Add to Menu**.
 4. Click **Save Menu**.
 
-The gold **Enquire** button at the end of the menu is just an ordinary link
-with a special marking. If it ever loses its gold colour: click the arrow on
+The dark blue **Enquire** button at the end of the menu is just an ordinary
+link with a special marking. If it ever stops looking like a button: click the arrow on
 that item, find the box called **CSS Classes** and type `cta` into it, then
 **Save Menu**. (If you cannot see a CSS Classes box, click **Screen Options**
 at the very top right of the screen and tick **CSS Classes**.)
@@ -224,24 +224,29 @@ backup — see the next section.
 
 ## 9. Backups
 
-Hostinger takes a copy of the whole website automatically, every week. You do
-not need to do anything for this to happen.
+Hostinger takes a copy of the whole website automatically, **once a week**.
+You do not need to do anything for this to happen.
 
-**To take a backup yourself** (a good idea before making a lot of changes):
+**To see your backups:**
 
 1. Log in at https://hpanel.hostinger.com and click **Websites**.
 2. Click **Dashboard** next to the website.
-3. In the left-hand menu, click **Files**, then **Backups**.
-4. Click **Generate new backup**.
+3. In the left-hand menu, click **Files**, then **Backups**. The **Latest
+   backup** date is shown at the top.
 
 **To go back to a backup:**
 
-1. On the same **Backups** screen, choose the date you want under **Restore**.
-2. Click **Restore** and confirm.
+1. On the same **Backups** screen, click **View backups**.
+2. Choose the date you want, click **Restore** and confirm.
 
 This puts the whole website back exactly as it was on that day, including any
 messages, pages and pictures added since. Use it only when something has gone
 badly wrong.
+
+**Backups you take yourself** (before a big change) are not included in the
+current hosting plan; Hostinger offers them as an upgrade on the Backups
+screen. Without one, the safety net is the weekly copy plus the page
+**Revisions** described in section 8.
 
 ---
 
@@ -251,8 +256,7 @@ WordPress itself gets small updates from time to time. Hostinger installs
 these for you automatically. You do not need to do anything.
 
 If you ever see a number in a red circle next to **Updates** in the left-hand
-menu, it is safe to click **Updates** and then **Update Now**. Take a backup
-first if you want to be extra careful (section 9).
+menu, it is safe to click **Updates** and then **Update Now**.
 
 **Do not install extra plugins or themes unless someone technical has asked you
 to.** The website does not need any, and each one is a possible way for things
@@ -282,33 +286,35 @@ Open the website and check it looks right.
 **What is kept:** all your words, pictures, extra sections, menu changes and
 enquiries. A new version of the design never touches those.
 
-**If you are unsure whether to do this:** take a backup first (section 9). If
-anything looks wrong afterwards, restore that backup.
+**If you are unsure whether to do this:** check the date of the latest weekly
+backup first (section 9). If anything looks wrong afterwards, that backup can
+be restored.
 
 ---
 
 ## 12. Pointing redcliffeadvisory.com at the website
 
-Until this is done, the website lives at its temporary Hostinger address, and
-the public still sees the old website. Do this only once you are happy with
-the new one.
+Until this is done, the website lives at its temporary Hostinger address
+(ending in `.hostingersite.com`), and the public still sees the old website.
+Do this only once you are happy with the new one.
 
 1. Log in at https://hpanel.hostinger.com.
 2. Click **Websites**, then **Dashboard** next to the website.
-3. In the left-hand menu, click **Domains** (or look for **Change domain** /
-   **Connect domain** on the dashboard).
-4. Choose **Connect an existing domain** and enter `redcliffeadvisory.com`.
+3. At the top of the dashboard there is a red note saying *Every website needs
+   a domain*. Click its **Connect domain** button.
+4. On the screen *What domain do you want to connect to this site?*, type
+   `redcliffeadvisory.com` and click **Next**.
 5. Hostinger will tell you what to do next. If the domain is already with
    Hostinger, it connects on its own. If it is with another company, Hostinger
    shows you two or three settings (called **nameservers** or **DNS records**)
-   to enter at that company. Their support desk can do this for you if you
-   send them the settings.
+   to enter at that company. That company's support desk can do this for you
+   if you send them the settings.
 6. Once connected, Hostinger sets up the padlock (HTTPS) automatically. There
    is nothing to buy.
 
 It can take anywhere from a few minutes to a day for the change to show
-everywhere. If in doubt, Hostinger's live chat (bottom right of hPanel) will
-check it for you.
+everywhere. If in doubt, the **Agent** button at the bottom right of hPanel
+opens Hostinger's help chat, which will check it for you.
 
 Afterwards, in WordPress go to **Settings → General** and make sure both
 address boxes show `https://www.redcliffeadvisory.com`.
@@ -320,12 +326,12 @@ address boxes show `https://www.redcliffeadvisory.com`.
 | What you see | What it means | What to do |
 | --- | --- | --- |
 | A new section does not appear on the website | It was not published | Open the page under **Pages → Edit** and click **Update** |
-| A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5 (Cmd+Shift+R on a Mac) to reload. If it persists, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All** |
+| A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5 (Cmd+Shift+R on a Mac) to reload. If it persists, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
 | Pages look plain, with no colours or fonts | The design is not switched on | **Appearance → Themes** → click **Activate** on **Redcliffe Advisory** |
 | The menu at the top is empty | The menu was unassigned | **Appearance → Menus** → at the bottom tick **Primary menu** → **Save Menu** |
 | A menu link goes to the homepage | That page was deleted | **Pages → Trash** → hover the page → **Restore**. Never delete the nine main pages |
 | The homepage shows a list of blog posts | The front page setting changed | **Settings → Reading** → *Your homepage displays: A static page* → Homepage: **Home** → **Save Changes** |
-| Enquiries arrive in WordPress but no email comes | Email sending is off | Check spam first. Then ask Hostinger live chat to "enable email sending from WordPress". The messages are safe under **Enquiries** in the meantime |
+| Enquiries arrive in WordPress but no email comes | Email sending is off | Check spam first. Then ask Hostinger's help chat (the **Agent** button in hPanel) to "enable email sending from WordPress". The messages are safe under **Enquiries** in the meantime |
 | A photograph you uploaded is not showing | The change was not published | Reopen where you changed it and click **Publish** (Customizer) or **Update** (page) |
 | "The uploaded file exceeds the maximum size" | The picture is very large | Email the picture to yourself choosing a smaller size, then upload that |
 | You cannot log in | Wrong password, or the WordPress user changed | Use **WP Admin** from https://hpanel.hostinger.com, which does not need the WordPress password |
@@ -338,8 +344,9 @@ the section or clear the box, and the original comes back.
 ## 14. Getting help
 
 - **Hostinger** answers questions about logging in, backups, the domain name,
-  email and anything about the hosting itself. Use the live chat at the bottom
-  right of https://hpanel.hostinger.com, 24 hours a day.
+  email and anything about the hosting itself. Click the **Agent** button at
+  the bottom right of https://hpanel.hostinger.com to open its help chat, 24
+  hours a day.
 - **The design and the theme file** come from whoever built the website. Ask
   them for a new `redcliffe-advisory.zip` if the design itself needs to
   change, and follow section 11 to put it live.

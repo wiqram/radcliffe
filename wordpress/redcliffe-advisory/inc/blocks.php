@@ -238,7 +238,7 @@ function rad_register_block_patterns() {
 		),
 		'button'            => array(
 			'title'       => __( 'Button', 'redcliffe-advisory' ),
-			'description' => __( 'A gold button that links to another page or website.', 'redcliffe-advisory' ),
+			'description' => __( 'A dark blue button that links to another page or website.', 'redcliffe-advisory' ),
 			'content'     => '<!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button {"className":"rad-button"} -->
 <div class="wp-block-button rad-button"><a class="wp-block-button__link wp-element-button" href="' . esc_url( home_url( '/contact/' ) ) . '">Get in touch</a></div>

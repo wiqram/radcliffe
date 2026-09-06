@@ -121,7 +121,7 @@ In the left-hand menu, hover over the site name at the very top and click
 
 Check each of these:
 
-- [ ] The homepage loads, with the portrait photograph and the gold announcement
+- [ ] The homepage loads, with the portrait photograph and the dark blue announcement
       strip across the top
 - [ ] The menu along the top shows: Chair Advisory, Who's Who, The City of
       London, Summit, Articles, Ethics, and an **Enquire** button
@@ -168,10 +168,11 @@ Until you do this, the old website is still the one the public sees. That is
 your safety net.
 
 **On Hostinger:** go to https://hpanel.hostinger.com → **Websites** →
-**Dashboard** next to the site → **Domains** → **Connect an existing domain**,
-enter `redcliffeadvisory.com`, and follow the instructions. If the domain is
-registered elsewhere, Hostinger shows you the nameserver settings to enter
-there; its live chat (bottom right) will check the change for you.
+**Dashboard** next to the site → the red *Every website needs a domain* note →
+**Connect domain**, enter `redcliffeadvisory.com`, click **Next** and follow
+the instructions. If the domain is registered elsewhere, Hostinger shows you
+the nameserver settings to enter there; its **Agent** help chat (bottom right)
+will check the change for you.
 
 **On WordPress.com:** go to **Upgrades → Domains → Add a domain → Use a domain I
 own**, enter `redcliffeadvisory.com`, and follow the instructions it gives you.
@@ -217,7 +218,7 @@ appears at the bottom of that page on the website, styled to match. Click
 
 **Appearance → Menus.** Reorder, rename or remove links here.
 
-To make a link look like the gold **Enquire** button, open **Screen Options** at
+To make a link look like the dark blue **Enquire** button, open **Screen Options** at
 the top right, tick **CSS Classes**, then type `cta` into the CSS Classes box
 for that link.
 
@@ -240,7 +241,7 @@ notification writes back to the person who sent it.
 | The menu at the top is empty | The menu was edited or removed | Appearance → Menus → assign a menu to the **Primary menu** location |
 | A menu link leads to the homepage | That page was deleted | Pages → check the page exists; restore it from Trash if not |
 | The homepage shows a list of blog posts | The front page setting was changed | Settings → Reading → *Your homepage displays: A static page* → Homepage: **Home** |
-| Contact form messages arrive but no email does | The site cannot send email | Check spam first. On Hostinger, ask live chat to enable email sending from WordPress; elsewhere ask your host or install an SMTP plugin. Messages are still safe under **Enquiries** |
+| Contact form messages arrive but no email does | The site cannot send email | Check spam first. On Hostinger, ask its help chat (the **Agent** button) to enable email sending from WordPress; elsewhere ask your host or install an SMTP plugin. Messages are still safe under **Enquiries** |
 | Photographs you uploaded do not appear | The change was not published | Reopen the Customizer and click **Publish** |
 
 **Nothing here can break the design.** If an edit goes wrong, clear the box you
