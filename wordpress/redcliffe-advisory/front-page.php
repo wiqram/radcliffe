@@ -143,4 +143,7 @@
     ];
   </script>
 
+<?php rad_extra_sections(); ?>
+
+
 <?php get_footer(); ?>

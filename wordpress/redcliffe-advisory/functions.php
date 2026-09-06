@@ -4,19 +4,23 @@
  *
  * The nine pages of the website are reproduced exactly as designed. Everything
  * the old Node CMS made editable is editable here too, under
- * Appearance > Customize > Redcliffe Advisory.
+ * Appearance > Customize > Redcliffe Advisory. New sections and pictures are
+ * added to any page with the ordinary page editor (inc/blocks.php), and the
+ * owner's guide lives in the dashboard (inc/guide.php).
  *
  * @package Redcliffe_Advisory
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RAD_VERSION', '1.0.0' );
+define( 'RAD_VERSION', '1.1.0' );
 
 require_once get_theme_file_path( 'inc/content.php' );
 require_once get_theme_file_path( 'inc/customizer.php' );
 require_once get_theme_file_path( 'inc/contact.php' );
 require_once get_theme_file_path( 'inc/setup.php' );
+require_once get_theme_file_path( 'inc/blocks.php' );
+require_once get_theme_file_path( 'inc/guide.php' );
 
 /**
  * Theme supports and menu locations.
@@ -48,7 +52,7 @@ add_action( 'after_setup_theme', 'rad_after_setup_theme' );
 function rad_enqueue_assets() {
 	wp_enqueue_style(
 		'rad-fonts',
-		'https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap',
+		rad_fonts_url(),
 		array(),
 		null // Google serves its own versioned URLs.
 	);

@@ -8,8 +8,9 @@
  *   redcliffe-advisory-wordpress.zip          the full handover pack
  *   redcliffe-advisory-wordpress.tar.gz       the same, for anyone who prefers tar
  *
- * The instructions inside the pack are lifted straight out of README.md, so
- * there is only ever one copy of them to keep up to date.
+ * The pack carries two guides: START-HERE.md (installing the theme, from the
+ * top of README.md) and WEBSITE-GUIDE.md (looking after the site afterwards,
+ * from docs/), so there is only ever one copy of each to keep up to date.
  *
  * Run `npm run package:wp` (which regenerates the theme first).
  */
@@ -79,6 +80,7 @@ function main() {
   fs.cpSync(themePath, path.join(STAGING, '2-theme-files', THEME_NAME), { recursive: true });
 
   fs.writeFileSync(path.join(STAGING, 'START-HERE.md'), `${extractGuide()}\n`);
+  fs.copyFileSync(path.join(ROOT, 'docs', 'WEBSITE-GUIDE.md'), path.join(STAGING, 'WEBSITE-GUIDE.md'));
 
   const packZip = path.join(OUT, `${THEME_NAME}-wordpress.zip`);
   const packTar = path.join(OUT, `${THEME_NAME}-wordpress.tar.gz`);
@@ -93,7 +95,8 @@ function main() {
   console.log(`  ${THEME_NAME}-wordpress.zip       ${bytes(packZip)}   give this to the deployment team`);
   console.log(`  ${THEME_NAME}-wordpress.tar.gz    ${bytes(packTar)}   the same, as a tarball`);
   console.log('\nThe pack contains:');
-  console.log('  START-HERE.md              step-by-step instructions');
+  console.log('  START-HERE.md              how to install the theme');
+  console.log('  WEBSITE-GUIDE.md           how to look after the site afterwards');
   console.log('  1-theme-to-upload/         the zip to upload in WordPress');
   console.log('  2-theme-files/             the same theme unzipped, for FTP installs');
 }

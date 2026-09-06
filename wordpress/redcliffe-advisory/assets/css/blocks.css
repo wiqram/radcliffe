@@ -1,0 +1,225 @@
+/*
+ * Styles for the extra sections the owner writes in the page editor.
+ *
+ * Loaded on the website (inside <section class="rad-extra">) and inside the
+ * block editor, so what is written looks the same in both places. Everything
+ * here leans on the variables and type set in style.css.
+ */
+
+.rad-blocks,
+.editor-styles-wrapper {
+  font-family: var(--serif);
+  color: var(--ink-2);
+}
+
+.rad-blocks > * + *,
+.editor-styles-wrapper .block-editor-block-list__layout > * + * {
+  margin-top: 40px;
+}
+
+/* ─── Text ─── */
+.rad-blocks p,
+.editor-styles-wrapper p {
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.3vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.rad-blocks p + p,
+.editor-styles-wrapper p + p { margin-top: 22px; }
+.rad-blocks p em,
+.editor-styles-wrapper p em { font-style: italic; color: var(--gold); }
+.rad-blocks a,
+.editor-styles-wrapper a { color: var(--gold); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+.rad-blocks .rad-lede,
+.editor-styles-wrapper .rad-lede {
+  font-style: italic;
+  font-size: clamp(22px, 1.7vw, 28px);
+  line-height: 1.4;
+  color: var(--ink);
+}
+.rad-blocks .rad-lede em,
+.editor-styles-wrapper .rad-lede em { color: var(--gold); }
+
+.rad-blocks .has-large-font-size,
+.editor-styles-wrapper .has-large-font-size { font-size: clamp(22px, 1.7vw, 28px) !important; line-height: 1.4; }
+
+.rad-blocks ul, .rad-blocks ol,
+.editor-styles-wrapper ul, .editor-styles-wrapper ol {
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.3vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 60ch;
+  padding-left: 1.3em;
+}
+.rad-blocks li + li,
+.editor-styles-wrapper li + li { margin-top: 8px; }
+
+/* ─── Headings ─── */
+.rad-blocks h2, .rad-blocks h3, .rad-blocks h4,
+.editor-styles-wrapper h2, .editor-styles-wrapper h3, .editor-styles-wrapper h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  line-height: 1.05;
+}
+.rad-blocks h2, .editor-styles-wrapper h2 { font-size: clamp(36px, 4.4vw, 68px); max-width: 18ch; }
+.rad-blocks h3, .editor-styles-wrapper h3 { font-size: clamp(26px, 2.4vw, 36px); line-height: 1.15; }
+.rad-blocks h4, .editor-styles-wrapper h4 { font-size: clamp(20px, 1.6vw, 24px); line-height: 1.3; }
+.rad-blocks h2 em, .rad-blocks h3 em,
+.editor-styles-wrapper h2 em, .editor-styles-wrapper h3 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.rad-blocks h2 + p, .rad-blocks h3 + p, .rad-blocks h4 + p,
+.editor-styles-wrapper h2 + p, .editor-styles-wrapper h3 + p, .editor-styles-wrapper h4 + p { margin-top: 22px; }
+
+/* Section head: small label + big heading, as on the designed pages */
+.rad-blocks .rad-section-head,
+.editor-styles-wrapper .rad-section-head {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+.rad-blocks .rad-section-head > * + *,
+.editor-styles-wrapper .rad-section-head > * + * { margin-top: 0; }
+.rad-blocks .rad-label,
+.editor-styles-wrapper .rad-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  padding-top: 12px;
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .rad-blocks .rad-section-head,
+  .editor-styles-wrapper .rad-section-head { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* ─── Photographs ─── */
+.rad-blocks figure,
+.editor-styles-wrapper figure { margin: 0; }
+.rad-blocks .wp-block-image img,
+.editor-styles-wrapper .wp-block-image img {
+  width: 100%;
+  height: auto;
+  background: var(--paper);
+  filter: contrast(1.02) saturate(0.95);
+}
+.rad-blocks figcaption,
+.editor-styles-wrapper figcaption {
+  margin-top: 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--slate);
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.rad-blocks .wp-block-gallery,
+.editor-styles-wrapper .wp-block-gallery { gap: 18px; }
+.rad-blocks .wp-block-gallery img,
+.editor-styles-wrapper .wp-block-gallery img { background: var(--paper); }
+
+.rad-blocks .wp-block-media-text,
+.editor-styles-wrapper .wp-block-media-text { gap: 48px; }
+.rad-blocks .wp-block-media-text__content,
+.editor-styles-wrapper .wp-block-media-text__content { padding: 0; }
+.rad-blocks .wp-block-media-text__content > * + *,
+.editor-styles-wrapper .wp-block-media-text__content > * + * { margin-top: 18px; }
+.rad-blocks .wp-block-media-text img,
+.editor-styles-wrapper .wp-block-media-text img { background: var(--paper); }
+
+/* ─── Columns ─── */
+.rad-blocks .wp-block-columns,
+.editor-styles-wrapper .wp-block-columns { gap: 48px; }
+.rad-blocks .wp-block-column > * + *,
+.editor-styles-wrapper .wp-block-column > * + * { margin-top: 18px; }
+
+/* ─── Quotation ─── */
+.rad-blocks .wp-block-quote,
+.editor-styles-wrapper .wp-block-quote {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 56px 0;
+  margin: 64px 0 0;
+  max-width: 22ch;
+}
+.rad-blocks .wp-block-quote p,
+.editor-styles-wrapper .wp-block-quote p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(28px, 3.4vw, 48px);
+  line-height: 1.15;
+  color: var(--ink);
+  max-width: none;
+}
+.rad-blocks .wp-block-quote cite,
+.editor-styles-wrapper .wp-block-quote cite {
+  display: block;
+  margin-top: 22px;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* ─── Buttons ─── */
+.rad-blocks .wp-block-button__link,
+.editor-styles-wrapper .wp-block-button__link {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 0;
+  padding: 14px 22px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 240ms ease;
+}
+.rad-blocks .wp-block-button__link:hover,
+.editor-styles-wrapper .wp-block-button__link:hover { background: var(--gold); color: var(--cream); }
+
+/* ─── Separator ─── */
+.rad-blocks hr,
+.editor-styles-wrapper hr { border: 0; border-top: 1px solid var(--rule); max-width: none; }
+
+/* ─── Tables ─── */
+.rad-blocks table,
+.editor-styles-wrapper table {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--ink-2);
+  border-collapse: collapse;
+  width: 100%;
+}
+.rad-blocks th, .rad-blocks td,
+.editor-styles-wrapper th, .editor-styles-wrapper td { border-bottom: 1px solid var(--rule); padding: 12px 8px; text-align: left; }
+.rad-blocks th, .editor-styles-wrapper th { font-weight: 500; color: var(--ink); }
+
+/* ─── Editor only: a white page in the site's proportions ─── */
+.editor-styles-wrapper {
+  background: #FFFFFF;
+  --cream: #F6F8FB; --paper: #E7EEF6; --ink: #0F2A4A; --ink-2: #2F4A68; --slate: #61748D;
+  --gold: #2E6CA6; --gold-soft: #8FBEE2; --rule: rgba(15,42,74,0.13);
+  --serif: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+}
+.editor-styles-wrapper .editor-post-title__input,
+.editor-styles-wrapper .wp-block-post-title {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}

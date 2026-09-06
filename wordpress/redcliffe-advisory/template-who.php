@@ -99,4 +99,7 @@
   </section>
 <?php endif; ?>
 
+<?php rad_extra_sections(); ?>
+
+
 <?php get_footer(); ?>

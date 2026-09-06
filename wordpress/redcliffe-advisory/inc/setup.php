@@ -140,7 +140,11 @@ function rad_activation_notice() {
 			esc_url( home_url( '/' ) ),
 			esc_url( admin_url( 'customize.php' ) )
 		),
-		esc_html__( 'Contact form messages arrive under "Enquiries" in the menu on the left.', 'redcliffe-advisory' )
+		sprintf(
+			/* translators: %s: link to the guide. */
+			wp_kses_post( __( 'Contact form messages arrive under "Enquiries" in the menu on the left. The <a href="%s">Website guide</a> explains how to look after the site.', 'redcliffe-advisory' ) ),
+			esc_url( admin_url( 'admin.php?page=rad-guide' ) )
+		)
 	);
 }
 add_action( 'admin_notices', 'rad_activation_notice' );

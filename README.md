@@ -18,16 +18,19 @@ about twenty minutes.
 | --- | --- |
 | `1-theme-to-upload/redcliffe-advisory.zip` | **The file you upload to WordPress.** Do not unzip it |
 | `2-theme-files/redcliffe-advisory/` | The same thing already unzipped, in case your host wants files uploaded by FTP instead |
-| `START-HERE.md` | This guide |
+| `START-HERE.md` | This guide: putting the website live |
+| `WEBSITE-GUIDE.md` | The guide for afterwards: changing words and pictures, adding sections, backups. It is also built into the website's dashboard under **Website guide** |
 
 ## What you need before you start
 
-1. **The login for the WordPress site.** Your account must be an
-   **Administrator** — a lesser role cannot install a theme.
-2. **On WordPress.com only:** the site must be on the **Business plan or
-   higher**. Uploading a theme is not possible on the Free, Personal or Premium
-   plans. If in doubt, check under *Upgrades → Plans*.
-3. **About twenty minutes.**
+1. **The login for the WordPress site.** On Hostinger, log in at
+   https://hpanel.hostinger.com, click **Websites**, and press **WP Admin**
+   next to the site — no separate WordPress password is needed. Your WordPress
+   account must be an **Administrator**, which the Hostinger one is.
+2. **About twenty minutes.**
+
+> Not on Hostinger? Any WordPress host works. On WordPress.com the site must be
+> on the **Business plan or higher** to upload a theme.
 
 You do **not** need a database, a server, or any settings from the old website.
 Everything the site needs is inside the theme file.
@@ -47,6 +50,8 @@ website by itself:
 - **The top menu is built** with all the links in the right order
 - **The contact form starts working**, and messages appear in WordPress under
   **Enquiries**
+- **A "Website guide"** appears in the left-hand menu, explaining how to look
+  after the site from then on
 
 You do not have to create any of that by hand. If you have run it before, doing
 it again is safe: existing pages are reused, never duplicated.
@@ -55,14 +60,15 @@ it again is safe: existing pages are reused, never duplicated.
 
 # Step 1 — Log in to WordPress
 
-Go to your site's admin address and log in:
+**On Hostinger:** go to https://hpanel.hostinger.com, log in, click
+**Websites** in the left-hand menu, and press the **WP Admin** button next to
+the site.
+
+**Anywhere else:** go to your site's admin address and log in:
 
 ```
 https://your-site-address/wp-admin
 ```
-
-On WordPress.com you can also go to **wordpress.com** → **My Sites** → and open
-the site's dashboard.
 
 **You should see:** the WordPress dashboard, with a dark menu down the left-hand
 side.
@@ -87,6 +93,10 @@ side.
 **You should see:** a message saying *Theme installed successfully*, with links
 underneath saying **Live Preview** and **Activate**.
 
+> **If WordPress says the theme is already installed** (because you are
+> putting a newer version live), click **Replace active with uploaded**. Your
+> words, pictures and enquiries are kept.
+>
 > **If there is no "Upload Theme" button** on WordPress.com, the site is not on
 > the Business plan. Upgrade the plan, then come back to this step.
 
@@ -157,14 +167,17 @@ Check two things afterwards:
 Until you do this, the old website is still the one the public sees. That is
 your safety net.
 
+**On Hostinger:** go to https://hpanel.hostinger.com → **Websites** →
+**Dashboard** next to the site → **Domains** → **Connect an existing domain**,
+enter `redcliffeadvisory.com`, and follow the instructions. If the domain is
+registered elsewhere, Hostinger shows you the nameserver settings to enter
+there; its live chat (bottom right) will check the change for you.
+
 **On WordPress.com:** go to **Upgrades → Domains → Add a domain → Use a domain I
 own**, enter `redcliffeadvisory.com`, and follow the instructions it gives you.
-WordPress.com will either transfer the domain or give you DNS records to enter
-at your current provider.
 
-**On self-hosted WordPress:** point the domain's DNS at your host as your
-hosting company instructs, and set the correct address under **Settings →
-General**.
+**Anywhere else:** point the domain's DNS at your host as your hosting company
+instructs, and set the correct address under **Settings → General**.
 
 Either way:
 
@@ -177,22 +190,28 @@ Either way:
 
 # How to change the website from now on
 
-## Words and pictures
+**The full guide is `WEBSITE-GUIDE.md`, and the same guide is inside
+WordPress under Website guide in the left-hand menu.** In short:
+
+## Words and pictures already on the site
 
 **Appearance → Customize → Redcliffe Advisory.**
 
 There is one section per page. Inside each you can change the headline and the
 opening text, swap the photographs, and switch whole sections of a page on or
-off. Click **Publish** to save.
+off. Click **Publish** to save. **Clearing a box puts the original wording
+back**, so nothing can be left blank by accident.
 
-Two useful things to know:
+## New sections and pictures
 
-- **Clearing a box puts the original wording back.** Nothing can be left blank
-  by accident.
-- The pages under **Pages** in the menu look empty when you open them. That is
-  normal and correct — the design lives in the theme, and the editable words
-  live in the Customizer. **Do not delete these pages**, or the menu links will
-  stop working.
+**Pages → Edit** on any page. The page looks mostly empty in the editor — the
+designed part is not shown there. Press **+**, open **Patterns**, choose
+**Redcliffe Advisory**, and pick a ready-made section (heading and text, a
+photograph with caption, a gallery, a quotation, and so on). Whatever you add
+appears at the bottom of that page on the website, styled to match. Click
+**Update** to save.
+
+**Do not delete the nine main pages**, or the menu links will stop working.
 
 ## The menu
 
@@ -217,10 +236,11 @@ notification writes back to the person who sent it.
 | No **Upload Theme** button | The WordPress.com plan is too low | Upgrade to Business, then retry Step 2 |
 | *The package could not be installed* | The wrong file was chosen | Choose `redcliffe-advisory.zip` itself, not a folder and not a file from inside it |
 | Pages look plain, with no styling | The theme is installed but not activated | Appearance → Themes → **Activate** on Redcliffe Advisory |
+| A new section is not showing, or looks unstyled | An old copy is cached | Reload with Ctrl+F5; on Hostinger, hover **LiteSpeed Cache** in the top bar and click **Purge All** |
 | The menu at the top is empty | The menu was edited or removed | Appearance → Menus → assign a menu to the **Primary menu** location |
 | A menu link leads to the homepage | That page was deleted | Pages → check the page exists; restore it from Trash if not |
 | The homepage shows a list of blog posts | The front page setting was changed | Settings → Reading → *Your homepage displays: A static page* → Homepage: **Home** |
-| Contact form messages arrive but no email does | The site cannot send email | On WordPress.com this is included; on self-hosted, ask your host to enable email or install an SMTP plugin. Messages are still safe under **Enquiries** |
+| Contact form messages arrive but no email does | The site cannot send email | Check spam first. On Hostinger, ask live chat to enable email sending from WordPress; elsewhere ask your host or install an SMTP plugin. Messages are still safe under **Enquiries** |
 | Photographs you uploaded do not appear | The change was not published | Reopen the Customizer and click **Publish** |
 
 **Nothing here can break the design.** If an edit goes wrong, clear the box you
@@ -239,7 +259,9 @@ This package contains the Redcliffe Advisory website, a lightweight Node/Express
 > **The WordPress theme** lives in `wordpress/redcliffe-advisory/`. It is
 > generated from the same HTML by `npm run build:wp`, and packaged for handover
 > with `npm run package:wp`. See `docs/WORDPRESS-THEME.md` for how it is put
-> together.
+> together, and `docs/WEBSITE-GUIDE.md` for the owner's guide that ships with
+> it. **The live site runs on Hostinger** (see `docs/WORDPRESS-THEME.md`,
+> "Where it is deployed").
 
 > **The simplest way to get this website online is Vercel or Netlify.** Connect
 > the repository to either one and it deploys with no build settings to fill in.

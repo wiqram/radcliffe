@@ -4,12 +4,13 @@
  *
  * Generated (never edit by hand — re-run `npm run build:wp` instead):
  *   header.php, footer.php, front-page.php, template-*.php
- *   inc/content-defaults.php, style.css, assets/js/site.js, images/
+ *   inc/content-defaults.php, inc/pages.php, inc/customizer-fields.php,
+ *   inc/guide-content.php, style.css, assets/js/site.js, images/
  *
  * Hand-written and left untouched by this script:
  *   functions.php, index.php, page.php, single.php, 404.php,
  *   inc/content.php, inc/customizer.php, inc/contact.php, inc/setup.php,
- *   template-parts/*.php
+ *   inc/blocks.php, inc/guide.php, assets/css/blocks.css, template-parts/*.php
  *
  * The conversion is mechanical and deliberately strict: anything it does not
  * recognise raises an error rather than being silently dropped, so the theme
@@ -145,9 +146,16 @@ function rewriteCmsSections(html) {
   return out;
 }
 
-/** The old CMS could inject extra sections here; WordPress uses pages instead. */
-function removeDynamicSectionMount(html) {
-  return html.replace(/\s*<div\b[^>]*\bdata-cms-sections\b[^>]*>\s*<\/div>/g, '');
+/**
+ * The old CMS injected extra sections here. In WordPress the same slot shows
+ * whatever the owner adds to the page in the block editor (see inc/blocks.php),
+ * so every page can grow new sections without touching the design.
+ */
+function rewriteDynamicSectionMount(html, label) {
+  const mount = /\s*<div\b[^>]*\bdata-cms-sections\b[^>]*>\s*<\/div>/g;
+  const found = html.match(mount) || [];
+  if (found.length !== 1) fail(`${label} should have exactly one data-cms-sections mount, found ${found.length}`);
+  return html.replace(mount, '\n\n<?php rad_extra_sections(); ?>\n');
 }
 
 /** The contact form becomes a real WordPress form with a nonce and handler. */
@@ -163,7 +171,7 @@ function rewriteContactForm(html) {
   );
 }
 
-function convert(html) {
+function convert(html, label = '') {
   let out = html;
   out = rewriteCmsImages(out);
   out = rewriteStaticAssets(out);
@@ -171,7 +179,7 @@ function convert(html) {
   out = rewriteContactForm(out);
   out = rewriteCmsText(out);
   out = rewriteCmsSections(out);
-  out = removeDynamicSectionMount(out);
+  if (label) out = rewriteDynamicSectionMount(out, label);
   return out;
 }
 
@@ -382,10 +390,10 @@ function buildStylesheet() {
 Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
-Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. Page content is edited under Appearance › Customize › Redcliffe Advisory.
-Version: 1.0.0
+Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
+Version: 1.1.0
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -420,6 +428,150 @@ function copyImages() {
   return fs.readdirSync(target).length;
 }
 
+/* ------------------------------------------------------------ owner's guide */
+
+/**
+ * A small Markdown-to-HTML converter, enough for docs/WEBSITE-GUIDE.md:
+ * headings, paragraphs, lists, tables, block quotes, rules, bold, italic,
+ * inline code and links. Anything the guide starts using beyond that should be
+ * added here rather than worked around in the guide.
+ */
+function inlineMarkdown(text) {
+  return text
+    .replace(/&(?!(amp|lt|gt|quot|#\d+);)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/`([^`]+)`/g, (_m, code) => `<code>${code}</code>`)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g, '$1<em>$2</em>')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/(^|[\s(])(https?:\/\/[^\s)<]+)/g, '$1<a href="$2">$2</a>');
+}
+
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function markdownToHtml(markdown) {
+  const lines = markdown.replace(/\r/g, '').split('\n');
+  const out = [];
+  let i = 0;
+
+  const isTableRow = (line) => /^\s*\|.*\|\s*$/.test(line);
+  const isSeparator = (line) => /^\s*\|?\s*:?-{3,}/.test(line);
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (!line.trim()) { i += 1; continue; }
+
+    if (/^---+\s*$/.test(line)) { out.push('<hr />'); i += 1; continue; }
+
+    const heading = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (heading) {
+      const level = heading[1].length;
+      const text = inlineMarkdown(heading[2].trim());
+      out.push(`<h${level} id="${slugify(heading[2])}">${text}</h${level}>`);
+      i += 1;
+      continue;
+    }
+
+    if (isTableRow(line) && i + 1 < lines.length && isSeparator(lines[i + 1])) {
+      const cells = (row) => row.trim().replace(/^\||\|$/g, '').split('|').map((c) => inlineMarkdown(c.trim()));
+      const head = cells(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && isTableRow(lines[i])) { rows.push(cells(lines[i])); i += 1; }
+      out.push('<table>');
+      out.push(`<thead><tr>${head.map((c) => `<th>${c}</th>`).join('')}</tr></thead>`);
+      out.push(`<tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`);
+      out.push('</table>');
+      continue;
+    }
+
+    if (/^\s*>/.test(line)) {
+      const quote = [];
+      while (i < lines.length && /^\s*>/.test(lines[i])) { quote.push(lines[i].replace(/^\s*>\s?/, '')); i += 1; }
+      out.push(`<blockquote>${markdownToHtml(quote.join('\n'))}</blockquote>`);
+      continue;
+    }
+
+    const listItem = /^(\s*)([-*]|\d+\.)\s+(.*)$/.exec(line);
+    if (listItem) {
+      const indent = listItem[1].length;
+      const ordered = /\d/.test(listItem[2]);
+      const items = [];
+      while (i < lines.length) {
+        const m = /^(\s*)([-*]|\d+\.)\s+(.*)$/.exec(lines[i]);
+        if (m && m[1].length === indent && /\d/.test(m[2]) === ordered) {
+          items.push([m[3]]);
+          i += 1;
+          // Continuation lines and nested blocks belong to this item.
+          while (i < lines.length && lines[i].trim() && !(/^(\s*)([-*]|\d+\.)\s+/.exec(lines[i]) && /^(\s*)/.exec(lines[i])[1].length <= indent)) {
+            items[items.length - 1].push(lines[i]);
+            i += 1;
+          }
+          // A blank line followed by an indented block is still part of the item.
+          while (i + 1 < lines.length && !lines[i].trim() && /^\s{2,}/.test(lines[i + 1]) && !(/^(\s*)([-*]|\d+\.)\s+/.exec(lines[i + 1]) && /^(\s*)/.exec(lines[i + 1])[1].length <= indent)) {
+            items[items.length - 1].push('');
+            i += 1;
+            while (i < lines.length && lines[i].trim() && /^\s{2,}/.test(lines[i])) { items[items.length - 1].push(lines[i]); i += 1; }
+          }
+          // A blank line between items keeps the same list going.
+          let next = i;
+          while (next < lines.length && !lines[next].trim()) next += 1;
+          const following = next < lines.length && /^(\s*)([-*]|\d+\.)\s+/.exec(lines[next]);
+          if (following && following[1].length === indent && /\d/.test(following[2]) === ordered) i = next;
+        } else {
+          break;
+        }
+      }
+      const tag = ordered ? 'ol' : 'ul';
+      const rendered = items.map(([first, ...rest]) => {
+        const nested = rest.map((l) => l.replace(new RegExp(`^\\s{0,${indent + 3}}`), '')).join('\n');
+        const inner = nested.trim() ? markdownToHtml(`${first}\n${nested}`).replace(/^<p>([\s\S]*?)<\/p>/, '$1') : inlineMarkdown(first);
+        return `<li>${inner}</li>`;
+      });
+      out.push(`<${tag}>${rendered.join('')}</${tag}>`);
+      continue;
+    }
+
+    // Paragraph: consecutive non-blank, non-special lines.
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|---+\s*$|\s*>|\s*([-*]|\d+\.)\s+)/.test(lines[i]) && !(isTableRow(lines[i]) && isSeparator(lines[i + 1] || ''))) {
+      para.push(lines[i].trim());
+      i += 1;
+    }
+    out.push(`<p>${inlineMarkdown(para.join(' '))}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+function buildGuide() {
+  const markdown = fs.readFileSync(path.join(ROOT, 'docs', 'WEBSITE-GUIDE.md'), 'utf8');
+  const html = markdownToHtml(markdown);
+  return `<?php
+/**
+ * GENERATED FILE — do not edit.
+ *
+ * The owner's guide, converted from docs/WEBSITE-GUIDE.md. Shown under
+ * "Website guide" in the WordPress admin menu (see inc/guide.php).
+ *
+ * Run \`npm run build:wp\` to regenerate.
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+return ${phpString(html)};
+`;
+}
+
 /* --------------------------------------------------------------------- main */
 
 function main() {
@@ -440,7 +592,7 @@ function main() {
   }
 
   for (const { page, parts } of pages) {
-    const template = buildTemplate(page, convert(parts.main));
+    const template = buildTemplate(page, convert(parts.main, page.template));
     assertClean(page.template, template);
     written.push(write(page.template, template));
   }
@@ -455,6 +607,7 @@ function main() {
   written.push(write('inc/content-defaults.php', buildDefaults()));
   written.push(write('inc/pages.php', buildPagesFile()));
   written.push(write('inc/customizer-fields.php', buildCustomizerFields()));
+  written.push(write('inc/guide-content.php', buildGuide()));
   written.push(write('style.css', buildStylesheet()));
   written.push(write('assets/js/site.js', buildSiteScript()));
 
