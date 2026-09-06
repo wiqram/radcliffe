@@ -81,6 +81,8 @@ function main() {
 
   fs.writeFileSync(path.join(STAGING, 'START-HERE.md'), `${extractGuide()}\n`);
   fs.copyFileSync(path.join(ROOT, 'docs', 'WEBSITE-GUIDE.md'), path.join(STAGING, 'WEBSITE-GUIDE.md'));
+  const guidePdf = path.join(ROOT, 'docs', 'WEBSITE-GUIDE.pdf');
+  if (fs.existsSync(guidePdf)) fs.copyFileSync(guidePdf, path.join(STAGING, 'WEBSITE-GUIDE.pdf'));
 
   const packZip = path.join(OUT, `${THEME_NAME}-wordpress.zip`);
   const packTar = path.join(OUT, `${THEME_NAME}-wordpress.tar.gz`);

@@ -20,7 +20,7 @@
   </div>
 
   <?php if ( rad_section_enabled( 'global.announcement' ) ) : ?>
-<a class="announce" href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>" aria-label="The City Quantum and AI Summit, 7 October 2026">
+<a class="announce" href="<?php echo esc_url( rad_setting_url( 'global.announcement.url', rad_url( 'agenda' ) ) ); ?>" aria-label="The City Quantum and AI Summit, 7 October 2026">
     <span class="a-dot" aria-hidden="true"></span>
     <span class="a-text" data-rad="global.announcement.text"><?php rad_html( 'global.announcement.text' ); ?></span>
     <span class="a-cta" data-rad="global.announcement.cta"><?php rad_html( 'global.announcement.cta' ); ?></span>

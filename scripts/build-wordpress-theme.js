@@ -408,8 +408,16 @@ function splitPage(html, file) {
 function buildHeader(chrome) {
   // The announcement strip gets a show/hide switch like any page section.
   const announceStart = chrome.indexOf('<a class="announce"');
-  const announceEnd = chrome.indexOf('</a>', announceStart) + '</a>'.length;
+  let announceEnd = chrome.indexOf('</a>', announceStart) + '</a>'.length;
   if (announceStart === -1) fail('Could not find the announcement strip');
+  // Its link can be pointed anywhere from the Customizer; the Agenda is the default.
+  const announceTag = chrome.slice(announceStart, chrome.indexOf('>', announceStart) + 1);
+  if (!/href="Agenda\.html"/.test(announceTag)) fail('The announcement strip should link to Agenda.html');
+  chrome = // eslint-disable-line no-param-reassign
+    chrome.slice(0, announceStart) +
+    announceTag.replace(/href="Agenda\.html"/, `href="<?php echo esc_url( rad_setting_url( 'global.announcement.url', rad_url( 'agenda' ) ) ); ?>"`) +
+    chrome.slice(announceStart + announceTag.length);
+  announceEnd = chrome.indexOf('</a>', announceStart) + '</a>'.length; // eslint-disable-line no-param-reassign
   chrome = // eslint-disable-line no-param-reassign
     chrome.slice(0, announceStart) +
     `<?php if ( rad_section_enabled( 'global.announcement' ) ) : ?>\n` +
@@ -578,7 +586,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.2.0
+Version: 1.2.1
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -916,4 +924,8 @@ function main() {
   );
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { markdownToHtml };

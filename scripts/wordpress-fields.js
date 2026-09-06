@@ -53,6 +53,15 @@ const PANELS = [
     ],
     images: [],
     toggles: [['global.announcement', 'the announcement strip']],
+    extra: [
+      {
+        key: 'global.announcement.url',
+        label: 'Announcement link goes to',
+        description: 'Leave empty to send visitors to the Agenda page. Paste any web address to send them somewhere else.',
+        type: 'url',
+        default: '',
+      },
+    ],
   },
   {
     id: 'home',

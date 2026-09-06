@@ -114,7 +114,7 @@ function rad_customize_register( $wp_customize ) {
 					$setting,
 					array(
 						'default'           => $field['default'],
-						'sanitize_callback' => 'email' === $field['type'] ? 'sanitize_email' : 'sanitize_text_field',
+						'sanitize_callback' => 'email' === $field['type'] ? 'sanitize_email' : ( 'url' === $field['type'] ? 'esc_url_raw' : 'sanitize_text_field' ),
 						'transport'         => 'refresh',
 					)
 				);

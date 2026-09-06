@@ -590,7 +590,11 @@ speaker, "registration now open".
 2. **Announcement text** is the message. **Announcement link text** is the
    short link at the end of it. Type your announcement, keeping it to one
    line.
-3. Click **Publish**. The strip changes on every page at once.
+3. The strip links to the Agenda page unless you say otherwise. To send
+   visitors somewhere else (a registration form, a news article), paste the
+   address into **Announcement link goes to**. Clear the box to go back to
+   the Agenda.
+4. Click **Publish**. The strip changes on every page at once.
 
 For a longer announcement, add a **Heading and text** section to the homepage
 under **Pages → Home → Edit** (section 4), and mention it in the strip.

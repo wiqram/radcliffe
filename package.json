@@ -9,7 +9,8 @@
     "dev": "node server.js",
     "build": "node scripts/build-static.js",
     "build:wp": "node scripts/build-wordpress-theme.js",
-    "package:wp": "npm run build:wp && node scripts/package-wordpress.js"
+    "package:wp": "npm run build:wp && node scripts/package-wordpress.js",
+    "guide:pdf": "node scripts/build-guide-pdf.js"
   },
   "dependencies": {
     "express": "^4.19.2",

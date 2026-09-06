@@ -175,6 +175,19 @@ function rad_pages() {
 }
 
 /**
+ * A web address saved in the Customizer, or a fallback when it is empty.
+ *
+ * @param string $key      Content key of the URL setting.
+ * @param string $fallback Address to use when nothing is saved.
+ * @return string
+ */
+function rad_setting_url( $key, $fallback ) {
+	$value = trim( (string) get_theme_mod( rad_mod_name( $key ), '' ) );
+
+	return '' === $value ? $fallback : $value;
+}
+
+/**
  * Link to one of the site's pages by its slug.
  *
  * Falls back to the homepage if a page has been deleted, so a missing page can

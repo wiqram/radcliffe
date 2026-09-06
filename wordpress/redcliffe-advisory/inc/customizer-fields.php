@@ -47,7 +47,15 @@ return array(
 				'the announcement strip',
 			),
 		),
-		'extra' => array(),
+		'extra' => array(
+			array(
+				'key' => 'global.announcement.url',
+				'label' => 'Announcement link goes to',
+				'description' => 'Leave empty to send visitors to the Agenda page. Paste any web address to send them somewhere else.',
+				'type' => 'url',
+				'default' => '',
+			),
+		),
 	),
 	array(
 		'id' => 'home',
