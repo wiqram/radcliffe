@@ -9,37 +9,13 @@
     <div class="container">
       <div class="footer-top">
         <div>
-          <div class="footer-mark">Redcliffe Advisory<span class="dot" aria-hidden="true"></span></div>
-          <div class="footer-tag">Connecting the world&rsquo;s most independent minds. Operating from London &amp; Madrid.</div>
+          <div class="footer-mark" data-rad="footer.top.0aa4s5n"><?php rad_html( 'footer.top.0aa4s5n' ); ?></div>
+          <div class="footer-tag" data-rad="footer.top.0dyyeh4"><?php rad_html( 'footer.top.0dyyeh4' ); ?></div>
         </div>
         <div>
-          <h5>Practice</h5>
+          <h5 data-rad="footer.top.1cqcms9"><?php rad_html( 'footer.top.1cqcms9' ); ?></h5>
           <ul>
-            <li><a href="<?php echo esc_url( rad_url( 'practice' ) ); ?>">Chair &amp; CEO Counsel</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'city' ) ); ?>">The City of London</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>">Ethics</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5>The Summit</h5>
-          <ul>
-            <li><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>">Connections in Chaos · 2026</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>">Agenda</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>#collaborators">Collaborators</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5>House</h5>
-          <ul>
-            <li><a href="<?php echo esc_url( rad_url( 'who' ) ); ?>">Who&rsquo;s Who</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'articles' ) ); ?>">Articles</a></li>
-            <li><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bot">
-        <div class="l"><span>&copy; MMXXVI Redcliffe Advisory Ltd.</span><span>London · Madrid</span></div>
-        <div class="r"><a href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>">Ethics</a><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>">Contact</a><a href="#">Privacy</a><a href="#">Cookies</a></div>
+            <li><a href="<?php echo esc_url( rad_url( 'practice' ) ); ?>" data-rad="footer.top.0lujr2u"><?php rad_html( 'footer.top.0lujr2u' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'city' ) ); ?>" data-rad="footer.top.16oxrst"><?php rad_html( 'footer.top.16oxrst' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>" data-rad="footer.top.0rv2w3m"><?php rad_html( 'footer.top.0rv2w3m' ); ?></a></li> </ul> </div> <div> <h5 data-rad="footer.top.13rht28"><?php rad_html( 'footer.top.13rht28' ); ?></h5> <ul> <li><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>" data-rad="footer.top.0grazzb"><?php rad_html( 'footer.top.0grazzb' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>" data-rad="footer.top.0p0hc22"><?php rad_html( 'footer.top.0p0hc22' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>#collaborators" data-rad="footer.top.09ldhaj"><?php rad_html( 'footer.top.09ldhaj' ); ?></a></li> </ul> </div> <div> <h5 data-rad="footer.top.17tuk86"><?php rad_html( 'footer.top.17tuk86' ); ?></h5> <ul> <li><a href="<?php echo esc_url( rad_url( 'who' ) ); ?>" data-rad="footer.top.06kle1y"><?php rad_html( 'footer.top.06kle1y' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'articles' ) ); ?>" data-rad="footer.top.05ous6t"><?php rad_html( 'footer.top.05ous6t' ); ?></a></li> <li><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>" data-rad="footer.top.1w6w2ua"><?php rad_html( 'footer.top.1w6w2ua' ); ?></a></li> </ul> </div> </div> <div class="footer-bot"> <div class="l"><span data-rad="footer.top.1n0z6kq"><?php rad_html( 'footer.top.1n0z6kq' ); ?></span><span data-rad="footer.top.1svsnyi"><?php rad_html( 'footer.top.1svsnyi' ); ?></span></div> <div class="r"><a href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>" data-rad="footer.top.0rv2w3m"><?php rad_html( 'footer.top.0rv2w3m' ); ?></a><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>" data-rad="footer.top.1w6w2ua"><?php rad_html( 'footer.top.1w6w2ua' ); ?></a><a href="#" data-rad="footer.top.0iv3upw"><?php rad_html( 'footer.top.0iv3upw' ); ?></a><a href="#" data-rad="footer.top.1w63z4l"><?php rad_html( 'footer.top.1w63z4l' ); ?></a></div>
       </div>
     </div>
   </footer>

@@ -7,6 +7,12 @@ typing. Nothing you do by following this guide can break the design.
 This same guide is available inside the website's dashboard, under **Website
 guide** in the left-hand menu, so you never need to find this file again.
 
+**In a hurry?** Jump to the worked examples: [changing the Summit
+agenda](#15-example-updating-the-2026-summit-agenda), [changing or adding
+photographs](#16-example-changing-and-adding-photographs), [announcing
+something](#17-example-making-an-announcement) and [adding
+speakers](#18-example-adding-the-speakers).
+
 ---
 
 ## 1. Logging in
@@ -38,44 +44,67 @@ left-hand side. Near the top of that menu, just under **Dashboard**, is
 
 ---
 
-## 2. The three places you will use
+## 2. The four places you will use
 
-Almost everything you do lives in one of three places in the left-hand menu.
+Almost everything you do lives in one of four places in the left-hand menu.
 
 | I want to… | Go to |
 | --- | --- |
-| Change the headline, opening text or a photograph in a part of the website that is already there | **Appearance → Customize** |
-| **Add something new** to a page: a new section of text, a new photograph, a gallery, a quotation | **Pages** |
+| Change **any words or any photograph** already on the website: a headline, a date, a name, a paragraph, the announcement strip, the footer | **Appearance → Customize** |
+| Change the **Summit agenda** (times, sessions, speakers, the note at the bottom) | **Pages → Agenda → Edit** |
+| **Add something new** to a page: a new section of text, a speaker, a new photograph, a gallery, a quotation | **Pages** |
 | Read the messages sent through the contact form | **Enquiries** |
 
 The rest of this guide walks through each one.
 
 ---
 
-## 3. Changing the words and pictures that are already there
+## 3. Changing words and pictures that are already there
 
-The nine pages of the website (Home, Chair Advisory, Who's Who, The City of
-London, Summit, Agenda, Articles, Ethics, Contact) have a fixed design. The
-words and photographs inside that design are changed in one place:
+Every piece of text on the website and every photograph can be changed. There
+are two ways to find the thing you want to change; both end in the same place.
 
-1. In the left-hand menu, click **Appearance**, then **Customize**.
-2. Click **Redcliffe Advisory**.
-3. Click the page you want to change, for example **Homepage**.
-4. Change the text in the boxes, or click **Change image** under a photograph
-   and pick a new one.
-5. Watch the preview on the right update as you type.
-6. Click the blue **Publish** button at the top when you are happy.
+### The quick way: click the pencil
 
-Three useful things to know:
+1. In the left-hand menu, click **Appearance**, then **Customize**. The website
+   appears on the right, with a small blue **pencil** next to every piece of
+   text and in the corner of every photograph.
+2. Use the website on the right as normal to get to the page you want (click
+   the menu, scroll down). The pencils come with you.
+3. Click the pencil next to the words you want to change. A box with those
+   words opens on the left.
+4. Type your change. The website on the right updates as you type.
+5. Click the blue **Publish** button at the top when you are happy.
+
+### The other way: find it in the list
+
+1. In **Appearance → Customize**, click **Redcliffe Advisory** on the left.
+2. Click the page you want, for example **Summit page**. Every piece of text
+   on that page is listed, in the order it appears on the page, followed by
+   the photographs and the switches for hiding whole sections.
+3. Change the text in a box, or click **Select image** under a photograph.
+4. Click **Publish**.
+
+**Top of every page** holds the announcement strip and the logo; **Bottom of
+every page** holds the footer.
+
+Four useful things to know:
 
 - **Clearing a box puts the original wording back.** Nothing can be left blank
   by accident.
+- **A little formatting is allowed** in the boxes. `<em>word</em>` makes a word
+  italic and blue, as in the headlines; `<br />` starts a new line. Otherwise
+  just type plainly.
 - **Each page has switches** to show or hide whole sections of the page (for
-  example, hiding the testimonials on the homepage). Flick the switch and click
+  example, hiding the testimonials on the homepage). Untick the box and click
   **Publish**.
 - **Nothing changes on the live website until you click Publish.** If you get
-  in a muddle, close the Customizer without publishing and nothing has
-  happened.
+  in a muddle, close the Customizer (the **×** at the top left) without
+  publishing and nothing has happened.
+
+**The one exception:** the programme on the **Agenda** page is not in the
+Customizer. It is edited under **Pages**, because it grows and changes. See
+[section 15](#15-example-updating-the-2026-summit-agenda).
 
 ---
 
@@ -83,15 +112,17 @@ Three useful things to know:
 
 Every page has room underneath its designed part for as many new sections as
 you like. This is where you add news, a new photograph, a gallery of pictures
-from an event, a quotation, or anything else.
+from an event, a quotation, a list of speakers, or anything else.
 
 1. In the left-hand menu, click **Pages**.
 2. Hover over the page you want to add to, and click **Edit**.
 3. You will see a mostly empty page with the page's name at the top. **That is
    normal.** The designed part of the page is not shown here. A blue note at the
    top reminds you that whatever you add here appears at the **bottom** of the
-   page on the website.
-4. Click the **+** button (top left, or in the middle of the page).
+   page on the website. (The Agenda page is different: it shows the whole
+   programme.)
+4. Click the **+** button in the middle of the page (or the blue **+** at the
+   top left).
 5. Click the **Patterns** tab, then choose **Redcliffe Advisory** from the list.
    You will see ready-made sections that match the design of the website:
 
@@ -104,6 +135,9 @@ from an event, a quotation, or anything else.
    | **Quotation** | A large quotation with the name of the person who said it |
    | **Two columns of text** | Two short pieces of text side by side |
    | **Button** | A button that links to another page |
+   | **Speaker** | A photograph, a name, a role and a line about one speaker |
+   | **Agenda: a time slot** | One line of the Summit programme (Agenda page) |
+   | **Agenda: part of the day** | A small heading such as *Afternoon* (Agenda page) |
 
 6. Click the one you want. It appears on the page filled with example text and
    pictures.
@@ -130,9 +164,28 @@ Update, see [Undoing a published change](#8-undoing-a-published-change).
 
 ## 5. Adding or replacing a photograph
 
-### In a new section
+### A photograph that is part of the design
 
-Any picture in a pattern from the previous section can be replaced:
+The portrait on the homepage, the Summit pictures, the six photographs in the
+Summit gallery, the logo: all of these are changed in **Appearance →
+Customize**. Either click the **pencil** in the corner of the photograph, or
+find it in the list for that page. Then:
+
+1. Click **Select image**.
+2. Click **Upload files** and choose a photograph from your computer, or click
+   **Media Library** to use one that is already on the website.
+3. Click the blue **Choose image** button at the bottom right.
+4. The website on the right shows the new photograph. Click **Publish**.
+
+**To go back to the original photograph,** click **Remove** under it and
+**Publish**.
+
+The Summit gallery photographs each have a **caption** box in the same list,
+so you can change the words underneath a picture at the same time.
+
+### A photograph in a new section
+
+Any picture in a pattern from section 4 can be replaced:
 
 1. Click on the picture.
 2. In the toolbar above it, click **Replace**.
@@ -143,20 +196,15 @@ Any picture in a pattern from the previous section can be replaced:
 To add a picture on its own, press **+**, type **Image**, and choose the
 **Image** block. Then click **Upload**.
 
-### In the designed part of a page
-
-Photographs that are part of the design (the portrait on the homepage, the
-Summit pictures, and so on) are changed in **Appearance → Customize**, as
-described in section 3. Click **Change image** under the photograph you want to
-replace.
-
 ### A few tips about photographs
 
 - **Size:** photographs straight from a phone or camera are fine. WordPress
   makes smaller copies automatically. Very large files (over 10 MB) may be
   refused; if so, email the picture to yourself first, choosing a smaller size.
 - **Shape:** the design uses landscape (wider than tall) photographs in most
-  places. Portrait photographs work but may be cropped.
+  places. Portrait photographs work but may be cropped. The Summit gallery has
+  one wide picture, one tall one and one full-width one; the names in the
+  Customizer say which is which.
 - **Describe the picture:** after adding a picture, there is a box on the
   right called **Alternative text**. Type a short description, such as
   "Karina Robinson speaking at Mansion House". This is read aloud to visitors
@@ -199,7 +247,7 @@ emailed to you.
 
 If a message is listed under Enquiries but no email arrived, check your spam
 folder first. If emails never arrive, see [If something looks
-wrong](#12-if-something-looks-wrong). The messages are safe under Enquiries
+wrong](#13-if-something-looks-wrong). The messages are safe under Enquiries
 either way.
 
 ---
@@ -215,7 +263,8 @@ Every time you click **Update** on a page, WordPress keeps the old version.
 4. Click **Restore This Revision**, then **Update**.
 
 Changes made in **Appearance → Customize** do not keep old versions, but
-clearing a box always puts the original wording back.
+clearing a box always puts the original wording back, and **Remove** under a
+photograph puts the original photograph back.
 
 If the whole website needs to go back to an earlier day, use a Hostinger
 backup — see the next section.
@@ -283,8 +332,8 @@ do not unzip it. To put it live:
 **You should see:** a message saying the theme was installed successfully.
 Open the website and check it looks right.
 
-**What is kept:** all your words, pictures, extra sections, menu changes and
-enquiries. A new version of the design never touches those.
+**What is kept:** all your words, pictures, extra sections, the agenda, menu
+changes and enquiries. A new version of the design never touches those.
 
 **If you are unsure whether to do this:** check the date of the latest weekly
 backup first (section 9). If anything looks wrong afterwards, that backup can
@@ -325,12 +374,16 @@ address boxes show `https://www.redcliffeadvisory.com`.
 
 | What you see | What it means | What to do |
 | --- | --- | --- |
-| A new section does not appear on the website | It was not published | Open the page under **Pages → Edit** and click **Update** |
-| A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5 (Cmd+Shift+R on a Mac) to reload. If it persists, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
+| A change does not appear on the website | It was not published | Customizer: click **Publish**. Page: click **Update** |
+| A change appears for you but not for someone else | Their browser is showing an old copy | Ask them to press Ctrl+F5 (Cmd+Shift+R on a Mac). If it persists, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
+| A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5, then **Purge All** as above |
 | Pages look plain, with no colours or fonts | The design is not switched on | **Appearance → Themes** → click **Activate** on **Redcliffe Advisory** |
 | The menu at the top is empty | The menu was unassigned | **Appearance → Menus** → at the bottom tick **Primary menu** → **Save Menu** |
 | A menu link goes to the homepage | That page was deleted | **Pages → Trash** → hover the page → **Restore**. Never delete the nine main pages |
 | The homepage shows a list of blog posts | The front page setting changed | **Settings → Reading** → *Your homepage displays: A static page* → Homepage: **Home** → **Save Changes** |
+| The Articles page shows a list of blog posts instead of the designed page | The "Posts page" setting is pointing at it | **Settings → Reading** → set **Posts page** to **— Select —** → **Save Changes** |
+| The Agenda page shows the old programme, not what you typed | The page has not been updated, or the browser is showing an old copy | Open **Pages → Agenda → Edit** and click **Update**; then Ctrl+F5 |
+| A block on the Agenda page says "unexpected or invalid content" | Something was pasted in that the editor does not understand | Click **Attempt recovery**. If that does not help, click the three dots on that block, choose **Delete**, and add a fresh **Agenda: a time slot** |
 | Enquiries arrive in WordPress but no email comes | Email sending is off | Check spam first. Then ask Hostinger's help chat (the **Agent** button in hPanel) to "enable email sending from WordPress". The messages are safe under **Enquiries** in the meantime |
 | A photograph you uploaded is not showing | The change was not published | Reopen where you changed it and click **Publish** (Customizer) or **Update** (page) |
 | "The uploaded file exceeds the maximum size" | The picture is very large | Email the picture to yourself choosing a smaller size, then upload that |
@@ -350,3 +403,228 @@ the section or clear the box, and the original comes back.
 - **The design and the theme file** come from whoever built the website. Ask
   them for a new `redcliffe-advisory.zip` if the design itself needs to
   change, and follow section 11 to put it live.
+
+---
+
+## 15. Example: updating the 2026 Summit agenda
+
+The programme for The City Quantum & AI Summit lives on the **Agenda** page.
+It is a list of time slots, each with a time, a title and a short description,
+grouped under headings such as *Morning* and *Afternoon*. You change it the way
+you would change a document.
+
+**Before you start:** log in (section 1), click **Pages** in the left-hand
+menu, hover over **Agenda** and click **Edit**. You will see the programme
+exactly as it appears on the website, with a blue note at the top. Close the
+note with its **×**. (The first time, WordPress may show a short *Welcome to
+the editor* tour; close it with its **×** too.)
+
+### Changing the time, title or description of a session
+
+1. Click on the words you want to change, for example the title *Keynote — the
+   state of quantum & AI*.
+2. Delete the old words and type the new ones. To make a word italic and blue
+   (as in *opening address*), select it and press Ctrl+I (Cmd+I on a Mac).
+3. Click the blue **Update** button at the top right.
+4. Click **View page** in the message that appears, or open the website and
+   go to **Summit → Agenda**, to see the change live.
+
+Times work the same way: click **09.45**, type **10.00**, click **Update**.
+
+### Adding a session
+
+1. Click on the session **above** where the new one should go, so it is
+   highlighted.
+2. Click the blue **+** at the top left of the screen.
+3. Click the **Patterns** tab, click **Redcliffe Advisory**, and click
+   **Agenda: a time slot**. A new slot appears underneath the one you
+   highlighted, filled with example words.
+4. Click each part of it and type: the time, the title, then the description
+   (who is speaking, and what the session is about).
+5. Click **Update**.
+
+If the slot appeared in the wrong place, click on it and use the **up and
+down arrows** in the small toolbar above it to move it.
+
+**A quicker way for a similar session:** click on an existing slot, click the
+**three dots** in its toolbar, choose **Duplicate**, and then change the copy.
+
+### Removing a session
+
+1. Click on the slot you want to remove, so it is highlighted. Make sure the
+   whole slot is highlighted (a thin blue outline around the time and the
+   title together). If only the title is highlighted, press **Escape** and then
+   click the slot's left-hand edge, or use the arrow above the toolbar that
+   says **Select parent block** until the outline covers the whole slot.
+2. Click the **three dots** at the right-hand end of the toolbar and choose
+   **Delete**.
+3. Click **Update**.
+
+### Adding a new part of the day (for example, *Evening*)
+
+1. Click on the last session of the previous part, so it is highlighted.
+2. Click the blue **+** at the top left, then **Patterns → Redcliffe Advisory →
+   Agenda: part of the day**. A small heading appears.
+3. Click the heading and type its name, for example **Evening**.
+4. Add sessions under it as described above.
+5. Click **Update**.
+
+### Changing a speaker's name in the agenda
+
+Speakers are mentioned in the description of each session. Click the
+description, change the name, click **Update**. If the speaker line-up has
+its own section on the Summit page, see [section 18](#18-example-adding-the-speakers).
+
+### Changing the date, venue or theme
+
+- **On the Agenda page**, the three facts at the top of the programme (Date,
+  Venue, Theme) are part of the same editor. Click **7 October 2026**, type
+  the new date, click **Update**.
+- **Everywhere else** (the Summit page, the homepage, the announcement strip
+  at the top, the footer) the date is ordinary text: go to **Appearance →
+  Customize**, click the **pencil** next to each mention, change it, and
+  click **Publish**. The quickest way to find every mention is to click
+  **Redcliffe Advisory → Summit page** in the Customizer, where each piece of
+  text is listed with its wording as the label.
+
+### Changing the note at the bottom, or the buttons
+
+The italic note under the programme and the two buttons (*Enquire about
+attending* and *Back to the Summit*) are ordinary text in the same editor.
+Click and type, then **Update**. To change where a button points, click the
+button, click the **link** icon in its toolbar, and paste the new address.
+
+### If you would rather start again
+
+Nothing you do here is final. Under **Page → Revisions** on the right-hand
+side you can go back to any earlier version of the agenda (section 8).
+
+---
+
+## 16. Example: changing and adding photographs
+
+### Swapping one of the six Summit gallery photographs
+
+The Summit page has a gallery of six photographs under *From the floor*. To
+replace, say, the third one with a photograph from this year's reception:
+
+1. Have the new photograph saved on your computer (a JPEG from a phone or
+   camera is fine).
+2. In the left-hand menu, click **Appearance**, then **Customize**.
+3. On the website on the right, click **Summit** in the menu, scroll down to
+   the gallery and click the **pencil** in the corner of the third
+   photograph. (Or, on the left, click **Redcliffe Advisory**, then **Summit
+   page**, and scroll down to **Gallery photo 3**.)
+4. Click **Select image**, then **Upload files**, then **Select Files**, and
+   pick the photograph on your computer.
+5. While it uploads, fill in **Alt Text** on the right with a short
+   description, such as "Guests at the Summit reception, Mansion House".
+6. Click the blue **Choose image** button at the bottom right.
+7. The website on the right shows the new photograph in place. Find **Gallery
+   photo 3 caption** in the same list on the left and type the words that
+   appear under the picture.
+8. Click **Publish** at the top.
+
+Do the same for any of the six. **To put the original photograph back**, click
+**Remove** under it and **Publish**.
+
+### Replacing the portrait on the homepage
+
+1. **Appearance → Customize**. On the homepage on the right, click the
+   **pencil** in the corner of the portrait (or **Redcliffe Advisory →
+   Homepage → Portrait photograph**).
+2. **Select image → Upload files**, choose the new portrait, fill in **Alt
+   Text**, click **Choose image**.
+3. Check it looks right on the right-hand side, then click **Publish**.
+
+The portrait is shown taller than it is wide, so choose a photograph in that
+shape; WordPress will crop a landscape one to fit.
+
+### Adding a set of new photographs from an event
+
+New photographs that are not replacing an existing one go in a new section on
+whichever page suits (usually the Summit page):
+
+1. **Pages** → hover over **Summit** → **Edit**. Close the blue note.
+2. Click the **+** in the middle of the page → **Patterns** tab → **Redcliffe
+   Advisory** → **Heading and text**. Type a label such as **Summit 2026**, a
+   heading such as **The day in pictures**, and a sentence or two. (If you do
+   not want words, skip this step.)
+3. Click below that section, press **+** again → **Patterns → Redcliffe
+   Advisory → Photo gallery**. Three example photographs appear.
+4. Click on the first example photograph, click **Replace** in its toolbar,
+   choose **Upload** and pick your photograph. Repeat for the other two.
+5. To add more photographs to the gallery, click on the gallery (its outline
+   should surround all the pictures), then click the **+** at the end of the
+   gallery, or use the **Add** button in the right-hand panel, and upload
+   more. You can add as many as you like; they arrange themselves in rows of
+   three.
+6. Click **Update** at the top right, then **View page**. Scroll to the bottom
+   of the Summit page to see the gallery live.
+
+**For one big photograph with a caption** use **Photograph with caption**
+instead of **Photo gallery**, and type the caption in the box under the
+picture.
+
+**To change the order** of photographs in a gallery, click one and use the
+left and right arrows in its toolbar. **To remove one**, click it and press
+the **Delete** key on your keyboard.
+
+### Changing the logo
+
+**Appearance → Customize → Redcliffe Advisory → Top of every page**, then
+**Select image** under the logo. Use a picture with a transparent or white
+background, wider than it is tall. Click **Publish**.
+
+---
+
+## 17. Example: making an announcement
+
+The thin strip across the very top of every page (currently *7 October 2026 ·
+See the agenda*) is the place for short announcements: a date change, a new
+speaker, "registration now open".
+
+1. **Appearance → Customize**. Click the **pencil** at the very top of the
+   page next to the strip's words, or click **Redcliffe Advisory → Top of
+   every page**.
+2. **Announcement text** is the message. **Announcement link text** is the
+   short link at the end of it. Type your announcement, keeping it to one
+   line.
+3. Click **Publish**. The strip changes on every page at once.
+
+For a longer announcement, add a **Heading and text** section to the homepage
+under **Pages → Home → Edit** (section 4), and mention it in the strip.
+
+To take the strip away altogether, untick the switch for it at the bottom of
+the **Top of every page** list, and **Publish**.
+
+---
+
+## 18. Example: adding the speakers
+
+As speakers are confirmed, add them to the Summit page, one section per
+person:
+
+1. **Pages** → hover over **Summit** → **Edit**. Close the blue note.
+2. Click **+** → **Patterns → Redcliffe Advisory → Heading and text**. Type
+   the label **Speakers · 2026** and a heading such as **Who is speaking**.
+   Delete the example paragraphs if you do not need them (click one, three
+   dots, **Delete**).
+3. Click below it, press **+** → **Patterns → Redcliffe Advisory → Speaker**.
+   A photograph, a name, a role line and a short paragraph appear.
+4. Click the photograph → **Replace** → **Upload**, and choose the speaker's
+   picture (a square or portrait head-and-shoulders photograph looks best).
+5. Click the name and type the speaker's name; click the role line and type
+   their title and organisation; click the paragraph and type a sentence about
+   them or their session.
+6. For the next speaker, click on the one you just made, click the **three
+   dots** in its toolbar and choose **Duplicate**, then change the copy. Or
+   press **+** and choose **Speaker** again.
+7. Click **Update**, then **View page**. The speakers appear at the bottom of
+   the Summit page, under the designed part.
+
+**If a speaker drops out,** open the page, click their section, three dots,
+**Delete**, then **Update**.
+
+**To mention a speaker in the programme** as well, change the description of
+their session on the Agenda page (section 15).

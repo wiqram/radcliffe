@@ -15,10 +15,10 @@
 <?php if ( rad_section_enabled( 'practice.hero' ) ) : ?>
 <section class="page-hero">
     <div class="container">
-      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>">Home</a><span class="sep">·</span><span>Chair Advisory</span></div>
-      <h1><?php rad_html( 'practice.hero.title' ); ?></h1>
-      <div class="hero-subhead">A wise word</div>
-      <p class="page-lede">Redcliffe Advisory advises companies with a global outlook — from conventional strategic counsel to forging the connections between Deep Tech, Finance and Defence.</p>
+      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="practice.hero.1nfzvhp"><?php rad_html( 'practice.hero.1nfzvhp' ); ?></a><span class="sep">·</span><span data-rad="practice.hero.00tp5xa"><?php rad_html( 'practice.hero.00tp5xa' ); ?></span></div>
+      <h1 data-rad="practice.hero.title"><?php rad_html( 'practice.hero.title' ); ?></h1>
+      <div class="hero-subhead" data-rad="practice.hero.12cq8at"><?php rad_html( 'practice.hero.12cq8at' ); ?></div>
+      <p class="page-lede" data-rad="practice.hero.12n1n25"><?php rad_html( 'practice.hero.12n1n25' ); ?></p>
     </div>
   </section>
 <?php endif; ?>
@@ -26,11 +26,11 @@
 <section class="section">
     <div class="container">
       <div class="prose reveal">
-        <div class="prose-aside">On the discipline of quiet authority.</div>
+        <div class="prose-aside" data-rad="practice.intro.0fiz36i"><?php rad_html( 'practice.intro.0fiz36i' ); ?></div>
         <div class="prose-body">
-          <p class="lede">We work principally with Chairs and Chief Executives — at the point where geopolitical exposure, technological direction and board composition begin to ask the same question.</p>
-          <p>Our work is measured in conversations rather than campaigns. We convene chairs, founders, ministers and investors who would not otherwise share a room, and hold the conversation long enough for something to be decided.</p>
-          <p><em>ESG and a sensible Diversity &amp; Inclusion underpin all our work.</em> Through The Inclusion Initiative at the LSE — of which our CEO is Co-Founder — we apply behavioural science to the culture of City of London and Deep-Tech firms.</p>
+          <p class="lede" data-rad="practice.intro.16gwfvj"><?php rad_html( 'practice.intro.16gwfvj' ); ?></p>
+          <p data-rad="practice.intro.1pvnw96"><?php rad_html( 'practice.intro.1pvnw96' ); ?></p>
+          <p data-rad="practice.intro.1sfilw9"><?php rad_html( 'practice.intro.1sfilw9' ); ?></p>
         </div>
       </div>
     </div>
@@ -41,33 +41,33 @@
 <section class="section" style="padding-top:0;">
     <div class="container">
       <div class="section-head reveal">
-        <div class="label">Practice areas</div>
-        <h2>Four <em>practices</em> held in private</h2>
+        <div class="label" data-rad="practice.areas.0k476yl"><?php rad_html( 'practice.areas.0k476yl' ); ?></div>
+        <h2 data-rad="practice.areas.0q11fr8"><?php rad_html( 'practice.areas.0q11fr8' ); ?></h2>
       </div>
       <div class="practice-list reveal">
         <div class="practice-item">
           <div class="pi-n">01</div>
-          <h3>Chair &amp; CEO Advisory</h3>
-          <p>Counsel to the principals who have the final say on succession, board composition and geopolitical exposure.</p>
+          <h3 data-rad="practice.areas.0qjwi1i"><?php rad_html( 'practice.areas.0qjwi1i' ); ?></h3>
+          <p data-rad="practice.areas.1caurm6"><?php rad_html( 'practice.areas.1caurm6' ); ?></p>
         </div>
         <div class="practice-item">
           <div class="pi-n">02</div>
-          <h3>Deep Tech &times; Finance</h3>
-          <p>Forging connections between frontier laboratories — quantum, AI, defence and the bio-adjacent industries — and the sovereign, pension and primary capital that stands behind them.</p>
+          <h3 data-rad="practice.areas.0dnpvmn"><?php rad_html( 'practice.areas.0dnpvmn' ); ?></h3>
+          <p data-rad="practice.areas.08kr0m0"><?php rad_html( 'practice.areas.08kr0m0' ); ?></p>
         </div>
         <div class="practice-item">
           <div class="pi-n">03</div>
-          <h3>ESG as a strategic question</h3>
-          <p>Held not as compliance but as foresight — underpinning every conversation we hold in board rooms, working groups and at the City Quantum &amp; AI Summit.</p>
+          <h3 data-rad="practice.areas.1f4nnnq"><?php rad_html( 'practice.areas.1f4nnnq' ); ?></h3>
+          <p data-rad="practice.areas.1mbwxhs"><?php rad_html( 'practice.areas.1mbwxhs' ); ?></p>
         </div>
         <div class="practice-item">
           <div class="pi-n">04</div>
-          <h3>The Redcliffe Advisory Salon</h3>
-          <p>The City Quantum &amp; AI Summit and the working rooms around it — where the people who decide and the people who know close the distance between them.</p>
+          <h3 data-rad="practice.areas.1gdzum1"><?php rad_html( 'practice.areas.1gdzum1' ); ?></h3>
+          <p data-rad="practice.areas.12xhmcx"><?php rad_html( 'practice.areas.12xhmcx' ); ?></p>
         </div>
       </div>
 
-      <blockquote class="pullquote reveal">Connecting the world&rsquo;s most independent minds<span class="cite">Redcliffe Advisory in a single sentence</span></blockquote>
+      <blockquote class="pullquote reveal" data-rad="practice.areas.01mvday"><?php rad_html( 'practice.areas.01mvday' ); ?></blockquote>
     </div>
   </section>
 <?php endif; ?>
@@ -76,13 +76,13 @@
 <section class="other">
     <div class="container">
       <div class="other-head">
-        <h3>Other <em>rooms</em></h3>
-        <div class="small">Continue</div>
+        <h3 data-rad="practice.other.1mx1n5x"><?php rad_html( 'practice.other.1mx1n5x' ); ?></h3>
+        <div class="small" data-rad="practice.other.1cd2rqb"><?php rad_html( 'practice.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t">Who&rsquo;s Who — <em>Karina Robinson</em></span><span class="d">Founder of The City Quantum &amp; AI Summit; champion of the City of London</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t">The City Quantum &amp; AI <em>Summit</em></span><span class="d">7 October 2026 — Mansion House.</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'city' ) ); ?>"><span class="n">04</span><span class="t">The City &amp; <em>Our Quantum Future</em></span><span class="d">Where the City of London meets the laboratory</span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t" data-rad="practice.other.1ozkbpl"><?php rad_html( 'practice.other.1ozkbpl' ); ?></span><span class="d" data-rad="practice.other.0ng9skz"><?php rad_html( 'practice.other.0ng9skz' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t" data-rad="practice.other.0jt4grq"><?php rad_html( 'practice.other.0jt4grq' ); ?></span><span class="d" data-rad="practice.other.10qyuye"><?php rad_html( 'practice.other.10qyuye' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'city' ) ); ?>"><span class="n">04</span><span class="t" data-rad="practice.other.0pa6spk"><?php rad_html( 'practice.other.0pa6spk' ); ?></span><span class="d" data-rad="practice.other.1ngcrxc"><?php rad_html( 'practice.other.1ngcrxc' ); ?></span><span class="arr">→</span></a>
       </div>
     </div>
   </section>

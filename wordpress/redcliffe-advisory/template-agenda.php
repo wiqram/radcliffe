@@ -15,15 +15,24 @@
 <?php if ( rad_section_enabled( 'agenda.hero' ) ) : ?>
 <section class="page-hero">
     <div class="container">
-      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>">Home</a><span class="sep">·</span><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>">Summit</a><span class="sep">·</span><span>Agenda</span></div>
-      <h1><?php rad_html( 'agenda.hero.title' ); ?></h1>
-      <div class="hero-subhead">A day for world-changing technology and the City of London</div>
-      <p class="page-lede">The City Quantum &amp; AI Summit unfolds across a single day at the Mansion House. The shape of the day is set out below; the full speaker line-up is confirmed closer to the date.</p>
+      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="agenda.hero.1nfzvhp"><?php rad_html( 'agenda.hero.1nfzvhp' ); ?></a><span class="sep">·</span><a href="<?php echo esc_url( rad_url( 'summit' ) ); ?>" data-rad="agenda.hero.0vd8lq1"><?php rad_html( 'agenda.hero.0vd8lq1' ); ?></a><span class="sep">·</span><span data-rad="agenda.hero.0p0hc22"><?php rad_html( 'agenda.hero.0p0hc22' ); ?></span></div>
+      <h1 data-rad="agenda.hero.title"><?php rad_html( 'agenda.hero.title' ); ?></h1>
+      <div class="hero-subhead" data-rad="agenda.hero.11yakm2"><?php rad_html( 'agenda.hero.11yakm2' ); ?></div>
+      <p class="page-lede" data-rad="agenda.hero.1o9osu9"><?php rad_html( 'agenda.hero.1o9osu9' ); ?></p>
     </div>
   </section>
 <?php endif; ?>
 
   <?php if ( rad_section_enabled( 'agenda.programme' ) ) : ?>
+<?php if ( rad_page_has_content() ) : ?>
+<section class="section rad-page-blocks">
+<div class="container">
+<div class="rad-blocks entry-content rad-agenda">
+<?php rad_page_content(); ?>
+</div>
+</div>
+</section>
+<?php else : ?>
 <section class="section">
     <div class="container">
       <div class="agenda-intro reveal">
@@ -117,8 +126,7 @@
     </div>
   </section>
 <?php endif; ?>
-
-<?php rad_extra_sections(); ?>
+<?php endif; ?>
 
 
 <?php get_footer(); ?>

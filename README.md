@@ -196,21 +196,30 @@ WordPress under Website guide in the left-hand menu.** In short:
 
 ## Words and pictures already on the site
 
-**Appearance → Customize → Redcliffe Advisory.**
+**Appearance → Customize.** The website appears on the right with a small
+blue **pencil** next to every piece of text and on every photograph. Click a
+pencil, type, and click **Publish**. Or click **Redcliffe Advisory** on the
+left and pick a page to see everything on it listed in order: every headline,
+date, name and paragraph, the photographs, and switches for hiding whole
+sections. **Clearing a box puts the original wording back**, so nothing can be
+left blank by accident. The announcement strip at the top of every page is
+under **Top of every page**.
 
-There is one section per page. Inside each you can change the headline and the
-opening text, swap the photographs, and switch whole sections of a page on or
-off. Click **Publish** to save. **Clearing a box puts the original wording
-back**, so nothing can be left blank by accident.
+## The Summit agenda
 
-## New sections and pictures
+**Pages → Agenda → Edit.** The programme is there exactly as it appears on
+the website. Click a time, a title or a description and type. To add a
+session, press **+**, open **Patterns → Redcliffe Advisory** and choose
+**Agenda: a time slot**. Click **Update** to save.
+
+## New sections, speakers and pictures
 
 **Pages → Edit** on any page. The page looks mostly empty in the editor — the
 designed part is not shown there. Press **+**, open **Patterns**, choose
 **Redcliffe Advisory**, and pick a ready-made section (heading and text, a
-photograph with caption, a gallery, a quotation, and so on). Whatever you add
-appears at the bottom of that page on the website, styled to match. Click
-**Update** to save.
+speaker, a photograph with caption, a gallery, a quotation, and so on).
+Whatever you add appears at the bottom of that page on the website, styled to
+match. Click **Update** to save.
 
 **Do not delete the nine main pages**, or the menu links will stop working.
 
@@ -243,6 +252,7 @@ notification writes back to the person who sent it.
 | The homepage shows a list of blog posts | The front page setting was changed | Settings → Reading → *Your homepage displays: A static page* → Homepage: **Home** |
 | Contact form messages arrive but no email does | The site cannot send email | Check spam first. On Hostinger, ask its help chat (the **Agent** button) to enable email sending from WordPress; elsewhere ask your host or install an SMTP plugin. Messages are still safe under **Enquiries** |
 | Photographs you uploaded do not appear | The change was not published | Reopen the Customizer and click **Publish** |
+| The Articles page shows a list of blog posts | The *Posts page* setting points at it | Settings → Reading → Posts page: **— Select —** → Save Changes |
 
 **Nothing here can break the design.** If an edit goes wrong, clear the box you
 changed and the original wording comes back.

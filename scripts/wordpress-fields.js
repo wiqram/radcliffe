@@ -15,7 +15,9 @@ const PAGES = [
   { file: 'Whos-Who.html', slug: 'who', title: 'Who’s Who', template: 'template-who.php' },
   { file: 'The-City.html', slug: 'city', title: 'The City of London', template: 'template-city.php' },
   { file: 'Summit.html', slug: 'summit', title: 'Summit', template: 'template-summit.php' },
-  { file: 'Agenda.html', slug: 'agenda', title: 'Agenda', template: 'template-agenda.php' },
+  // The programme is edited as blocks: the page's content replaces this
+  // section when it has any, and is seeded from the HTML on first run.
+  { file: 'Agenda.html', slug: 'agenda', title: 'Agenda', template: 'template-agenda.php', blockSection: 'agenda.programme' },
   { file: 'Articles.html', slug: 'articles', title: 'Articles', template: 'template-articles.php' },
   { file: 'Ethics.html', slug: 'ethics', title: 'Ethics', template: 'template-ethics.php' },
   { file: 'Contact.html', slug: 'contact', title: 'Contact', template: 'template-contact.php' },
@@ -43,14 +45,14 @@ const NAV = [
 const PANELS = [
   {
     id: 'global',
-    title: 'Announcement bar',
-    description: 'The gold strip that runs across the top of every page.',
+    title: 'Top of every page',
+    description: 'The announcement strip and the logo, which appear on every page.',
     text: [
       ['global.announcement.text', 'Announcement text'],
       ['global.announcement.cta', 'Announcement link text'],
     ],
     images: [],
-    toggles: [],
+    toggles: [['global.announcement', 'the announcement strip']],
   },
   {
     id: 'home',
@@ -114,10 +116,22 @@ const PANELS = [
     text: [
       ['summit.hero.title', 'Page headline'],
       ['summit.hero.sub', 'Subtitle'],
+      ['summit.gallery.1.caption', 'Gallery photo 1 caption'],
+      ['summit.gallery.2.caption', 'Gallery photo 2 caption'],
+      ['summit.gallery.3.caption', 'Gallery photo 3 caption'],
+      ['summit.gallery.4.caption', 'Gallery photo 4 caption'],
+      ['summit.gallery.5.caption', 'Gallery photo 5 caption'],
+      ['summit.gallery.6.caption', 'Gallery photo 6 caption'],
     ],
     images: [
       ['summit.hero.medallion', 'Medallion'],
       ['summit.feature.photo', 'Feature photograph'],
+      ['summit.gallery.1', 'Gallery photo 1 (wide)'],
+      ['summit.gallery.2', 'Gallery photo 2 (tall)'],
+      ['summit.gallery.3', 'Gallery photo 3'],
+      ['summit.gallery.4', 'Gallery photo 4'],
+      ['summit.gallery.5', 'Gallery photo 5'],
+      ['summit.gallery.6', 'Gallery photo 6 (full width)'],
     ],
     toggles: [
       ['summit.hero', 'Hero'],
@@ -186,6 +200,14 @@ const PANELS = [
         default: 'karina.robinson@redcliffeadvisory.com',
       },
     ],
+  },
+  {
+    id: 'footer',
+    title: 'Bottom of every page',
+    description: 'The footer that appears on every page.',
+    text: [],
+    images: [],
+    toggles: [],
   },
 ];
 

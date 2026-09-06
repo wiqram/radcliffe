@@ -49,13 +49,33 @@ nine pages share byte-identical chrome, and then rewrites:
 
 | In the HTML | In the theme |
 | --- | --- |
-| `data-cms-key="home.hero.title"` | `<?php rad_html( 'home.hero.title' ); ?>`, with the element's current content captured as the Customizer default |
+| `data-cms-key="home.hero.title"` | `<?php rad_html( 'home.hero.title' ); ?>`, with the element's current content captured as the Customizer default, plus `data-rad="home.hero.title"` for the Customizer's edit-shortcut pencil |
 | `data-cms-image="who.hero.photo"` | `rad_image_url()` / `rad_image_alt()`, defaulting to the original file |
 | `data-cms-section="summit.gallery"` | wrapped in `if ( rad_section_enabled( … ) )` |
 | `href="Contact.html#x"` | `<?php echo esc_url( rad_url( 'contact' ) ); ?>#x` |
 | `src="images/…"` | `get_theme_file_uri()` |
 | the contact `<form>` | `get_template_part( 'template-parts/contact-form' )` |
 | `<div data-cms-sections>` | `rad_extra_sections()` — the page's block content |
+
+Before any of that runs, an **auto-tagging pass** makes everything else on the
+page editable too. Every innermost element that carries text (at least three
+letters or digits; inline `<em>`/`<span>`/`<br />` kept) and every untagged
+`<img>` gets a generated key — `<page>.<section>.<hash of the text>`, so the
+key survives the HTML being reordered and changes only when the wording does.
+These become Customizer fields after the hand-picked ones, labelled with their
+own wording, grouped by page (`global` for the header, `footer` for the
+footer). Scripts, forms, SVG, the primary nav and any section a page edits as
+blocks are left alone. A link inside auto-tagged text is stored as
+`{{url:slug}}` in the default and resolved by `rad_get_html()`.
+
+One page section can be **block-edited** instead of Customizer-edited:
+`blockSection` in `wordpress-fields.js` (today `agenda.programme`). The
+template renders the page's `post_content` in that section's place when it
+has any, and `inc/content-seeds.php` carries the section converted to core
+blocks (columns, paragraphs, headings, buttons with the theme's class names).
+`rad_seed_block_pages()` writes that into the page once, on the first request
+after install or update, and only if the page is empty; the option
+`rad_seeded_pages` records it.
 
 The script is strict on purpose: unbalanced tags, a changed header, or any
 leftover `data-cms-*` attribute, `.html` link or flat-file asset path aborts the
@@ -73,6 +93,14 @@ can never render an empty hero.
 
 Text fields pass through `wp_kses_post()` on both save and output, which keeps
 the `<em>`, `<span>` and `<br />` the design relies on and drops anything else.
+
+Every text setting uses `postMessage` transport with a selective-refresh
+partial on `[data-rad="key"]`, which gives the Customizer preview its pencil
+edit shortcuts and live updates without a reload. Images also use
+`postMessage` with a partial on `[data-rad-img="key"]` that falls back to a
+full refresh; since a pencil cannot live inside an `<img>`,
+`assets/js/customize-preview.js` places one beside each photograph that
+focuses the matching control.
 
 Images store an attachment ID and fall back to the file shipped in the theme.
 Every image the site uses is shipped with it — the five stock photographs that
@@ -93,11 +121,15 @@ is ever wanted.
 - Editor support: `editor-styles` with `assets/css/blocks.css`, the site's five
   colours as the palette (custom colours, gradients and font sizes disabled so
   the owner cannot drift off-brand), `align-wide`.
-- Seven block patterns under a "Redcliffe Advisory" category, built from core
+- `rad_page_has_content()` / `rad_page_content()` for block-edited sections
+  (the agenda), sharing `rad_page_content_html()` with the above.
+- Ten block patterns under a "Redcliffe Advisory" category, built from core
   blocks with the theme's class names (`rad-section-head`, `rad-label`,
-  `rad-lede`), so they need no custom blocks and survive core updates.
+  `rad-lede`, `rad-agenda-row`, `rad-speaker`), so they need no custom blocks
+  and survive core updates. Three are for the agenda and speakers.
 - A one-time notice in the page editor explaining that content appears at the
-  bottom of the page and that the designed parts are edited in the Customizer.
+  bottom of the page and that the designed parts are edited in the Customizer;
+  on a seeded page it explains how to edit the programme instead.
 
 `assets/css/blocks.css` styles core blocks to match `styles.css` and is loaded
 both on the front end (after `style.css`) and in the editor. Every selector is

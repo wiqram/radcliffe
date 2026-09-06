@@ -15,9 +15,9 @@
 <?php if ( rad_section_enabled( 'contact.hero' ) ) : ?>
 <section class="page-hero">
     <div class="container">
-      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>">Home</a><span class="sep">·</span><span>Contact</span></div>
-      <h1><?php rad_html( 'contact.hero.title' ); ?></h1>
-      <p class="page-lede"><?php rad_html( 'contact.hero.lede' ); ?></p>
+      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="contact.hero.1nfzvhp"><?php rad_html( 'contact.hero.1nfzvhp' ); ?></a><span class="sep">·</span><span data-rad="contact.hero.1w6w2ua"><?php rad_html( 'contact.hero.1w6w2ua' ); ?></span></div>
+      <h1 data-rad="contact.hero.title"><?php rad_html( 'contact.hero.title' ); ?></h1>
+      <p class="page-lede" data-rad="contact.hero.lede"><?php rad_html( 'contact.hero.lede' ); ?></p>
     </div>
   </section>
 <?php endif; ?>
@@ -27,19 +27,19 @@
     <div class="container">
       <div class="contact-layout reveal">
         <aside class="contact-panel">
-          <div class="label">Contact details</div>
+          <div class="label" data-rad="contact.form.159ghb4"><?php rad_html( 'contact.form.159ghb4' ); ?></div>
           <dl>
             <div>
-              <dt>Email</dt>
-              <dd><?php rad_html( 'contact.details.email' ); ?></dd>
+              <dt data-rad="contact.form.17w067i"><?php rad_html( 'contact.form.17w067i' ); ?></dt>
+              <dd data-rad="contact.details.email"><?php rad_html( 'contact.details.email' ); ?></dd>
             </div>
             <div>
-              <dt>Location</dt>
-              <dd><?php rad_html( 'contact.details.location' ); ?></dd>
+              <dt data-rad="contact.form.1sy0ftr"><?php rad_html( 'contact.form.1sy0ftr' ); ?></dt>
+              <dd data-rad="contact.details.location"><?php rad_html( 'contact.details.location' ); ?></dd>
             </div>
             <div>
-              <dt>Response</dt>
-              <dd><?php rad_html( 'contact.details.response' ); ?></dd>
+              <dt data-rad="contact.form.0mjc61t"><?php rad_html( 'contact.form.0mjc61t' ); ?></dt>
+              <dd data-rad="contact.details.response"><?php rad_html( 'contact.details.response' ); ?></dd>
             </div>
           </dl>
         </aside>

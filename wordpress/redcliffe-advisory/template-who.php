@@ -15,68 +15,9 @@
 <?php if ( rad_section_enabled( 'who.hero' ) ) : ?>
 <section class="page-hero">
     <div class="container">
-      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>">Home</a><span class="sep">·</span><span>Who&rsquo;s Who</span></div>
-      <h1><?php rad_html( 'who.hero.title' ); ?></h1>
-      <p class="page-lede">CEO of Redcliffe Advisory, FCSI (Hon.). Champion of the City of London. Benign disruptor. Connecting the worlds of Finance, Deep Tech and Defence.</p>
-    </div>
-  </section>
-<?php endif; ?>
-  <?php if ( rad_section_enabled( 'who.profile' ) ) : ?>
-<section class="section">
-    <div class="container">
-      <div class="profile reveal">
-        <aside class="profile-portrait">
-          <div class="photo"><img src="<?php echo esc_url( rad_image_url( 'who.hero.photo' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'who.hero.photo' ) ); ?>" /></div>
-          <div class="photo-cap"><span>Karina Robinson</span><span>London · 2026</span></div>
-          <div class="roles">
-            <h4>Currently</h4>
-            <ul>
-              <li><span class="k">CEO</span><span class="v">Redcliffe Advisory</span></li>
-              <li><span class="k">Founder</span><span class="v">The City Quantum &amp; AI Summit</span></li>
-              <li><span class="k">Sr. Advisor</span><span class="v">Multiverse Computing SL</span></li>
-              <li><span class="k">NED</span><span class="v">Atlanti — Anglo-Swiss fund management</span></li>
-              <li><span class="k">Judge</span><span class="v">EIC Accelerator</span></li>
-              <li><span class="k">Exec. Advisor</span><span class="v">Global India Business Corridor (GIBC&nbsp;UK)</span></li>
-              <li><span class="k">Advisor</span><span class="v">MissionLink</span></li>
-              <li><span class="k">Emeritus Gov.</span><span class="v">London School of Economics</span></li>
-            </ul>
-          </div>
-        </aside>
-
-        <div class="profile-body">
-          <div class="role-tag">CEO · Redcliffe Advisory · FCSI (Hon.)</div>
-          <p class="lede">Karina connects the worlds of Finance, Deep Tech and Defence — with a deep belief in the power of sensible <em>Diversity &amp; Inclusion</em>.</p>
-
-          <h3 class="cv-h">Quantum &amp; Deep Tech</h3>
-          <div class="cv-list">
-            <div class="cv-entry"><div class="cv-org">Multiverse Computing SL</div><div class="cv-desc"><span class="cv-role">Senior Advisor.</span> Europe&rsquo;s largest Quantum &amp; AI software firm. Winner of Europe&rsquo;s Future Unicorn Award 2024.</div></div>
-            <div class="cv-entry"><div class="cv-org">The City Quantum &amp; AI Summit</div><div class="cv-desc"><span class="cv-role">Founder.</span> Now in its Sixth Anniversary year.</div></div>
-            <div class="cv-entry"><div class="cv-org">UKQuantum</div><div class="cv-desc"><span class="cv-role">Member.</span> Working Group on International Cooperation and Trade.</div></div>
-            <div class="cv-entry"><div class="cv-org">NATO</div><div class="cv-desc"><span class="cv-role">Contributor.</span> Involved in brainstorming its Quantum Strategy.</div></div>
-            <div class="cv-entry"><div class="cv-org">EIC Accelerator</div><div class="cv-desc"><span class="cv-role">Judge.</span> Targeting funds at promising Deep Tech in critical fields like space.</div></div>
-            <div class="cv-entry"><div class="cv-org">MissionLink &amp; The Entrepreneurs Network</div><div class="cv-desc"><span class="cv-role">Advisor.</span></div></div>
-            <div class="cv-entry"><div class="cv-org">Global India Business Corridor (GIBC&nbsp;UK)</div><div class="cv-desc"><span class="cv-role">Executive Advisor to the Board.</span> Deepening trade and investment between the UK and India.</div></div>
-          </div>
-
-          <h3 class="cv-h">The City of London</h3>
-          <div class="cv-list">
-            <div class="cv-entry"><div class="cv-org">The Lord Mayor&rsquo;s Appeal</div><div class="cv-desc"><span class="cv-role">Chair, Advisory Board.</span> Former Trustee.</div></div>
-            <div class="cv-entry"><div class="cv-org">Worshipful Company of International Bankers</div><div class="cv-desc"><span class="cv-role">Past Master.</span></div></div>
-            <div class="cv-entry"><div class="cv-org">CISI</div><div class="cv-desc"><span class="cv-role">Honorary Fellow.</span></div></div>
-            <div class="cv-entry"><div class="cv-org">Atlanti</div><div class="cv-desc"><span class="cv-role">Non-Executive Director.</span></div></div>
-            <div class="cv-entry"><div class="cv-org">London School of Economics</div><div class="cv-desc"><span class="cv-role">Emeritus Governor.</span> Co-Founder of The Inclusion Initiative.</div></div>
-          </div>
-
-          <h3 class="cv-h">Earlier career</h3>
-          <div class="cv-list">
-            <div class="cv-entry"><div class="cv-org">Robinson Hambro</div><div class="cv-desc"><span class="cv-role">Co-Founded with City legend Rupert Hambro CBE.</span> Ran the firm for over a decade.</div></div>
-            <div class="cv-entry"><div class="cv-org">Cambridge Quantum</div><div class="cv-desc"><span class="cv-role">Senior Advisor.</span></div></div>
-            <div class="cv-entry"><div class="cv-org">Journalism</div><div class="cv-desc"><span class="cv-role">Senior Editor, The Banker.</span> Banking columnist for the International Herald Tribune; correspondent at Bloomberg.</div></div>
-            <div class="cv-entry"><div class="cv-org">Morgan Grenfell</div><div class="cv-desc"><span class="cv-role">Began her career at the merchant bank.</span></div></div>
-          </div>
-
-          <p class="coda">Educated in Madrid, at the Hotchkiss School in the US, and at the London School of Economics. Fluent in four languages.</p>
-          <div class="contact"><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>">karina.robinson@redcliffeadvisory.com</a></div>
+      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="who.hero.1nfzvhp"><?php rad_html( 'who.hero.1nfzvhp' ); ?></a><span class="sep">·</span><span data-rad="who.hero.06kle1y"><?php rad_html( 'who.hero.06kle1y' ); ?></span></div> <h1 data-rad="who.hero.title"><?php rad_html( 'who.hero.title' ); ?></h1> <p class="page-lede" data-rad="who.hero.0hxd4qm"><?php rad_html( 'who.hero.0hxd4qm' ); ?></p> </div> </section>
+<?php endif; ?> <?php if ( rad_section_enabled( 'who.profile' ) ) : ?>
+<section class="section"> <div class="container"> <div class="profile reveal"> <aside class="profile-portrait"> <div class="photo"><img src="<?php echo esc_url( rad_image_url( 'who.hero.photo' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'who.hero.photo' ) ); ?>" data-rad-img="who.hero.photo" /></div> <div class="photo-cap"><span data-rad="who.profile.167aimu"><?php rad_html( 'who.profile.167aimu' ); ?></span><span data-rad="who.profile.0rb0bjv"><?php rad_html( 'who.profile.0rb0bjv' ); ?></span></div> <div class="roles"> <h4 data-rad="who.profile.0v1u3by"><?php rad_html( 'who.profile.0v1u3by' ); ?></h4> <ul> <li><span class="k" data-rad="who.profile.1s803t7"><?php rad_html( 'who.profile.1s803t7' ); ?></span><span class="v" data-rad="who.profile.1ks56qn"><?php rad_html( 'who.profile.1ks56qn' ); ?></span></li> <li><span class="k" data-rad="who.profile.0uvr00z"><?php rad_html( 'who.profile.0uvr00z' ); ?></span><span class="v" data-rad="who.profile.16mbh1l"><?php rad_html( 'who.profile.16mbh1l' ); ?></span></li> <li><span class="k" data-rad="who.profile.1jhobbt"><?php rad_html( 'who.profile.1jhobbt' ); ?></span><span class="v" data-rad="who.profile.05u8is3"><?php rad_html( 'who.profile.05u8is3' ); ?></span></li> <li><span class="k" data-rad="who.profile.1s80g5p"><?php rad_html( 'who.profile.1s80g5p' ); ?></span><span class="v" data-rad="who.profile.05ld2cc"><?php rad_html( 'who.profile.05ld2cc' ); ?></span></li> <li><span class="k" data-rad="who.profile.17vn2bf"><?php rad_html( 'who.profile.17vn2bf' ); ?></span><span class="v" data-rad="who.profile.0jop1y2"><?php rad_html( 'who.profile.0jop1y2' ); ?></span></li> <li><span class="k" data-rad="who.profile.1uwza03"><?php rad_html( 'who.profile.1uwza03' ); ?></span><span class="v" data-rad="who.profile.0tgity2"><?php rad_html( 'who.profile.0tgity2' ); ?></span></li> <li><span class="k" data-rad="who.profile.1bie6nq"><?php rad_html( 'who.profile.1bie6nq' ); ?></span><span class="v" data-rad="who.profile.0m06fam"><?php rad_html( 'who.profile.0m06fam' ); ?></span></li> <li><span class="k" data-rad="who.profile.0ypq7jq"><?php rad_html( 'who.profile.0ypq7jq' ); ?></span><span class="v" data-rad="who.profile.1nbz2uj"><?php rad_html( 'who.profile.1nbz2uj' ); ?></span></li> </ul> </div> </aside> <div class="profile-body"> <div class="role-tag" data-rad="who.profile.0qaodcf"><?php rad_html( 'who.profile.0qaodcf' ); ?></div> <p class="lede" data-rad="who.profile.16ta0o5"><?php rad_html( 'who.profile.16ta0o5' ); ?></p> <h3 class="cv-h" data-rad="who.profile.093jaiy"><?php rad_html( 'who.profile.093jaiy' ); ?></h3> <div class="cv-list"> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.05u8is3"><?php rad_html( 'who.profile.05u8is3' ); ?></div><div class="cv-desc" data-rad="who.profile.130y85p"><?php rad_html( 'who.profile.130y85p' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.16mbh1l"><?php rad_html( 'who.profile.16mbh1l' ); ?></div><div class="cv-desc" data-rad="who.profile.0knd0lp"><?php rad_html( 'who.profile.0knd0lp' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0pv7hcr"><?php rad_html( 'who.profile.0pv7hcr' ); ?></div><div class="cv-desc" data-rad="who.profile.015neqb"><?php rad_html( 'who.profile.015neqb' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1ng5bg6"><?php rad_html( 'who.profile.1ng5bg6' ); ?></div><div class="cv-desc" data-rad="who.profile.0c6odn4"><?php rad_html( 'who.profile.0c6odn4' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0jop1y2"><?php rad_html( 'who.profile.0jop1y2' ); ?></div><div class="cv-desc" data-rad="who.profile.1js7umb"><?php rad_html( 'who.profile.1js7umb' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0j59epk"><?php rad_html( 'who.profile.0j59epk' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.056iw9k"><?php rad_html( 'who.profile.056iw9k' ); ?></span></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0tgity2"><?php rad_html( 'who.profile.0tgity2' ); ?></div><div class="cv-desc" data-rad="who.profile.0q2t7cw"><?php rad_html( 'who.profile.0q2t7cw' ); ?></div></div> </div> <h3 class="cv-h" data-rad="who.profile.16oxrst"><?php rad_html( 'who.profile.16oxrst' ); ?></h3> <div class="cv-list"> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0i9qu6j"><?php rad_html( 'who.profile.0i9qu6j' ); ?></div><div class="cv-desc" data-rad="who.profile.1p9gv65"><?php rad_html( 'who.profile.1p9gv65' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1gp28gz"><?php rad_html( 'who.profile.1gp28gz' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.0p5gduu"><?php rad_html( 'who.profile.0p5gduu' ); ?></span></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1nfu06q"><?php rad_html( 'who.profile.1nfu06q' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.1r6z46h"><?php rad_html( 'who.profile.1r6z46h' ); ?></span></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1ltj4qx"><?php rad_html( 'who.profile.1ltj4qx' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.080hjfi"><?php rad_html( 'who.profile.080hjfi' ); ?></span></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1nbz2uj"><?php rad_html( 'who.profile.1nbz2uj' ); ?></div><div class="cv-desc" data-rad="who.profile.0yyqlqe"><?php rad_html( 'who.profile.0yyqlqe' ); ?></div></div> </div> <h3 class="cv-h" data-rad="who.profile.1jzrthg"><?php rad_html( 'who.profile.1jzrthg' ); ?></h3> <div class="cv-list"> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0p2suqb"><?php rad_html( 'who.profile.0p2suqb' ); ?></div><div class="cv-desc" data-rad="who.profile.0lnpvc9"><?php rad_html( 'who.profile.0lnpvc9' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.04i0oqd"><?php rad_html( 'who.profile.04i0oqd' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.1e1d42c"><?php rad_html( 'who.profile.1e1d42c' ); ?></span></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.0a1pz6c"><?php rad_html( 'who.profile.0a1pz6c' ); ?></div><div class="cv-desc" data-rad="who.profile.1htjaaf"><?php rad_html( 'who.profile.1htjaaf' ); ?></div></div> <div class="cv-entry"><div class="cv-org" data-rad="who.profile.1k6s2rr"><?php rad_html( 'who.profile.1k6s2rr' ); ?></div><div class="cv-desc"><span class="cv-role" data-rad="who.profile.0xju9by"><?php rad_html( 'who.profile.0xju9by' ); ?></span></div></div> </div> <p class="coda" data-rad="who.profile.0c0179p"><?php rad_html( 'who.profile.0c0179p' ); ?></p> <div class="contact"><a href="<?php echo esc_url( rad_url( 'contact' ) ); ?>" data-rad="who.profile.02nxgh6"><?php rad_html( 'who.profile.02nxgh6' ); ?></a></div>
         </div>
       </div>
     </div>
@@ -87,13 +28,13 @@
 <section class="other">
     <div class="container">
       <div class="other-head">
-        <h3>Other <em>rooms</em></h3>
-        <div class="small">Continue</div>
+        <h3 data-rad="who.other.1mx1n5x"><?php rad_html( 'who.other.1mx1n5x' ); ?></h3>
+        <div class="small" data-rad="who.other.1cd2rqb"><?php rad_html( 'who.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t">The City Quantum &amp; AI <em>Summit</em></span><span class="d">7 October 2026 — Mansion House.</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'practice' ) ); ?>"><span class="n">03</span><span class="t">Chair &amp; CEO <em>Counsel</em></span><span class="d">Counsel for Chairs and Chief Executives</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'articles' ) ); ?>"><span class="n">05</span><span class="t">Articles &amp; <em>long reads</em></span><span class="d">Reports and essays under the Redcliffe Advisory name</span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t" data-rad="who.other.0jt4grq"><?php rad_html( 'who.other.0jt4grq' ); ?></span><span class="d" data-rad="who.other.10qyuye"><?php rad_html( 'who.other.10qyuye' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'practice' ) ); ?>"><span class="n">03</span><span class="t" data-rad="who.other.0011heh"><?php rad_html( 'who.other.0011heh' ); ?></span><span class="d" data-rad="who.other.0br3zvz"><?php rad_html( 'who.other.0br3zvz' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'articles' ) ); ?>"><span class="n">05</span><span class="t" data-rad="who.other.0dfz3lc"><?php rad_html( 'who.other.0dfz3lc' ); ?></span><span class="d" data-rad="who.other.0t0wkvl"><?php rad_html( 'who.other.0t0wkvl' ); ?></span><span class="arr">→</span></a>
       </div>
     </div>
   </section>

@@ -5,7 +5,8 @@
  * Generated (never edit by hand — re-run `npm run build:wp` instead):
  *   header.php, footer.php, front-page.php, template-*.php
  *   inc/content-defaults.php, inc/pages.php, inc/customizer-fields.php,
- *   inc/guide-content.php, style.css, assets/js/site.js, images/
+ *   inc/guide-content.php, inc/content-seeds.php, style.css, assets/js/site.js,
+ *   images/
  *
  * Hand-written and left untouched by this script:
  *   functions.php, index.php, page.php, single.php, 404.php,
@@ -52,6 +53,155 @@ function findMatchingClose(html, tag, from) {
   return fail(`Unbalanced <${tag}> near offset ${from}`);
 }
 
+/* ------------------------------------------------------------ auto-tagging */
+
+/**
+ * Everything on the site is editable. The design tags a handful of elements by
+ * hand (data-cms-key / data-cms-image); this pre-pass tags the rest, so every
+ * piece of text and every photograph becomes a Customizer field without the
+ * HTML having to be annotated by hand.
+ *
+ * Rules:
+ *   - The innermost element that carries text directly becomes a field, with
+ *     its inline formatting (<em>, <span>, <br />) kept. If an element's own
+ *     text is only whitespace, its children are considered instead.
+ *   - Fewer than three letters or digits ("02", "→") is decoration, not text.
+ *   - Scripts, forms, SVG, the primary nav and anything already tagged are
+ *     left alone, as is the section a page edits as blocks.
+ *   - Keys are <group>.<section>.<hash of the text>, so they survive the HTML
+ *     being reordered; if the wording in the HTML changes, the default changes
+ *     with it and a fresh key is right.
+ */
+const VOID_TAGS = new Set(['img', 'br', 'hr', 'input', 'meta', 'link', 'source', 'wbr', 'area', 'col', 'embed', 'track', 'param']);
+const SKIP_TAGS = new Set(['script', 'style', 'svg', 'form', 'nav', 'noscript', 'template', 'select', 'textarea', 'button']);
+const BLOCK_TAGS = new Set(['div', 'p', 'section', 'article', 'aside', 'header', 'footer', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'figure', 'figcaption', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'blockquote', 'form', 'nav', 'main', 'dl', 'dt', 'dd']);
+
+const autoFields = {}; // group -> [{ key, label, kind: 'text' | 'image' }]
+
+function hashText(text) {
+  let h = 5381;
+  for (let i = 0; i < text.length; i += 1) h = ((h * 33) ^ text.charCodeAt(i)) >>> 0;
+  return h.toString(36).padStart(7, '0').slice(-7);
+}
+
+function plainText(html) {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&rsquo;/g, '’')
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
+    .replace(/&times;/g, '×')
+    .replace(/&copy;/g, '©')
+    .replace(/&#(\d+);/g, (_all, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_all, code) => String.fromCodePoint(parseInt(code, 16)))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function labelFor(text) {
+  return text.length > 60 ? `${text.slice(0, 57).trimEnd()}…` : text;
+}
+
+/** Top-level child elements of an HTML fragment. */
+function childElements(html) {
+  const out = [];
+  const open = /<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|<!--[\s\S]*?-->/g;
+  let match;
+  while ((match = open.exec(html))) {
+    if (match[0].startsWith('<!--')) continue;
+    const tag = match[1].toLowerCase();
+    const start = match.index;
+    const openEnd = start + match[0].length;
+    if (VOID_TAGS.has(tag) || match[0].endsWith('/>')) {
+      out.push({ tag, start, openEnd, innerEnd: openEnd, end: openEnd, openTag: match[0] });
+      open.lastIndex = openEnd;
+      continue;
+    }
+    const { innerEnd, end } = findMatchingClose(html, tag, openEnd);
+    out.push({ tag, start, openEnd, innerEnd, end, openTag: match[0] });
+    open.lastIndex = end;
+  }
+  return out;
+}
+
+function addAutoField(group, section, kind, seed, label) {
+  const key = `${group}.${section}.${hashText(`${kind}:${seed}`)}`;
+  autoFields[group] = autoFields[group] || [];
+  if (!autoFields[group].some((f) => f.key === key)) autoFields[group].push({ key, label, kind });
+  return key;
+}
+
+/** Insert an attribute into an opening tag. */
+function withAttribute(openTag, attribute) {
+  return openTag.endsWith('/>') ? `${openTag.slice(0, -2).trimEnd()} ${attribute} />` : `${openTag.slice(0, -1)} ${attribute}>`;
+}
+
+function autoTag(html, group, section, skipSection) {
+  const children = childElements(html);
+  if (!children.length) return html;
+
+  let out = '';
+  let cursor = 0;
+
+  for (const child of children) {
+    out += html.slice(cursor, child.start);
+    cursor = child.end;
+
+    const { tag, openTag } = child;
+    const inner = html.slice(child.openEnd, child.innerEnd);
+    const closing = html.slice(child.innerEnd, child.end);
+
+    if (tag === 'img') {
+      if (/\sdata-cms-image=/.test(openTag)) {
+        out += openTag;
+      } else {
+        const alt = /\salt="([^"]*)"/.exec(openTag);
+        const src = /\ssrc="([^"]*)"/.exec(openTag);
+        const label = alt && alt[1] ? labelFor(plainText(alt[1])) : `Image (${src ? src[1].split('/').pop() : 'unknown'})`;
+        const key = addAutoField(group, section, 'image', src ? src[1] : openTag, label);
+        out += withAttribute(openTag, `data-cms-image="${key}"`);
+      }
+      continue;
+    }
+
+    if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-key=/.test(openTag)) {
+      out += html.slice(child.start, child.end);
+      continue;
+    }
+
+    const sectionAttr = /\sdata-cms-section="([^"]+)"/.exec(openTag);
+    if (sectionAttr) {
+      const key = sectionAttr[1];
+      if (key === skipSection) {
+        out += html.slice(child.start, child.end);
+      } else {
+        out += openTag + autoTag(inner, group, key.split('.').slice(1).join('_') || key, skipSection) + closing;
+      }
+      continue;
+    }
+
+    const grandchildren = childElements(inner);
+    let direct = inner;
+    for (let i = grandchildren.length - 1; i >= 0; i -= 1) {
+      direct = direct.slice(0, grandchildren[i].start) + ' ' + direct.slice(grandchildren[i].end);
+    }
+    const directText = plainText(direct);
+    const hasBlockChild = grandchildren.some((g) => BLOCK_TAGS.has(g.tag) || SKIP_TAGS.has(g.tag) || g.tag === 'img');
+    const alnum = (directText.match(/[\p{L}\p{N}]/gu) || []).length;
+
+    if (alnum >= 3 && !hasBlockChild && !grandchildren.some((g) => /\sdata-cms-/.test(g.openTag))) {
+      const key = addAutoField(group, section, 'text', inner.trim(), labelFor(plainText(inner)));
+      out += withAttribute(openTag, `data-cms-key="${key}"`) + inner + closing;
+    } else {
+      out += openTag + autoTag(inner, group, section, skipSection) + closing;
+    }
+  }
+
+  return out + html.slice(cursor);
+}
+
 /* ------------------------------------------------------------- transformers */
 
 /** `<img data-cms-image="key" src="images/x" alt="y">` -> Customizer-backed. */
@@ -66,7 +216,7 @@ function rewriteCmsImages(html) {
     defaults.imageAlt[key] = alt ? alt[1] : '';
 
     return tag
-      .replace(/\sdata-cms-image="[^"]*"/, '')
+      .replace(/\sdata-cms-image="[^"]*"/, ` data-rad-img="${key}"`)
       .replace(
         /\ssrc="[^"]*"/,
         ` src="<?php echo esc_url( rad_image_url( '${key}' ) ); ?>"`
@@ -98,7 +248,9 @@ function rewriteInternalLinks(html) {
 
 /** Editable text: the element's current content becomes the Customizer default. */
 function rewriteCmsText(html) {
-  const opening = /<([a-zA-Z0-9]+)\b([^>]*?)\sdata-cms-key="([^"]+)"([^>]*)>/;
+  // Attributes may already hold PHP (a rewritten href), hence the alternation.
+  const attr = String.raw`(?:[^>]|<\?php[\s\S]*?\?>)`;
+  const opening = new RegExp(`<([a-zA-Z0-9]+)\\b(${attr}*?)\\sdata-cms-key="([^"]+)"(${attr}*)>`);
   let out = html;
   let match;
 
@@ -107,7 +259,12 @@ function rewriteCmsText(html) {
     const openEnd = match.index + openTag.length;
     const { innerEnd, end } = findMatchingClose(out, tag, openEnd);
 
-    defaults.text[key] = out.slice(openEnd, innerEnd).trim();
+    // A link inside editable text keeps a {{url:slug}} token, which the theme
+    // turns into the page's real address when it prints the text.
+    defaults.text[key] = out
+      .slice(openEnd, innerEnd)
+      .trim()
+      .replace(/<\?php echo esc_url\( rad_url\( '([a-z-]+)' \) \); \?>/g, '{{url:$1}}');
 
     const attrs = `${before}${after}`
       .replace(/\sdata-cms-mode="[^"]*"/g, '')
@@ -116,7 +273,7 @@ function rewriteCmsText(html) {
 
     out =
       out.slice(0, match.index) +
-      `<${tag}${attrs}><?php rad_html( '${key}' ); ?></${tag}>` +
+      `<${tag}${attrs} data-rad="${key}"><?php rad_html( '${key}' ); ?></${tag}>` +
       out.slice(end);
   }
 
@@ -124,7 +281,7 @@ function rewriteCmsText(html) {
 }
 
 /** Sections gain a show/hide switch, matching the CMS this theme replaces. */
-function rewriteCmsSections(html) {
+function rewriteCmsSections(html, blockSection = '') {
   const opening = /<section\b([^>]*?)\sdata-cms-section="([^"]+)"([^>]*)>/;
   let out = html;
   let match;
@@ -135,7 +292,17 @@ function rewriteCmsSections(html) {
     const { end } = findMatchingClose(out, 'section', openEnd);
 
     const attrs = `${before}${after}`.replace(/\s+/g, ' ').trimEnd();
-    const body = `<section${attrs}>${out.slice(openEnd, end)}`;
+    let body = `<section${attrs}>${out.slice(openEnd, end)}`;
+
+    // The page's own block content stands in for this section once it has
+    // any, so the owner edits the section in the page editor.
+    if (key === blockSection) {
+      body =
+        `<?php if ( rad_page_has_content() ) : ?>\n` +
+        `<section class="section rad-page-blocks">\n<div class="container">\n` +
+        `<div class="rad-blocks entry-content rad-${key.split('.')[0]}">\n<?php rad_page_content(); ?>\n</div>\n</div>\n</section>\n` +
+        `<?php else : ?>\n${body}\n<?php endif; ?>`;
+    }
 
     out =
       out.slice(0, match.index) +
@@ -151,11 +318,12 @@ function rewriteCmsSections(html) {
  * whatever the owner adds to the page in the block editor (see inc/blocks.php),
  * so every page can grow new sections without touching the design.
  */
-function rewriteDynamicSectionMount(html, label) {
+function rewriteDynamicSectionMount(html, label, blockSection = '') {
   const mount = /\s*<div\b[^>]*\bdata-cms-sections\b[^>]*>\s*<\/div>/g;
   const found = html.match(mount) || [];
   if (found.length !== 1) fail(`${label} should have exactly one data-cms-sections mount, found ${found.length}`);
-  return html.replace(mount, '\n\n<?php rad_extra_sections(); ?>\n');
+  // A page whose content replaces a designed section shows it there, not here.
+  return html.replace(mount, blockSection ? '\n' : '\n\n<?php rad_extra_sections(); ?>\n');
 }
 
 /** The contact form becomes a real WordPress form with a nonce and handler. */
@@ -171,15 +339,16 @@ function rewriteContactForm(html) {
   );
 }
 
-function convert(html, label = '') {
+function convert(html, label = '', blockSection = '', group = '') {
   let out = html;
+  if (group) out = autoTag(out, group, 'top', blockSection);
   out = rewriteCmsImages(out);
   out = rewriteStaticAssets(out);
   out = rewriteInternalLinks(out);
   out = rewriteContactForm(out);
   out = rewriteCmsText(out);
-  out = rewriteCmsSections(out);
-  if (label) out = rewriteDynamicSectionMount(out, label);
+  out = rewriteCmsSections(out, blockSection);
+  if (label) out = rewriteDynamicSectionMount(out, label, blockSection);
   return out;
 }
 
@@ -237,6 +406,17 @@ function splitPage(html, file) {
 }
 
 function buildHeader(chrome) {
+  // The announcement strip gets a show/hide switch like any page section.
+  const announceStart = chrome.indexOf('<a class="announce"');
+  const announceEnd = chrome.indexOf('</a>', announceStart) + '</a>'.length;
+  if (announceStart === -1) fail('Could not find the announcement strip');
+  chrome = // eslint-disable-line no-param-reassign
+    chrome.slice(0, announceStart) +
+    `<?php if ( rad_section_enabled( 'global.announcement' ) ) : ?>\n` +
+    chrome.slice(announceStart, announceEnd) +
+    `\n<?php endif; ?>` +
+    chrome.slice(announceEnd);
+
   // The <nav> becomes a real WordPress menu, with this markup as its fallback.
   const navStart = chrome.indexOf('<nav class="nav"');
   const navEnd = chrome.indexOf('</nav>') + '</nav>'.length;
@@ -255,12 +435,12 @@ function buildHeader(chrome) {
 </head>
 <body <?php body_class(); ?> data-page="<?php echo esc_attr( rad_page_slug() ); ?>">
 <?php wp_body_open(); ?>
-${convert(withMenu)}
+${convert(withMenu, '', '', 'global')}
 `;
 }
 
 function buildFooter(footer) {
-  return `${GENERATED_NOTICE}${convert(footer)}
+  return `${GENERATED_NOTICE}${convert(footer, '', '', 'footer')}
 
 <?php wp_footer(); ?>
 </body>
@@ -370,18 +550,25 @@ function buildPagesFile() {
 }
 
 function buildCustomizerFields() {
-  return buildGeneratedPhp(
-    'The layout of Appearance > Customize > Redcliffe Advisory.',
-    PANELS.map((panel) => ({
+  const panels = PANELS.map((panel) => {
+    const auto = autoFields[panel.id] || [];
+    return {
       id: panel.id,
       title: panel.title,
       description: panel.description || '',
-      text: panel.text,
-      images: panel.images,
+      // Hand-picked fields first, then everything else on the page in page
+      // order. The third element marks an automatically found field.
+      text: [...panel.text, ...auto.filter((f) => f.kind === 'text').map((f) => [f.key, f.label, true])],
+      images: [...panel.images, ...auto.filter((f) => f.kind === 'image').map((f) => [f.key, f.label, true])],
       toggles: panel.toggles,
       extra: panel.extra || [],
-    }))
-  );
+    };
+  });
+
+  const unplaced = Object.keys(autoFields).filter((group) => !PANELS.some((panel) => panel.id === group));
+  if (unplaced.length) fail(`Auto-tagged fields have no Customizer section: ${unplaced.join(', ')}`);
+
+  return buildGeneratedPhp('The layout of Appearance > Customize > Redcliffe Advisory.', panels);
 }
 
 function buildStylesheet() {
@@ -391,7 +578,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.1.0
+Version: 1.2.0
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -426,6 +613,108 @@ function copyImages() {
   fs.rmSync(target, { recursive: true, force: true });
   fs.cpSync(source, target, { recursive: true });
   return fs.readdirSync(target).length;
+}
+
+/* ------------------------------------------------------------- block seeds */
+
+/**
+ * Block markup for a section the owner edits in the page editor. Built from
+ * the HTML so the editor opens with the real programme, not a blank page.
+ *
+ * Only the agenda programme is converted today. The markup uses core blocks
+ * only (paragraphs, headings, columns, buttons) carrying the theme's class
+ * names, so it needs no custom blocks and survives WordPress updates.
+ */
+function blockText(html) {
+  // Keep the inline <em> the design uses; everything else becomes plain text.
+  return html
+    .replace(/<(?!\/?em\b)[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function paragraph(className, text) {
+  return `<!-- wp:paragraph {"className":"${className}"} -->\n<p class="${className}">${text}</p>\n<!-- /wp:paragraph -->`;
+}
+
+function heading(level, className, text) {
+  return `<!-- wp:heading {"level":${level},"className":"${className}"} -->\n<h${level} class="wp-block-heading ${className}">${text}</h${level}>\n<!-- /wp:heading -->`;
+}
+
+function column(inner, width = '') {
+  if (!width) return `<!-- wp:column -->\n<div class="wp-block-column">${inner}</div>\n<!-- /wp:column -->`;
+  return `<!-- wp:column {"width":"${width}"} -->\n<div class="wp-block-column" style="flex-basis:${width}">${inner}</div>\n<!-- /wp:column -->`;
+}
+
+function columns(className, cols) {
+  return `<!-- wp:columns {"className":"${className}"} -->\n<div class="wp-block-columns ${className}">${cols.join('\n\n')}</div>\n<!-- /wp:columns -->`;
+}
+
+function agendaRow(time, title, desc, feature) {
+  const className = feature ? 'rad-agenda-row is-feature' : 'rad-agenda-row';
+  const right = [paragraph('rad-agenda-title', title)];
+  if (desc) right.push(paragraph('rad-agenda-desc', desc));
+  return columns(className, [column(paragraph('rad-agenda-time', time), '132px'), column(right.join('\n\n'))]);
+}
+
+function buildAgendaSeed(sectionHtml) {
+  const blocks = [];
+
+  // Date / venue / theme
+  const facts = [...sectionHtml.matchAll(/<div class="ai"><div class="k">([\s\S]*?)<\/div><div class="v">([\s\S]*?)<\/div><\/div>/g)];
+  if (facts.length !== 3) fail(`Agenda intro should have three facts, found ${facts.length}`);
+  blocks.push(
+    columns(
+      'rad-agenda-intro',
+      facts.map(([, k, v]) => column(`${paragraph('rad-label', blockText(k))}\n\n${paragraph('rad-agenda-value', blockText(v))}`))
+    )
+  );
+
+  // Parts of the day
+  const parts = [...sectionHtml.matchAll(/<div class="agenda-block reveal">([\s\S]*?)<\/div>\s*(?=<div class="agenda-block reveal">|<div class="agenda-note)/g)];
+  if (!parts.length) fail('Agenda has no programme blocks');
+  for (const [, part] of parts) {
+    const name = /<span class="ph">([\s\S]*?)<\/span>/.exec(part);
+    if (!name) fail('Agenda block has no heading');
+    blocks.push(heading(3, 'rad-agenda-part', blockText(name[1])));
+
+    const rows = [...part.matchAll(/<div class="agenda-row( feature)?">\s*<div class="at">([\s\S]*?)<\/div>\s*<div><div class="as-title">([\s\S]*?)<\/div>(?:<div class="as-desc">([\s\S]*?)<\/div>)?<\/div>\s*<\/div>/g)];
+    if (!rows.length) fail(`Agenda block "${blockText(name[1])}" has no rows`);
+    for (const [, feature, time, title, desc] of rows) {
+      blocks.push(agendaRow(blockText(time), blockText(title), desc ? blockText(desc) : '', Boolean(feature)));
+    }
+  }
+
+  const note = /<div class="agenda-note reveal">([\s\S]*?)<\/div>/.exec(sectionHtml);
+  if (note) blocks.push(paragraph('rad-agenda-note', blockText(note[1])));
+
+  // Buttons: hrefs are filled in by PHP, since they depend on the site address.
+  blocks.push(
+    `<!-- wp:buttons {"className":"rad-agenda-actions"} -->\n<div class="wp-block-buttons rad-agenda-actions">` +
+      `<!-- wp:button {"className":"rad-button"} -->\n<div class="wp-block-button rad-button"><a class="wp-block-button__link wp-element-button" href="%1$s">Enquire about attending</a></div>\n<!-- /wp:button -->\n\n` +
+      `<!-- wp:button {"className":"rad-button is-style-outline"} -->\n<div class="wp-block-button is-style-outline rad-button"><a class="wp-block-button__link wp-element-button" href="%2$s">Back to the Summit</a></div>\n<!-- /wp:button -->` +
+      `</div>\n<!-- /wp:buttons -->`
+  );
+
+  return blocks.join('\n\n');
+}
+
+function buildSeed(page, mainHtml) {
+  const start = mainHtml.indexOf(`data-cms-section="${page.blockSection}"`);
+  if (start === -1) fail(`${page.file} has no section ${page.blockSection}`);
+  const sectionStart = mainHtml.lastIndexOf('<section', start);
+  const { end } = findMatchingClose(mainHtml, 'section', mainHtml.indexOf('>', start) + 1);
+  const sectionHtml = mainHtml.slice(sectionStart, end);
+
+  if (page.slug === 'agenda') return { markup: buildAgendaSeed(sectionHtml), links: ['contact', 'summit'] };
+  return fail(`No block seed builder for ${page.slug}`);
+}
+
+function buildSeedsFile(seeds) {
+  return buildGeneratedPhp(
+    'Starting content for the pages the owner edits as blocks: the section from the design, as core blocks. `markup` is a sprintf() template whose %n$s placeholders are the permalinks of the pages listed in `links`, in order.',
+    seeds
+  );
 }
 
 /* ------------------------------------------------------------ owner's guide */
@@ -576,6 +865,7 @@ return ${phpString(html)};
 
 function main() {
   const written = [];
+  const seeds = {};
 
   const pages = PAGES.map((page) => {
     const html = fs.readFileSync(path.join(ROOT, page.file), 'utf8');
@@ -592,7 +882,8 @@ function main() {
   }
 
   for (const { page, parts } of pages) {
-    const template = buildTemplate(page, convert(parts.main, page.template));
+    const template = buildTemplate(page, convert(parts.main, page.template, page.blockSection || '', page.slug));
+    if (page.blockSection) seeds[page.slug] = buildSeed(page, parts.main);
     assertClean(page.template, template);
     written.push(write(page.template, template));
   }
@@ -608,6 +899,7 @@ function main() {
   written.push(write('inc/pages.php', buildPagesFile()));
   written.push(write('inc/customizer-fields.php', buildCustomizerFields()));
   written.push(write('inc/guide-content.php', buildGuide()));
+  written.push(write('inc/content-seeds.php', buildSeedsFile(seeds)));
   written.push(write('style.css', buildStylesheet()));
   written.push(write('assets/js/site.js', buildSiteScript()));
 
@@ -616,10 +908,11 @@ function main() {
   console.log(`WordPress theme written to wordpress/redcliffe-advisory/`);
   for (const file of written) console.log(`  · ${file}`);
   console.log(`  · images/ (${imageCount} files)`);
+  const autoCount = Object.values(autoFields).reduce((n, list) => n + list.length, 0);
   console.log(
     `\n${Object.keys(defaults.text).length} text fields, ` +
-      `${Object.keys(defaults.images).length} images, ` +
-      `${pages.length} page templates.`
+      `${Object.keys(defaults.images).length} images ` +
+      `(${autoCount} found automatically), ${pages.length} page templates.`
   );
 }
 

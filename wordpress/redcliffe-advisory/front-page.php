@@ -11,29 +11,29 @@
 <section class="hero">
     <div class="container hero-grid">
       <div class="hero-left">
-        <div class="eyebrow"><?php rad_html( 'home.hero.eyebrow' ); ?></div>
-        <h1 class="display"><?php rad_html( 'home.hero.title' ); ?></h1>
-        <p class="lede"><?php rad_html( 'home.hero.lede' ); ?></p>
+        <div class="eyebrow" data-rad="home.hero.eyebrow"><?php rad_html( 'home.hero.eyebrow' ); ?></div>
+        <h1 class="display" data-rad="home.hero.title"><?php rad_html( 'home.hero.title' ); ?></h1>
+        <p class="lede" data-rad="home.hero.lede"><?php rad_html( 'home.hero.lede' ); ?></p>
         <div class="cta-row">
-          <a class="btn" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span>The Summit · 7 Oct 2026</span><span class="arr">→</span></a>
-          <a class="btn-link" href="<?php echo esc_url( rad_url( 'contact' ) ); ?>"><span>Write to Karina</span><span class="arr">↗</span></a>
+          <a class="btn" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span data-rad="home.hero.0rlyyqm"><?php rad_html( 'home.hero.0rlyyqm' ); ?></span><span class="arr">→</span></a>
+          <a class="btn-link" href="<?php echo esc_url( rad_url( 'contact' ) ); ?>"><span data-rad="home.hero.064ctui"><?php rad_html( 'home.hero.064ctui' ); ?></span><span class="arr">↗</span></a>
         </div>
         <div class="hero-facts">
-          <span><b>Chair &amp; CEO</b> Counsel</span>
+          <span data-rad="home.hero.1ekde2h"><?php rad_html( 'home.hero.1ekde2h' ); ?></span>
           <span class="dot" aria-hidden="true"></span>
-          <span><b>City Quantum &amp; AI</b> Summit</span>
+          <span data-rad="home.hero.0oeqr4v"><?php rad_html( 'home.hero.0oeqr4v' ); ?></span>
           <span class="dot" aria-hidden="true"></span>
-          <span><b>London</b> &amp; Madrid</span>
+          <span data-rad="home.hero.1wb8nxv"><?php rad_html( 'home.hero.1wb8nxv' ); ?></span>
         </div>
       </div>
       <figure class="hero-portrait">
         <div class="hp-card">
           <div class="hp-frame">
-            <img src="<?php echo esc_url( rad_image_url( 'home.hero.portrait' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.hero.portrait' ) ); ?>" />
+            <img src="<?php echo esc_url( rad_image_url( 'home.hero.portrait' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.hero.portrait' ) ); ?>" data-rad-img="home.hero.portrait" />
           </div>
           <figcaption class="hp-cap">
-            <span class="nm">Karina Robinson</span>
-            <span class="rl">CEO · Redcliffe Advisory</span>
+            <span class="nm" data-rad="home.hero.167aimu"><?php rad_html( 'home.hero.167aimu' ); ?></span>
+            <span class="rl" data-rad="home.hero.16ues1t"><?php rad_html( 'home.hero.16ues1t' ); ?></span>
           </figcaption>
         </div>
       </figure>
@@ -45,75 +45,75 @@
 <section class="index-section">
     <div class="container">
       <div class="index-head reveal">
-        <h2>The practice,<br />in <em>six rooms</em></h2>
-        <div class="small">London &amp; Madrid · MMXXVI</div>
+        <h2 data-rad="home.rooms.1y5hq47"><?php rad_html( 'home.rooms.1y5hq47' ); ?></h2>
+        <div class="small" data-rad="home.rooms.11p41zo"><?php rad_html( 'home.rooms.11p41zo' ); ?></div>
       </div>
       <div class="entries">
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>">
           <div class="e-num">01</div>
           <div class="e-meta">
-            <div class="e-kicker">The Convening</div>
-            <div class="e-title">The City Quantum &amp; AI <em>Summit</em></div>
-            <div class="e-dek">The Sixth Anniversary Summit — 7 October 2026, at Mansion House. Frontier science and the City of London, in one room. No lingo, no jargon.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.0ftrv38"><?php rad_html( 'home.rooms.0ftrv38' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.0jt4grq"><?php rad_html( 'home.rooms.0jt4grq' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.1ddlsbg"><?php rad_html( 'home.rooms.1ddlsbg' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.entry.summit' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.entry.summit' ) ); ?>" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.entry.summit' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.entry.summit' ) ); ?>" loading="lazy" data-rad-img="home.entry.summit" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'practice' ) ); ?>">
           <div class="e-num">02</div>
           <div class="e-meta">
-            <div class="e-kicker">The Practice</div>
-            <div class="e-title">Chair &amp; CEO <em>Counsel</em></div>
-            <div class="e-dek">Counsel for the principals who have the final say — and the bridge between Deep Tech, Finance and Defence.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.05t1xq8"><?php rad_html( 'home.rooms.05t1xq8' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.0011heh"><?php rad_html( 'home.rooms.0011heh' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.1buiff2"><?php rad_html( 'home.rooms.1buiff2' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/city-interior.webp' ) ); ?>" alt="A City of London interior" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.rooms.1djrkrb' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.rooms.1djrkrb' ) ); ?>" loading="lazy" data-rad-img="home.rooms.1djrkrb" /></div>
         </a>
 
         <a class="entry portrait reveal" href="<?php echo esc_url( rad_url( 'who' ) ); ?>">
           <div class="e-num">03</div>
           <div class="e-meta">
-            <div class="e-kicker">Who&rsquo;s Who</div>
-            <div class="e-title">Karina Robinson — a <em>benign disruptor</em></div>
-            <div class="e-dek">CEO of Redcliffe Advisory. Founder of The City Quantum &amp; AI Summit. Champion of the City of London.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.06kle1y"><?php rad_html( 'home.rooms.06kle1y' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.14rs0p1"><?php rad_html( 'home.rooms.14rs0p1' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.065zl3v"><?php rad_html( 'home.rooms.065zl3v' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.entry.who' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.entry.who' ) ); ?>" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.entry.who' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.entry.who' ) ); ?>" loading="lazy" data-rad-img="home.entry.who" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'city' ) ); ?>">
           <div class="e-num">04</div>
           <div class="e-meta">
-            <div class="e-kicker">The City of London</div>
-            <div class="e-title">The City &amp; <em>Our Quantum Future</em></div>
-            <div class="e-dek">Of the City of London by temperament — and the point at which the Square Mile meets the laboratory.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.16oxrst"><?php rad_html( 'home.rooms.16oxrst' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.0pa6spk"><?php rad_html( 'home.rooms.0pa6spk' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.0n64n8u"><?php rad_html( 'home.rooms.0n64n8u' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/city-at-dusk.webp' ) ); ?>" alt="The City of London at dusk" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.rooms.1sytxee' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.rooms.1sytxee' ) ); ?>" loading="lazy" data-rad-img="home.rooms.1sytxee" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'articles' ) ); ?>">
           <div class="e-num">05</div>
           <div class="e-meta">
-            <div class="e-kicker">Articles</div>
-            <div class="e-title">Race for Growth, &amp; <em>other long reads</em></div>
-            <div class="e-dek">Karina&rsquo;s Column, The Quantum Insider and on-the-record conversations, published under the Redcliffe Advisory name.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.05ous6t"><?php rad_html( 'home.rooms.05ous6t' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.1fh6z8w"><?php rad_html( 'home.rooms.1fh6z8w' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.09fago3"><?php rad_html( 'home.rooms.09fago3' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/working-desk.webp' ) ); ?>" alt="A working desk with papers" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.rooms.0hvfcxk' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.rooms.0hvfcxk' ) ); ?>" loading="lazy" data-rad-img="home.rooms.0hvfcxk" /></div>
         </a>
 
         <a class="entry reveal" href="<?php echo esc_url( rad_url( 'ethics' ) ); ?>">
           <div class="e-num">06</div>
           <div class="e-meta">
-            <div class="e-kicker">Ethics</div>
-            <div class="e-title">Ethics &amp; <em>independence</em></div>
-            <div class="e-dek">The principles by which the practice is held — discretion, independence and stewardship.</div>
-            <span class="e-open"><span>Open</span><span class="arr">→</span></span>
+            <div class="e-kicker" data-rad="home.rooms.0rv2w3m"><?php rad_html( 'home.rooms.0rv2w3m' ); ?></div>
+            <div class="e-title" data-rad="home.rooms.0glyqrc"><?php rad_html( 'home.rooms.0glyqrc' ); ?></div>
+            <div class="e-dek" data-rad="home.rooms.16a6gsa"><?php rad_html( 'home.rooms.16a6gsa' ); ?></div>
+            <span class="e-open"><span data-rad="home.rooms.1ng44ba"><?php rad_html( 'home.rooms.1ng44ba' ); ?></span><span class="arr">→</span></span>
           </div>
-          <div class="e-photo"><img src="<?php echo esc_url( get_theme_file_uri( 'images/architectural-detail.webp' ) ); ?>" alt="Architectural detail" loading="lazy" /></div>
+          <div class="e-photo"><img src="<?php echo esc_url( rad_image_url( 'home.rooms.1evsiz0' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'home.rooms.1evsiz0' ) ); ?>" loading="lazy" data-rad-img="home.rooms.1evsiz0" /></div>
         </a>
 
       </div>
@@ -124,11 +124,11 @@
   <?php if ( rad_section_enabled( 'home.testimonials' ) ) : ?>
 <section class="test">
     <div class="container">
-      <blockquote class="test-quote" id="t-quote"><?php rad_html( 'home.testimonial.1.quote' ); ?></blockquote>
-      <div class="test-attrib" id="t-attrib"><?php rad_html( 'home.testimonial.1.attribution' ); ?></div>
+      <blockquote class="test-quote" id="t-quote" data-rad="home.testimonial.1.quote"><?php rad_html( 'home.testimonial.1.quote' ); ?></blockquote>
+      <div class="test-attrib" id="t-attrib" data-rad="home.testimonial.1.attribution"><?php rad_html( 'home.testimonial.1.attribution' ); ?></div>
       <div class="test-controls">
         <button id="t-prev" aria-label="Previous">‹</button>
-        <span id="t-count">01 / 04</span>
+        <span id="t-count" data-rad="home.testimonials.04b0ryg"><?php rad_html( 'home.testimonials.04b0ryg' ); ?></span>
         <button id="t-next" aria-label="Next">›</button>
       </div>
     </div>

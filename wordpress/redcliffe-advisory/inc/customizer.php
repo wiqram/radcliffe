@@ -68,13 +68,14 @@ function rad_customize_register( $wp_customize ) {
 			list( $key, $label ) = $field;
 			$setting             = rad_mod_name( $key );
 			$defaults            = rad_defaults( 'text' );
+			$auto                = ! empty( $field[2] ); // Found by the build, not chosen by hand.
 
 			$wp_customize->add_setting(
 				$setting,
 				array(
 					'default'           => isset( $defaults[ $key ] ) ? $defaults[ $key ] : '',
 					'sanitize_callback' => 'rad_sanitize_html',
-					'transport'         => 'refresh',
+					'transport'         => 'postMessage',
 				)
 			);
 
@@ -84,9 +85,25 @@ function rad_customize_register( $wp_customize ) {
 					'label'       => $label,
 					'section'     => $section_id,
 					'type'        => 'textarea',
-					'description' => __( 'Basic formatting such as <em> and <br /> is allowed.', 'redcliffe-advisory' ),
+					'description' => $auto ? '' : __( 'Basic formatting such as <em> and <br /> is allowed.', 'redcliffe-advisory' ),
 				)
 			);
+
+			// The pencil icon in the preview: click the words on the page and
+			// the matching field opens. Changes show without a page reload.
+			if ( isset( $wp_customize->selective_refresh ) ) {
+				$wp_customize->selective_refresh->add_partial(
+					$setting,
+					array(
+						'selector'            => '[data-rad="' . $key . '"]',
+						'container_inclusive' => false,
+						'fallback_refresh'    => true,
+						'render_callback'     => function () use ( $key ) {
+							return wp_kses_post( rad_get_html( $key ) );
+						},
+					)
+				);
+			}
 		}
 
 		if ( isset( $panel['extra'] ) ) {
@@ -123,9 +140,23 @@ function rad_customize_register( $wp_customize ) {
 				array(
 					'default'           => '',
 					'sanitize_callback' => 'absint',
-					'transport'         => 'refresh',
+					'transport'         => 'postMessage',
 				)
 			);
+
+			// A pencil on the photograph itself. The whole page reloads after a
+			// change (fallback_refresh), which keeps the picture's sizes right.
+			if ( isset( $wp_customize->selective_refresh ) ) {
+				$wp_customize->selective_refresh->add_partial(
+					$setting,
+					array(
+						'selector'            => '[data-rad-img="' . $key . '"]',
+						'container_inclusive' => true,
+						'fallback_refresh'    => true,
+						'render_callback'     => '__return_false',
+					)
+				);
+			}
 
 			$wp_customize->add_control(
 				new WP_Customize_Media_Control(
@@ -167,3 +198,17 @@ function rad_customize_register( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'rad_customize_register' );
+
+/**
+ * Pencils on the photographs inside the Customizer preview.
+ */
+function rad_customize_preview_scripts() {
+	wp_enqueue_script(
+		'rad-customize-preview',
+		get_theme_file_uri( 'assets/js/customize-preview.js' ),
+		array( 'customize-preview', 'jquery' ),
+		RAD_VERSION,
+		true
+	);
+}
+add_action( 'customize_preview_init', 'rad_customize_preview_scripts' );

@@ -57,6 +57,17 @@ function rad_get_html( $key ) {
 		$value = $default;
 	}
 
+	// {{url:contact}} inside a piece of text is the address of that page.
+	if ( false !== strpos( $value, '{{url:' ) ) {
+		$value = preg_replace_callback(
+			'/\{\{url:([a-z-]+)\}\}/',
+			function ( $m ) {
+				return esc_url( rad_url( $m[1] ) );
+			},
+			$value
+		);
+	}
+
 	return $value;
 }
 

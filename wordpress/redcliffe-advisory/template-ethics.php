@@ -15,9 +15,9 @@
 <?php if ( rad_section_enabled( 'ethics.hero' ) ) : ?>
 <section class="page-hero">
     <div class="container">
-      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>">Home</a><span class="sep">·</span><span>Ethics</span></div>
-      <h1><?php rad_html( 'ethics.hero.title' ); ?></h1>
-      <p class="page-lede">Influence, properly conducted, is a form of trust held over time. These are the principles by which the practice is held.</p>
+      <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="ethics.hero.1nfzvhp"><?php rad_html( 'ethics.hero.1nfzvhp' ); ?></a><span class="sep">·</span><span data-rad="ethics.hero.0rv2w3m"><?php rad_html( 'ethics.hero.0rv2w3m' ); ?></span></div>
+      <h1 data-rad="ethics.hero.title"><?php rad_html( 'ethics.hero.title' ); ?></h1>
+      <p class="page-lede" data-rad="ethics.hero.1rg4il9"><?php rad_html( 'ethics.hero.1rg4il9' ); ?></p>
     </div>
   </section>
 <?php endif; ?>
@@ -25,10 +25,10 @@
 <section class="section">
     <div class="container">
       <div class="prose reveal">
-        <div class="prose-aside">How we hold the work.</div>
+        <div class="prose-aside" data-rad="ethics.principles.00jpqgp"><?php rad_html( 'ethics.principles.00jpqgp' ); ?></div>
         <div class="prose-body">
-          <p class="lede">We are engaged through introduction rather than enquiry — and we keep our counsel, and our clients&rsquo;, in confidence.</p>
-          <p>Our advice is independent. We do not accept a brief whose conclusion is already written, and we decline work where a conflict cannot be managed honestly. What we offer is judgement, access and continuity — not advocacy for hire.</p>
+          <p class="lede" data-rad="ethics.principles.03s6u8g"><?php rad_html( 'ethics.principles.03s6u8g' ); ?></p>
+          <p data-rad="ethics.principles.0yap24w"><?php rad_html( 'ethics.principles.0yap24w' ); ?></p>
         </div>
       </div>
     </div>
@@ -39,16 +39,16 @@
 <section class="section" style="padding-top:0;">
     <div class="container">
       <div class="section-head reveal">
-        <div class="label">Principles</div>
-        <h2>Three <em>commitments</em></h2>
+        <div class="label" data-rad="ethics.commitments.1kmpa3r"><?php rad_html( 'ethics.commitments.1kmpa3r' ); ?></div>
+        <h2 data-rad="ethics.commitments.0guybeb"><?php rad_html( 'ethics.commitments.0guybeb' ); ?></h2>
       </div>
       <div class="practice-list reveal">
-        <div class="practice-item"><div class="pi-n">01</div><h3>Discretion</h3><p>Conversations are held in confidence by default. We work quietly, and we do not publish a list of clients.</p></div>
-        <div class="practice-item"><div class="pi-n">02</div><h3>Independence</h3><p>Our judgement is our own. We are candid with principals, including when candour is unwelcome.</p></div>
-        <div class="practice-item"><div class="pi-n">03</div><h3>Stewardship</h3><p>We take a long view — of institutions, of technology, and of the public interest that surrounds both.</p></div>
+        <div class="practice-item"><div class="pi-n">01</div><h3 data-rad="ethics.commitments.1ggchhw"><?php rad_html( 'ethics.commitments.1ggchhw' ); ?></h3><p data-rad="ethics.commitments.1hcz5bo"><?php rad_html( 'ethics.commitments.1hcz5bo' ); ?></p></div>
+        <div class="practice-item"><div class="pi-n">02</div><h3 data-rad="ethics.commitments.03pq73q"><?php rad_html( 'ethics.commitments.03pq73q' ); ?></h3><p data-rad="ethics.commitments.17ojev1"><?php rad_html( 'ethics.commitments.17ojev1' ); ?></p></div>
+        <div class="practice-item"><div class="pi-n">03</div><h3 data-rad="ethics.commitments.0x4oima"><?php rad_html( 'ethics.commitments.0x4oima' ); ?></h3><p data-rad="ethics.commitments.1c1mdyv"><?php rad_html( 'ethics.commitments.1c1mdyv' ); ?></p></div>
       </div>
 
-      <blockquote class="pullquote reveal">It is easier to see the game from the sidelines. Redcliffe Advisory offers a different perspective.<span class="cite">Redcliffe Advisory · on ethics</span></blockquote>
+      <blockquote class="pullquote reveal" data-rad="ethics.commitments.0o4uw88"><?php rad_html( 'ethics.commitments.0o4uw88' ); ?></blockquote>
     </div>
   </section>
 <?php endif; ?>
@@ -57,13 +57,13 @@
 <section class="other">
     <div class="container">
       <div class="other-head">
-        <h3>Other <em>rooms</em></h3>
-        <div class="small">Continue</div>
+        <h3 data-rad="ethics.other.1mx1n5x"><?php rad_html( 'ethics.other.1mx1n5x' ); ?></h3>
+        <div class="small" data-rad="ethics.other.1cd2rqb"><?php rad_html( 'ethics.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t">Who&rsquo;s Who — <em>Karina Robinson</em></span><span class="d">Founder of The City Quantum &amp; AI Summit; champion of the City of London</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'practice' ) ); ?>"><span class="n">03</span><span class="t">Chair &amp; CEO <em>Counsel</em></span><span class="d">Counsel for Chairs and Chief Executives</span><span class="arr">→</span></a>
-        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t">The City Quantum &amp; AI <em>Summit</em></span><span class="d">7 October 2026 — Mansion House.</span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t" data-rad="ethics.other.1ozkbpl"><?php rad_html( 'ethics.other.1ozkbpl' ); ?></span><span class="d" data-rad="ethics.other.0ng9skz"><?php rad_html( 'ethics.other.0ng9skz' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'practice' ) ); ?>"><span class="n">03</span><span class="t" data-rad="ethics.other.0011heh"><?php rad_html( 'ethics.other.0011heh' ); ?></span><span class="d" data-rad="ethics.other.0br3zvz"><?php rad_html( 'ethics.other.0br3zvz' ); ?></span><span class="arr">→</span></a>
+        <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t" data-rad="ethics.other.0jt4grq"><?php rad_html( 'ethics.other.0jt4grq' ); ?></span><span class="d" data-rad="ethics.other.10qyuye"><?php rad_html( 'ethics.other.10qyuye' ); ?></span><span class="arr">→</span></a>
       </div>
     </div>
   </section>

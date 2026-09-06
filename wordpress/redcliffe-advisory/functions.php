@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RAD_VERSION', '1.1.0' );
+define( 'RAD_VERSION', '1.2.0' );
 
 require_once get_theme_file_path( 'inc/content.php' );
 require_once get_theme_file_path( 'inc/customizer.php' );

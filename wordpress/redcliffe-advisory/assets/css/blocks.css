@@ -223,3 +223,120 @@
   text-transform: uppercase;
   color: var(--slate);
 }
+
+/* ─── The Summit agenda (Pages → Agenda), mirroring the designed programme ─── */
+.rad-agenda .wp-block-columns,
+.editor-styles-wrapper .wp-block-columns.rad-agenda-intro,
+.editor-styles-wrapper .wp-block-columns.rad-agenda-row { gap: 32px; }
+
+.rad-agenda .rad-agenda-intro,
+.editor-styles-wrapper .rad-agenda-intro {
+  margin-bottom: 8px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule);
+}
+.rad-agenda .rad-agenda-intro .rad-label,
+.editor-styles-wrapper .rad-agenda-intro .rad-label { padding-top: 0; margin-bottom: 10px; }
+.rad-agenda .rad-agenda-value,
+.editor-styles-wrapper .rad-agenda-value {
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.5vw, 24px);
+  line-height: 1.3;
+  color: var(--ink);
+  margin-top: 0 !important;
+}
+.rad-agenda .rad-agenda-value em,
+.editor-styles-wrapper .rad-agenda-value em { font-style: italic; color: var(--gold); }
+
+.rad-agenda h3.rad-agenda-part,
+.editor-styles-wrapper h3.rad-agenda-part {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-top: 56px;
+  margin-bottom: 0;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  max-width: none;
+}
+.rad-agenda h3.rad-agenda-part::after,
+.editor-styles-wrapper h3.rad-agenda-part::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+.rad-agenda .rad-agenda-row,
+.editor-styles-wrapper .rad-agenda-row {
+  margin-top: 0 !important;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.rad-agenda .rad-agenda-row .wp-block-column > * + *,
+.editor-styles-wrapper .rad-agenda-row .wp-block-column > * + * { margin-top: 6px; }
+.rad-agenda .rad-agenda-time,
+.editor-styles-wrapper .rad-agenda-time {
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--slate);
+  padding-top: 4px;
+}
+.rad-agenda .rad-agenda-title,
+.editor-styles-wrapper .rad-agenda-title {
+  font-family: var(--serif);
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.25;
+  color: var(--ink);
+  max-width: none;
+}
+.rad-agenda .rad-agenda-title em,
+.editor-styles-wrapper .rad-agenda-title em { font-style: italic; color: var(--gold); }
+.rad-agenda .rad-agenda-desc,
+.editor-styles-wrapper .rad-agenda-desc {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.rad-agenda .rad-agenda-row.is-feature,
+.editor-styles-wrapper .rad-agenda-row.is-feature { background: linear-gradient(90deg, rgba(46,108,166,0.05), transparent 70%); }
+.rad-agenda .rad-agenda-row.is-feature .rad-agenda-title,
+.editor-styles-wrapper .rad-agenda-row.is-feature .rad-agenda-title { font-weight: 500; }
+
+.rad-agenda .rad-agenda-note,
+.editor-styles-wrapper .rad-agenda-note {
+  margin-top: 48px;
+  padding: 22px 26px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: none;
+}
+
+.rad-agenda .rad-agenda-actions,
+.editor-styles-wrapper .rad-agenda-actions { margin-top: 40px; gap: 14px; }
+.rad-blocks .is-style-outline .wp-block-button__link,
+.editor-styles-wrapper .is-style-outline .wp-block-button__link {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.rad-blocks .is-style-outline .wp-block-button__link:hover,
+.editor-styles-wrapper .is-style-outline .wp-block-button__link:hover { background: var(--ink); color: var(--cream); }
+
+/* ─── Speakers ─── */
+.rad-blocks .rad-speaker,
+.editor-styles-wrapper .rad-speaker { gap: 32px; align-items: start; }
+.rad-blocks .rad-speaker .rad-label,
+.editor-styles-wrapper .rad-speaker .rad-label { padding-top: 0; margin-top: 8px; }
+.rad-blocks .rad-speaker img,
+.editor-styles-wrapper .rad-speaker img { filter: grayscale(0.15) contrast(1.02); }
+.rad-blocks .rad-speaker + .rad-speaker,
+.editor-styles-wrapper .rad-speaker + .rad-speaker { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--rule); }
