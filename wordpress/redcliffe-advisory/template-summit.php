@@ -29,7 +29,11 @@
           <div class="m"><div class="k" data-rad="summit.hero.0oxp06e"><?php rad_html( 'summit.hero.0oxp06e' ); ?></div><div class="v" data-rad="summit.hero.0tz2bk8"><?php rad_html( 'summit.hero.0tz2bk8' ); ?></div></div>
         </div>
         <div class="cine-cta">
-          <a class="btn on-dark" href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>"><span data-rad="summit.hero.1j5lpty"><?php rad_html( 'summit.hero.1j5lpty' ); ?></span><span class="arr">→</span></a> </div> </div> <div class="sq-medallion"> <span class="sq-ring r-outer" aria-hidden="true"></span> <span class="sq-ring r-mid" aria-hidden="true"></span> <span class="sq-ring r-inner" aria-hidden="true"></span> <img src="<?php echo esc_url( rad_image_url( 'summit.hero.medallion' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'summit.hero.medallion' ) ); ?>" data-rad-img="summit.hero.medallion" /> </div> </div> </section>
+          <a class="btn on-dark" href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>"><span data-rad="summit.hero.1j5lpty"><?php rad_html( 'summit.hero.1j5lpty' ); ?></span><span class="arr">→</span></a> 
+<?php $rad_register_url = rad_setting_url( 'summit.hero.registerUrl', 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register' ); if ( $rad_register_url ) : ?>
+<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span>Register</span><span class="arr">→</span></a>
+<?php endif; ?>
+</div> </div> <div class="sq-medallion"> <span class="sq-ring r-outer" aria-hidden="true"></span> <span class="sq-ring r-mid" aria-hidden="true"></span> <span class="sq-ring r-inner" aria-hidden="true"></span> <img src="<?php echo esc_url( rad_image_url( 'summit.hero.medallion' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'summit.hero.medallion' ) ); ?>" data-rad-img="summit.hero.medallion" /> </div> </div> </section>
 <?php endif; ?> <?php if ( rad_section_enabled( 'summit.feature' ) ) : ?>
 <section class="section" style="padding-bottom:0;"> <div class="container"> <div class="summit-feature reveal"> <div class="text-side"> <h2 data-rad="summit.feature.1ivudv9"><?php rad_html( 'summit.feature.1ivudv9' ); ?></h2> <p data-rad="summit.feature.1225p60"><?php rad_html( 'summit.feature.1225p60' ); ?></p> <p data-rad="summit.feature.0411ob7"><?php rad_html( 'summit.feature.0411ob7' ); ?></p> <p class="promise" data-rad="summit.feature.1jfqtl3"><?php rad_html( 'summit.feature.1jfqtl3' ); ?></p> <div class="meta-row"> <div class="m"><div class="k" data-rad="summit.feature.1sy0ftr"><?php rad_html( 'summit.feature.1sy0ftr' ); ?></div><div class="v" data-rad="summit.feature.07sq3wh"><?php rad_html( 'summit.feature.07sq3wh' ); ?></div></div> <div class="m"><div class="k" data-rad="summit.feature.1nfwuja"><?php rad_html( 'summit.feature.1nfwuja' ); ?></div><div class="v" data-rad="summit.feature.1pu9jgx"><?php rad_html( 'summit.feature.1pu9jgx' ); ?></div></div> <div class="m"><div class="k" data-rad="summit.feature.182jvbn"><?php rad_html( 'summit.feature.182jvbn' ); ?></div><div class="v" data-rad="summit.feature.11o5ed2"><?php rad_html( 'summit.feature.11o5ed2' ); ?></div></div> </div> <div class="cta-row" style="margin-top:8px;"> <a class="btn" href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>"><span data-rad="summit.feature.1j5lpty"><?php rad_html( 'summit.feature.1j5lpty' ); ?></span><span class="arr">→</span></a> </div> </div> <div class="photo-side"> <img src="<?php echo esc_url( rad_image_url( 'summit.feature.photo' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'summit.feature.photo' ) ); ?>" data-rad-img="summit.feature.photo" /> </div> </div> </div> </section>
 <?php endif; ?> <?php if ( rad_section_enabled( 'summit.audience' ) ) : ?>
@@ -70,6 +74,9 @@
   </section>
 <?php endif; ?>
 
+<?php rad_extra_sections(); ?>
+
+
   <?php if ( rad_section_enabled( 'summit.gallery' ) ) : ?>
 <section class="section" id="gallery">
     <div class="container">
@@ -104,8 +111,5 @@
     </div>
   </section>
 <?php endif; ?>
-
-<?php rad_extra_sections(); ?>
-
 
 <?php get_footer(); ?>

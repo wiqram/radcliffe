@@ -22,32 +22,40 @@
   </section>
 <?php endif; ?>
   <?php if ( rad_section_enabled( 'articles.journal' ) ) : ?>
+<?php if ( rad_has_articles() ) : ?>
+<section class="section rad-articles-dynamic">
+<div class="container">
+<?php get_template_part( 'template-parts/journal' ); ?>
+</div>
+</section>
+<?php else : ?>
 <section class="section">
     <div class="container">
       <article class="journal-feature reveal">
         <div class="photo"><img src="<?php echo esc_url( rad_image_url( 'articles.hero.photo' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'articles.hero.photo' ) ); ?>" loading="lazy" data-rad-img="articles.hero.photo" /></div>
         <div class="meta">
-          <div class="kicker" data-rad="articles.journal.1cmb3gu"><?php rad_html( 'articles.journal.1cmb3gu' ); ?></div>
-          <h3 data-rad="articles.journal.0og1huk"><?php rad_html( 'articles.journal.0og1huk' ); ?></h3>
-          <p data-rad="articles.journal.138ysj9"><?php rad_html( 'articles.journal.138ysj9' ); ?></p>
-          <div class="byline" data-rad="articles.journal.0quccw4"><?php rad_html( 'articles.journal.0quccw4' ); ?></div>
+          <div class="kicker">Featured report · 2025</div>
+          <h3>Race for Growth: the levers Britain still holds</h3>
+          <p>On why the UK remains home to the second-largest number of quantum start-ups in the world — and what is required of the City of London, government and the sovereign capital around them.</p>
+          <div class="byline">Karina Robinson · 2025</div>
         </div>
       </article>
 
       <div class="section-head reveal" style="margin-bottom:40px;">
-        <div class="label" data-rad="articles.journal.0ctm491"><?php rad_html( 'articles.journal.0ctm491' ); ?></div>
-        <h2 data-rad="articles.journal.1njr3ha"><?php rad_html( 'articles.journal.1njr3ha' ); ?></h2>
+        <div class="label">The index</div>
+        <h2>Recent <em>writing</em></h2>
       </div>
       <div class="journal-list reveal">
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.1wu0mia"><?php rad_html( 'articles.journal.1wu0mia' ); ?></div><h4 data-rad="articles.journal.0yemidx"><?php rad_html( 'articles.journal.0yemidx' ); ?></h4><div class="byline" data-rad="articles.journal.0k0mn3s"><?php rad_html( 'articles.journal.0k0mn3s' ); ?></div></a>
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.1xuvvbi"><?php rad_html( 'articles.journal.1xuvvbi' ); ?></div><h4 data-rad="articles.journal.1v3s71s"><?php rad_html( 'articles.journal.1v3s71s' ); ?></h4><div class="byline" data-rad="articles.journal.0quccw4"><?php rad_html( 'articles.journal.0quccw4' ); ?></div></a>
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.1xuvvbi"><?php rad_html( 'articles.journal.1xuvvbi' ); ?></div><h4 data-rad="articles.journal.15x9we3"><?php rad_html( 'articles.journal.15x9we3' ); ?></h4><div class="byline" data-rad="articles.journal.1mevlwy"><?php rad_html( 'articles.journal.1mevlwy' ); ?></div></a>
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.006i44r"><?php rad_html( 'articles.journal.006i44r' ); ?></div><h4 data-rad="articles.journal.0i1d3pm"><?php rad_html( 'articles.journal.0i1d3pm' ); ?></h4><div class="byline" data-rad="articles.journal.16r3ldm"><?php rad_html( 'articles.journal.16r3ldm' ); ?></div></a>
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.1xuvvbi"><?php rad_html( 'articles.journal.1xuvvbi' ); ?></div><h4 data-rad="articles.journal.0rvn0gf"><?php rad_html( 'articles.journal.0rvn0gf' ); ?></h4><div class="byline" data-rad="articles.journal.0quccw4"><?php rad_html( 'articles.journal.0quccw4' ); ?></div></a>
-        <a class="journal-item" href="#"><div class="kicker" data-rad="articles.journal.1wu0mia"><?php rad_html( 'articles.journal.1wu0mia' ); ?></div><h4 data-rad="articles.journal.008h3m8"><?php rad_html( 'articles.journal.008h3m8' ); ?></h4><div class="byline" data-rad="articles.journal.0xa4e0e"><?php rad_html( 'articles.journal.0xa4e0e' ); ?></div></a>
+        <a class="journal-item" href="#"><div class="kicker">The Quantum Insider</div><h4>Connections in Chaos: why the Sixth Summit chose its theme.</h4><div class="byline">The Editors · 2026</div></a>
+        <a class="journal-item" href="#"><div class="kicker">Karina&rsquo;s Column</div><h4>Deep Tech meets Finance — a translation problem, not a funding one.</h4><div class="byline">Karina Robinson · 2025</div></a>
+        <a class="journal-item" href="#"><div class="kicker">Karina&rsquo;s Column</div><h4>From the Inclusion Initiative: what behavioural science teaches the City of London.</h4><div class="byline">Karina Robinson, LSE · 2025</div></a>
+        <a class="journal-item" href="#"><div class="kicker">Interview</div><h4>Inside the lab rewriting cryptographic assumptions.</h4><div class="byline">In conversation · 2025</div></a>
+        <a class="journal-item" href="#"><div class="kicker">Karina&rsquo;s Column</div><h4>A sensible case for Diversity &amp; Inclusion in the City of London.</h4><div class="byline">Karina Robinson · 2025</div></a>
+        <a class="journal-item" href="#"><div class="kicker">The Quantum Insider</div><h4>Quantum &amp; sovereign capital: the questions Boards should be asking.</h4><div class="byline">Redcliffe Advisory · 2026</div></a>
       </div>
     </div>
   </section>
+<?php endif; ?>
 <?php endif; ?>
 
   <?php if ( rad_section_enabled( 'articles.other' ) ) : ?>

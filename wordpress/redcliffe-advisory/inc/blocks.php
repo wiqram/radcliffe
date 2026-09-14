@@ -361,6 +361,27 @@ function rad_register_block_patterns() {
 <h3 class="wp-block-heading rad-agenda-part">Afternoon</h3>
 <!-- /wp:heading -->',
 		),
+		'sponsor-logos'     => array(
+			'title'       => __( 'Sponsor logos', 'redcliffe-advisory' ),
+			'description' => __( 'A label such as "Gold Sponsor" above a row of logos from the Media Library. Add one of these for each tier — Gold, Dinner, Silver, Bronze, Collaborators, Partners — with as many logos as you like; they keep a fixed height and are never cropped or stretched.', 'redcliffe-advisory' ),
+			'content'     => '<!-- wp:paragraph {"className":"rad-label"} -->
+<p class="rad-label">Gold Sponsor</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:gallery {"columns":4,"linkTo":"none","className":"rad-logos"} -->
+<figure class="wp-block-gallery has-nested-images columns-4 rad-logos"><!-- wp:image {"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="' . $photo . '" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="' . $photo2 . '" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="' . $photo3 . '" alt=""/></figure>
+<!-- /wp:image --></figure>
+<!-- /wp:gallery -->',
+		),
 		'speaker'           => array(
 			'title'       => __( 'Speaker', 'redcliffe-advisory' ),
 			'description' => __( 'A photograph, a name, a role and a line or two about a speaker. Add one per person.', 'redcliffe-advisory' ),
@@ -412,6 +433,8 @@ function rad_page_editor_notice() {
 
 	if ( $post instanceof WP_Post && isset( $seeds[ $post->post_name ] ) ) {
 		$message = __( 'This is the programme as it appears on the website. Click any time, title or description to change it. To add a slot, click the + and choose "Agenda: a time slot" under Redcliffe Advisory; to remove one, click it, press the three dots and choose Delete. Press Update when you are done.', 'redcliffe-advisory' );
+	} elseif ( $post instanceof WP_Post && 'summit' === $post->post_name ) {
+		$message = __( 'Anything you add here appears directly underneath Collaborators, above the photo gallery — this is where to add "Sponsor logos" sections for Gold, Dinner, Silver and Bronze Sponsors, Collaborators and Partners. Click the + and choose a pattern under Redcliffe Advisory.', 'redcliffe-advisory' );
 	}
 
 	wp_add_inline_script(

@@ -1370,7 +1370,15 @@ return array(
 				'Other rooms',
 			),
 		),
-		'extra' => array(),
+		'extra' => array(
+			array(
+				'key' => 'summit.hero.registerUrl',
+				'label' => 'Register button address',
+				'description' => 'Where the "Register" button beside "See the 2026 agenda" sends people. Leave empty to send them to the same address already in use.',
+				'type' => 'url',
+				'default' => '',
+			),
+		),
 	),
 	array(
 		'id' => 'agenda',
@@ -1442,101 +1450,6 @@ return array(
 			array(
 				'articles.hero.0jp2c80',
 				'A reading list for the people shaping the next decade — K…',
-				true,
-			),
-			array(
-				'articles.journal.1cmb3gu',
-				'Featured report · 2025',
-				true,
-			),
-			array(
-				'articles.journal.0og1huk',
-				'Race for Growth: the levers Britain still holds',
-				true,
-			),
-			array(
-				'articles.journal.138ysj9',
-				'On why the UK remains home to the second-largest number o…',
-				true,
-			),
-			array(
-				'articles.journal.0quccw4',
-				'Karina Robinson · 2025',
-				true,
-			),
-			array(
-				'articles.journal.0ctm491',
-				'The index',
-				true,
-			),
-			array(
-				'articles.journal.1njr3ha',
-				'Recent writing',
-				true,
-			),
-			array(
-				'articles.journal.1wu0mia',
-				'The Quantum Insider',
-				true,
-			),
-			array(
-				'articles.journal.0yemidx',
-				'Connections in Chaos: why the Sixth Summit chose its theme.',
-				true,
-			),
-			array(
-				'articles.journal.0k0mn3s',
-				'The Editors · 2026',
-				true,
-			),
-			array(
-				'articles.journal.1xuvvbi',
-				'Karina’s Column',
-				true,
-			),
-			array(
-				'articles.journal.1v3s71s',
-				'Deep Tech meets Finance — a translation problem, not a fu…',
-				true,
-			),
-			array(
-				'articles.journal.15x9we3',
-				'From the Inclusion Initiative: what behavioural science t…',
-				true,
-			),
-			array(
-				'articles.journal.1mevlwy',
-				'Karina Robinson, LSE · 2025',
-				true,
-			),
-			array(
-				'articles.journal.006i44r',
-				'Interview',
-				true,
-			),
-			array(
-				'articles.journal.0i1d3pm',
-				'Inside the lab rewriting cryptographic assumptions.',
-				true,
-			),
-			array(
-				'articles.journal.16r3ldm',
-				'In conversation · 2025',
-				true,
-			),
-			array(
-				'articles.journal.0rvn0gf',
-				'A sensible case for Diversity & Inclusion in the City of…',
-				true,
-			),
-			array(
-				'articles.journal.008h3m8',
-				'Quantum & sovereign capital: the questions Boards should…',
-				true,
-			),
-			array(
-				'articles.journal.0xa4e0e',
-				'Redcliffe Advisory · 2026',
 				true,
 			),
 			array(

@@ -10,8 +10,11 @@ guide** in the left-hand menu, so you never need to find this file again.
 **In a hurry?** Jump to the worked examples: [changing the Summit
 agenda](#15-example-updating-the-2026-summit-agenda), [changing or adding
 photographs](#16-example-changing-and-adding-photographs), [announcing
-something](#17-example-making-an-announcement) and [adding
-speakers](#18-example-adding-the-speakers).
+something](#17-example-making-an-announcement), [adding
+speakers](#18-example-adding-the-speakers), [the Register
+button](#19-example-the-register-button), [sponsor and collaborator
+logos](#20-example-sponsor-and-collaborator-logos) and [writing an
+article](#21-example-writing-an-article).
 
 ---
 
@@ -52,7 +55,8 @@ Almost everything you do lives in one of four places in the left-hand menu.
 | --- | --- |
 | Change **any words or any photograph** already on the website: a headline, a date, a name, a paragraph, the announcement strip, the footer | **Appearance → Customize** |
 | Change the **Summit agenda** (times, sessions, speakers, the note at the bottom) | **Pages → Agenda → Edit** |
-| **Add something new** to a page: a new section of text, a speaker, a new photograph, a gallery, a quotation | **Pages** |
+| **Add something new** to a page: a new section of text, a speaker, sponsor logos, a new photograph, a gallery, a quotation | **Pages** |
+| **Write and publish an article** for the Articles page | **Posts → Add New** |
 | Read the messages sent through the contact form | **Enquiries** |
 
 The rest of this guide walks through each one.
@@ -136,6 +140,7 @@ from an event, a quotation, a list of speakers, or anything else.
    | **Two columns of text** | Two short pieces of text side by side |
    | **Button** | A button that links to another page |
    | **Speaker** | A photograph, a name, a role and a line about one speaker |
+   | **Sponsor logos** | A label ("Gold Sponsor") above a row of logos that are never cropped or stretched |
    | **Agenda: a time slot** | One line of the Summit programme (Agenda page) |
    | **Agenda: part of the day** | A small heading such as *Afternoon* (Agenda page) |
 
@@ -368,6 +373,10 @@ opens Hostinger's help chat, which will check it for you.
 Afterwards, in WordPress go to **Settings → General** and make sure both
 address boxes show `https://www.redcliffeadvisory.com`.
 
+Old links to the Summit page — including every past `…summit-2025` and
+`…summit-2026` address — start forwarding to the current Summit page
+automatically once the domain is connected. There is nothing to set up.
+
 ---
 
 ## 13. If something looks wrong
@@ -382,6 +391,9 @@ address boxes show `https://www.redcliffeadvisory.com`.
 | A menu link goes to the homepage | That page was deleted | **Pages → Trash** → hover the page → **Restore**. Never delete the nine main pages |
 | The homepage shows a list of blog posts | The front page setting changed | **Settings → Reading** → *Your homepage displays: A static page* → Homepage: **Home** → **Save Changes** |
 | The Articles page shows a list of blog posts instead of the designed page | The "Posts page" setting is pointing at it | **Settings → Reading** → set **Posts page** to **— Select —** → **Save Changes** |
+| A post you added does not appear on the Articles page | It is still a **Draft** | Open **Posts**, click the post, then **Publish** (top right) |
+| An article should link to another website but opens on this site instead | The **External web address** box was left empty | Open the post, find **Where this article appears** on the right, paste the address, **Update** |
+| The Register button on the Summit page goes to the wrong place | The old address is still saved | **Appearance → Customize → Summit page → Register button address**, paste the correct one, **Publish** |
 | The Agenda page shows the old programme, not what you typed | The page has not been updated, or the browser is showing an old copy | Open **Pages → Agenda → Edit** and click **Update**; then Ctrl+F5 |
 | A block on the Agenda page says "unexpected or invalid content" | Something was pasted in that the editor does not understand | Click **Attempt recovery**. If that does not help, click the three dots on that block, choose **Delete**, and add a fresh **Agenda: a time slot** |
 | Enquiries arrive in WordPress but no email comes | Email sending is off | Check spam first. Then ask Hostinger's help chat (the **Agent** button in hPanel) to "enable email sending from WordPress". The messages are safe under **Enquiries** in the meantime |
@@ -632,3 +644,96 @@ person:
 
 **To mention a speaker in the programme** as well, change the description of
 their session on the Agenda page (section 15).
+
+---
+
+## 19. Example: the Register button
+
+Beside **See the 2026 agenda** in the Summit page's opening section there is a
+second button, **Register**, that sends people straight to wherever booking
+happens — Cvent, Eventbrite, a form, anywhere.
+
+1. **Appearance → Customize → Summit page**.
+2. Find **Register button address** and paste the booking link.
+3. Click **Publish**.
+
+The button always shows the current address, so **Access** in the same hero
+no longer needs to hold a pasted web address. Open the same Customizer
+section, find the **Access** text field (it may currently hold a long web
+address), and change it back to a short phrase such as *Open to all* or *By
+invitation*, then **Publish**.
+
+---
+
+## 20. Example: sponsor and collaborator logos
+
+Gold, Dinner, Silver and Bronze Sponsors, Collaborators and Partners each get
+their own label and a row of logos, added the same way as any new section
+(section 4), directly under the existing **Collaborators · 2026** names on the
+Summit page:
+
+1. **Pages** → hover over **Summit** → **Edit**. Close the blue note — it now
+   tells you new sections appear here, just under Collaborators.
+2. Click **+** → **Patterns → Redcliffe Advisory → Sponsor logos**. A label
+   ("Gold Sponsor") and three placeholder logos appear.
+3. Click the label and type the tier: **Gold Sponsor**, **Dinner Sponsor**,
+   **Silver Sponsor**, **Bronze Sponsors**, **Collaborators**, or **Partners**.
+4. Click a logo → **Replace** → choose the file from the Media Library, or
+   **Upload** a new one. Repeat for the other logos. Click the **+** that
+   appears at the end of the row to add a fourth logo, or click a logo, three
+   dots, **Delete**, to remove one.
+5. For **Partners**, where names should show under the logos: click a logo
+   once to select it, then use the caption field that appears underneath to
+   type the partner's name.
+6. Press **+** below and add another **Sponsor logos** pattern for the next
+   tier. Click **Update**, then **View page**.
+
+**Logo tips:** a PNG with a transparent background looks best; logos of very
+different heights all still line up, since each sits in its own box and is
+never stretched or cropped.
+
+**Once sponsors and Partners are set up this way,** the existing
+**Collaborators · 2026** names further up can be turned off if they are no
+longer wanted: **Appearance → Customize → Summit page**, untick **Show:
+Collaborators**, **Publish**.
+
+---
+
+## 21. Example: writing an article
+
+Articles are written the ordinary WordPress way, under **Posts**, not on the
+Articles page itself. As soon as one is published, it appears there
+automatically, newest first, and the three already on the site are already
+showing this way.
+
+1. **Posts → Add New**.
+2. Type the title, then write the piece in the body underneath, exactly like
+   the page editor (section 4) — headings, paragraphs, photographs and
+   quotations all work the same way.
+3. On the right, under **Excerpt**, type one or two sentences summarising it —
+   this is what shows on the Articles page. If left empty, WordPress uses the
+   opening of the piece instead.
+4. Under **Categories**, tick one (**Karina's Column**, for example) — its
+   name is the small label shown above the title on the card. Add a new
+   category by typing its name and clicking **Add new category**.
+5. Under **Featured image**, set a photograph — this is the picture shown on
+   the card and, for the article at the top, the large photograph.
+6. If the piece was written for somewhere else — The Quantum Insider, LSE, a
+   partner site — find **Where this article appears** on the right, paste
+   that page's web address into **External web address**. The card then
+   sends readers straight there instead of to a page on this site; leave it
+   empty for an article people read here. You can also type a **Byline** by
+   hand there, such as *Karina Robinson, LSE · 2026* — leave it empty to show
+   your account name and the year automatically instead.
+7. Click **Publish** (top right).
+
+**To change your name as it appears on articles,** go to **Users → Profile**,
+change **Nickname**, and choose it under **Display name publicly as**, then
+**Update Profile**.
+
+**To edit or unpublish an article** later, open **Posts**, click it, make the
+change, and **Update**. Moving it to **Trash** removes its card from the
+Articles page.
+
+**If the Articles page ever has no posts on it,** it shows the original
+designed content instead, so it can never look empty.

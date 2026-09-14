@@ -18,7 +18,9 @@ const PAGES = [
   // The programme is edited as blocks: the page's content replaces this
   // section when it has any, and is seeded from the HTML on first run.
   { file: 'Agenda.html', slug: 'agenda', title: 'Agenda', template: 'template-agenda.php', blockSection: 'agenda.programme' },
-  { file: 'Articles.html', slug: 'articles', title: 'Articles', template: 'template-articles.php' },
+  // The "Recent writing" list is replaced by real WordPress Posts as soon as
+  // there are any; its designed content stands in only until the first post.
+  { file: 'Articles.html', slug: 'articles', title: 'Articles', template: 'template-articles.php', postSection: 'articles.journal' },
   { file: 'Ethics.html', slug: 'ethics', title: 'Ethics', template: 'template-ethics.php' },
   { file: 'Contact.html', slug: 'contact', title: 'Contact', template: 'template-contact.php' },
 ];
@@ -149,6 +151,15 @@ const PANELS = [
       ['summit.collaborators', 'Collaborators'],
       ['summit.gallery', 'Gallery'],
       ['summit.other', 'Other rooms'],
+    ],
+    extra: [
+      {
+        key: 'summit.hero.registerUrl',
+        label: 'Register button address',
+        description: 'Where the "Register" button beside "See the 2026 agenda" sends people. Leave empty to send them to the same address already in use.',
+        type: 'url',
+        default: '',
+      },
     ],
   },
   {

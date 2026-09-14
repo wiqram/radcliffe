@@ -281,7 +281,7 @@ function rewriteCmsText(html) {
 }
 
 /** Sections gain a show/hide switch, matching the CMS this theme replaces. */
-function rewriteCmsSections(html, blockSection = '') {
+function rewriteCmsSections(html, blockSection = '', postSection = '') {
   const opening = /<section\b([^>]*?)\sdata-cms-section="([^"]+)"([^>]*)>/;
   let out = html;
   let match;
@@ -304,6 +304,16 @@ function rewriteCmsSections(html, blockSection = '') {
         `<?php else : ?>\n${body}\n<?php endif; ?>`;
     }
 
+    // Real WordPress Posts stand in for this section once there are any, so
+    // the owner's "Add Post" workflow drives the page instead of fixed text.
+    if (key === postSection) {
+      body =
+        `<?php if ( rad_has_articles() ) : ?>\n` +
+        `<section class="section rad-articles-dynamic">\n<div class="container">\n` +
+        `<?php get_template_part( 'template-parts/journal' ); ?>\n</div>\n</section>\n` +
+        `<?php else : ?>\n${body}\n<?php endif; ?>`;
+    }
+
     out =
       out.slice(0, match.index) +
       `<?php if ( rad_section_enabled( '${key}' ) ) : ?>\n${body}\n<?php endif; ?>` +
@@ -311,6 +321,31 @@ function rewriteCmsSections(html, blockSection = '') {
   }
 
   return out;
+}
+
+/**
+ * A "Register" button beside "See the 2026 agenda" in the Summit hero, shown
+ * whenever a registration address is set — the default is the address Ramon
+ * already pasted into the Access field as plain text.
+ *
+ * Runs on the *converted* template (after auto-tagging), not the raw design
+ * HTML: its href carries PHP of its own, and auto-tagging's tag scanner does
+ * not expect a `>` inside an attribute (the one in `?>`), which corrupts the
+ * markup if this button is present when auto-tagging runs.
+ */
+function injectSummitRegisterButton(html) {
+  const ctaOpen = '<div class="cine-cta">';
+  const start = html.indexOf(ctaOpen);
+  if (start === -1) fail('template-summit.php has no .cine-cta to add the Register button to');
+  const openEnd = start + ctaOpen.length;
+  const { innerEnd } = findMatchingClose(html, 'div', openEnd);
+  const fallbackUrl = 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register';
+  const button =
+    `\n<?php $rad_register_url = rad_setting_url( 'summit.hero.registerUrl', ${phpString(fallbackUrl)} ); if ( $rad_register_url ) : ?>\n` +
+    `<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span>Register</span><span class="arr">→</span></a>\n` +
+    `<?php endif; ?>\n`;
+
+  return html.slice(0, innerEnd) + button + html.slice(innerEnd);
 }
 
 /**
@@ -339,15 +374,15 @@ function rewriteContactForm(html) {
   );
 }
 
-function convert(html, label = '', blockSection = '', group = '') {
+function convert(html, label = '', blockSection = '', group = '', postSection = '') {
   let out = html;
-  if (group) out = autoTag(out, group, 'top', blockSection);
+  if (group) out = autoTag(out, group, 'top', blockSection || postSection);
   out = rewriteCmsImages(out);
   out = rewriteStaticAssets(out);
   out = rewriteInternalLinks(out);
   out = rewriteContactForm(out);
   out = rewriteCmsText(out);
-  out = rewriteCmsSections(out, blockSection);
+  out = rewriteCmsSections(out, blockSection, postSection);
   if (label) out = rewriteDynamicSectionMount(out, label, blockSection);
   return out;
 }
@@ -586,7 +621,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.2.1
+Version: 1.3.0
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -890,7 +925,9 @@ function main() {
   }
 
   for (const { page, parts } of pages) {
-    const template = buildTemplate(page, convert(parts.main, page.template, page.blockSection || '', page.slug));
+    let converted = convert(parts.main, page.template, page.blockSection || '', page.slug, page.postSection || '');
+    if (page.slug === 'summit') converted = injectSummitRegisterButton(converted);
+    const template = buildTemplate(page, converted);
     if (page.blockSection) seeds[page.slug] = buildSeed(page, parts.main);
     assertClean(page.template, template);
     written.push(write(page.template, template));
