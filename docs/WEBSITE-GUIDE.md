@@ -512,13 +512,13 @@ Click and type, then **Update**.
 
 ### Changing the two buttons at the bottom of the programme
 
-The two buttons under the programme (by default *Register here* and *Back to
+The two buttons under the programme (by default *Reserve your spot* and *Back to
 the Summit*) are set in the Customizer, not in the page editor, so they can
 never be broken by accident:
 
 1. **Appearance → Customize → Agenda page**.
 2. Under **First closing button: text**, type what the button should say,
-   for example *Reserve your spot*. Its address is in **First closing button:
+   for example *Register here*. Its address is in **First closing button:
    address**. Leave that empty to use the registration page address you set
    for the Register button (section 19), or paste a different web address.
 3. Do the same for the **Second closing button**. Leave its address empty to
