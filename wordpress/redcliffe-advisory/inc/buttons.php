@@ -178,3 +178,26 @@ function rad_migrate_agenda_buttons() {
 	update_option( 'rad_agenda_buttons_migrated', RAD_VERSION, false );
 }
 add_action( 'init', 'rad_migrate_agenda_buttons', 40 );
+
+/**
+ * One-off, for a site that ran theme 1.3: there, an empty Register address just
+ * meant "nothing set, use the event's page", and the Customizer could leave an
+ * empty one saved. Now an empty address is a choice to hide the button, so an
+ * empty value left over from before is dropped and the event's page applies
+ * again. Runs once; after it, clearing the address hides the button as promised.
+ */
+function rad_migrate_register_address() {
+	if ( get_option( 'rad_register_address_migrated' ) ) {
+		return;
+	}
+
+	$name = rad_mod_name( 'summit.hero.registerUrl' );
+	$mods = get_theme_mods();
+
+	if ( is_array( $mods ) && array_key_exists( $name, $mods ) && '' === trim( (string) $mods[ $name ] ) ) {
+		remove_theme_mod( $name );
+	}
+
+	update_option( 'rad_register_address_migrated', RAD_VERSION, false );
+}
+add_action( 'init', 'rad_migrate_register_address', 40 );
