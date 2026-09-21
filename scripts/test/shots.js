@@ -40,6 +40,8 @@ const chrome = process.env.CHROME_BIN || ['/usr/bin/google-chrome', '/usr/bin/go
       const images = [...document.images];
       images.forEach((img) => { img.loading = 'eager'; });
       await Promise.all(images.map((img) => (img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; setTimeout(r, 8000); }))));
+      // Images use decoding="async": a tall screenshot can be taken before they are painted, leaving blank tiles.
+      await Promise.all(images.map((img) => img.decode().catch(() => null)));
       return images.filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.currentSrc || img.src);
     });
     if (broken.length) console.log(`  ! ${broken.length} broken image(s) at ${width}px: ${broken.slice(0, 3).join(', ')}`);

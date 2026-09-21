@@ -4,7 +4,7 @@
 #   scripts/test/wp-env.sh update  rebuild the zip and install it over the running site (the upgrade path)
 #   scripts/test/wp-env.sh seed    add sample sponsors (awkward logos of every kind) and enough articles for two pages
 #   scripts/test/wp-env.sh seed-legacy  put hand-placed sponsor logos on the Summit page, as the owner had before Sponsors existed
-#   scripts/test/wp-env.sh wp ...  run WP-CLI against the site
+#   scripts/test/wp-env.sh wp ...  run WP-CLI against the site (scripts/test/upgrade.sh rehearses the 1.3 -> current upgrade)
 #   scripts/test/wp-env.sh down    remove everything
 # The site answers on http://localhost:${RAD_TEST_PORT:-8092} with pretty permalinks.
 set -euo pipefail
