@@ -62,6 +62,22 @@ foreach ( array( 'Wide Eight To One', 'Tall One To Eight', 'Tiny Sixty By Thirty
 
 rad_m_check( 'a small logo carries its own size so it is not blown up', (bool) preg_match( '#style="[^"]*--lw:\d+;--lh:\d+#', rad_m_tile( $html, 'Tiny Sixty By Thirty' ) ) );
 
+// 1b. Which tile a see-through logo gets. A white wordmark next to a coloured symbol (the colour pulls the
+// average lightness down) must still go on a dark tile; white beside black ink must stay on white.
+$white_words = rad_m_sponsor( 'White Words Coloured Symbol', 'collaborators', rad_seed_logo( 'm-white-words', 1000, 200, function ( $im, $w, $h ) {
+	imagefilledellipse( $im, 100, 100, 200, 200, imagecolorallocate( $im, 255, 120, 0 ) );
+	imagefilledrectangle( $im, 300, 70, 550, 130, imagecolorallocate( $im, 255, 255, 255 ) );
+} ) );
+$white_and_black = rad_m_sponsor( 'White And Black And Colour', 'collaborators', rad_seed_logo( 'm-white-black', 1000, 200, function ( $im, $w, $h ) {
+	imagefilledellipse( $im, 50, 100, 100, 100, imagecolorallocate( $im, 255, 120, 0 ) );
+	imagefilledrectangle( $im, 200, 20, 400, 60, imagecolorallocate( $im, 0, 0, 0 ) );
+	imagefilledrectangle( $im, 200, 100, 400, 160, imagecolorallocate( $im, 255, 255, 255 ) );
+} ) );
+$logo_a = rad_sponsor_logo( $white_words );
+$logo_b = rad_sponsor_logo( $white_and_black );
+rad_m_check( 'a white wordmark beside a coloured symbol gets a dark tile, so the words show', $logo_a && 'dark' === $logo_a['card'], 'card ' . ( $logo_a['card'] ?? 'none' ) );
+rad_m_check( 'white next to black ink stays on a white tile', $logo_b && 'light' === $logo_b['card'], 'card ' . ( $logo_b['card'] ?? 'none' ) );
+
 // 2. A file the server cannot read, a very large one, and a WebP.
 $dir = wp_upload_dir();
 file_put_contents( $dir['path'] . '/corrupt-logo.png', 'this is not really a picture' );

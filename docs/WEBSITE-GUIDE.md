@@ -722,9 +722,9 @@ such as *Open to all* or *By invitation*, then **Publish**.
 
 Every sponsor and collaborator is kept under **Sponsors** in the left-hand
 menu, one entry for each organisation. The Summit page shows them
-automatically, grouped under a heading for each level (a **tier**): Gold
-Sponsor, Dinner Sponsor, Silver Sponsor, Bronze Sponsors, Collaborators and
-Partners. Each logo sits in a tile of the same shape, and the website works
+automatically, grouped under a heading for each level (a **tier**): Platinum
+Partner, Gold Sponsor, Dinner Sponsor, Silver Sponsor, Bronze Sponsors,
+Collaborators and Partners. Each logo sits in a tile of the same shape, and the website works
 out the rest: it trims the empty space around a logo, fits it inside its tile
 without stretching or cutting it, chooses a white or a dark blue tile so that
 the logo can be seen, puts as many logos on a row as fit the screen, and
@@ -777,12 +777,13 @@ arranged for you.
 
 ### Tiers
 
-**Sponsors → Tiers** shows the six levels. For each you can change:
+**Sponsors → Tiers** lists the levels, one for each heading on the Summit
+page. For each you can change:
 
 | Setting | What it does |
 | --- | --- |
 | **Name** | The heading above the logos |
-| **Position on the page** | A number: smaller comes first (Gold 10, Dinner 20, Silver 30…). Leave gaps so a new tier can go between |
+| **Position on the page** | A number: smaller comes first (Platinum 5, Gold 10, Dinner 20, Silver 30…). Leave gaps so a new tier can go between |
 | **Logo size** | From **Small** (fits the most across the page) to **Largest** (for one or two headline sponsors) |
 | **Show names** | Writes the organisation's name under each logo. Partners have this on by default |
 

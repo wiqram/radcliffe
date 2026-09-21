@@ -22,7 +22,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /** Bump to have every stored logo rebuilt the next time it is shown. */
-define( 'RAD_LOGO_VERSION', 1 );
+define( 'RAD_LOGO_VERSION', 2 );
 
 /* -------------------------------------------------------------------------
  * Registration
@@ -1618,6 +1618,8 @@ function rad_analyse_logo( $file ) {
 		$max_y = -1;
 		$count = 0;
 		$lum   = 0;
+		$white = 0;
+		$black = 0;
 
 		foreach ( $pixels as $i => $c ) {
 			if ( ! $is_art( $c ) ) {
@@ -1630,13 +1632,23 @@ function rad_analyse_logo( $file ) {
 			$min_y = min( $min_y, $y );
 			$max_y = max( $max_y, $y );
 			$count++;
-			$lum += 0.2126 * ( ( $c >> 16 ) & 0xFF ) + 0.7152 * ( ( $c >> 8 ) & 0xFF ) + 0.0722 * ( $c & 0xFF );
+			$r      = ( $c >> 16 ) & 0xFF;
+			$g      = ( $c >> 8 ) & 0xFF;
+			$b      = $c & 0xFF;
+			$pixel  = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+			$lum   += $pixel;
+			$white += ( $pixel >= 224 && max( $r, $g, $b ) - min( $r, $g, $b ) < 40 ) ? 1 : 0;
+			$black += $pixel <= 51 ? 1 : 0;
 		}
 
 		if ( $count > $sw * $sh * 0.002 ) {
 			if ( $has_alpha ) {
 				// Light artwork on nothing needs a dark tile; everything else, a white one.
-				$result['card'] = ( $lum / $count ) / 255 >= 0.72 ? 'dark' : 'light';
+				// A white wordmark beside a coloured symbol is light artwork too, even though the
+				// colour pulls the average down: on a white tile the words would vanish.
+				$mostly_light   = ( $lum / $count ) / 255 >= 0.72;
+				$white_with_ink = $white / $count >= 0.25 && $black / $count < 0.05;
+				$result['card'] = $mostly_light || $white_with_ink ? 'dark' : 'light';
 			}
 
 			$pad   = max( 2, (int) round( max( $max_x - $min_x, $max_y - $min_y ) * 0.03 ) );
