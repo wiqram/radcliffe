@@ -188,6 +188,51 @@ function rad_setting_url( $key, $fallback ) {
 }
 
 /**
+ * A saved setting where "cleared" is an answer of its own: the default while
+ * nothing has ever been saved, and an empty string once the owner has emptied
+ * the field. That is what lets a button or link be switched off by clearing
+ * its address, which rad_setting_url() cannot do.
+ *
+ * @param string $key     Content key of the setting.
+ * @param string $default Value while nothing has been saved.
+ * @return string
+ */
+function rad_saved_setting( $key, $default = '' ) {
+	$mods = get_theme_mods();
+	$name = rad_mod_name( $key );
+
+	if ( is_array( $mods ) && array_key_exists( $name, $mods ) ) {
+		return trim( (string) $mods[ $name ] );
+	}
+
+	return $default;
+}
+
+/**
+ * Where "Register" goes: the address set under Summit page in the Customizer,
+ * or the event's registration page until then. Empty when switched off.
+ *
+ * @return string
+ */
+function rad_registration_url() {
+	$links = rad_defaults( 'links' );
+
+	return rad_saved_setting( 'summit.hero.registerUrl', isset( $links['register'] ) ? $links['register'] : '' );
+}
+
+/**
+ * Whether an address leads away from this website.
+ *
+ * @param string $url Address.
+ * @return bool
+ */
+function rad_is_external_url( $url ) {
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+
+	return $host && wp_parse_url( home_url(), PHP_URL_HOST ) !== $host;
+}
+
+/**
  * Link to one of the site's pages by its slug.
  *
  * Falls back to the homepage if a page has been deleted, so a missing page can

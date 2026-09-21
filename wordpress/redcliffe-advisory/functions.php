@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RAD_VERSION', '1.3.0' );
+define( 'RAD_VERSION', '1.4.0' );
 
 require_once get_theme_file_path( 'inc/content.php' );
 require_once get_theme_file_path( 'inc/customizer.php' );
@@ -22,6 +22,9 @@ require_once get_theme_file_path( 'inc/setup.php' );
 require_once get_theme_file_path( 'inc/blocks.php' );
 require_once get_theme_file_path( 'inc/guide.php' );
 require_once get_theme_file_path( 'inc/articles.php' );
+require_once get_theme_file_path( 'inc/sponsors.php' );
+require_once get_theme_file_path( 'inc/buttons.php' );
+require_once get_theme_file_path( 'inc/linkedin.php' );
 require_once get_theme_file_path( 'inc/redirects.php' );
 
 /**

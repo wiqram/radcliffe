@@ -30,8 +30,8 @@
         </div>
         <div class="cine-cta">
           <a class="btn on-dark" href="<?php echo esc_url( rad_url( 'agenda' ) ); ?>"><span data-rad="summit.hero.1j5lpty"><?php rad_html( 'summit.hero.1j5lpty' ); ?></span><span class="arr">→</span></a> 
-<?php $rad_register_url = rad_setting_url( 'summit.hero.registerUrl', 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register' ); if ( $rad_register_url ) : ?>
-<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span>Register</span><span class="arr">→</span></a>
+<?php $rad_register_url = rad_registration_url(); if ( $rad_register_url ) : ?>
+<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span data-rad="summit.hero.registerLabel"><?php rad_html( 'summit.hero.registerLabel' ); ?></span><span class="arr">→</span></a>
 <?php endif; ?>
 </div> </div> <div class="sq-medallion"> <span class="sq-ring r-outer" aria-hidden="true"></span> <span class="sq-ring r-mid" aria-hidden="true"></span> <span class="sq-ring r-inner" aria-hidden="true"></span> <img src="<?php echo esc_url( rad_image_url( 'summit.hero.medallion' ) ); ?>" alt="<?php echo esc_attr( rad_image_alt( 'summit.hero.medallion' ) ); ?>" data-rad-img="summit.hero.medallion" /> </div> </div> </section>
 <?php endif; ?> <?php if ( rad_section_enabled( 'summit.feature' ) ) : ?>
@@ -50,7 +50,10 @@
         <div class="label" style="color:var(--gold-soft);" data-rad="summit.collaborators.0c21rei"><?php rad_html( 'summit.collaborators.0c21rei' ); ?></div>
         <h2 data-rad="summit.collaborators.08v247u"><?php rad_html( 'summit.collaborators.08v247u' ); ?></h2>
       </div>
-      <div class="partner-grid reveal">
+      <?php if ( rad_has_sponsors() ) : ?>
+<?php rad_render_sponsors(); ?>
+<?php else : ?>
+<div class="partner-grid reveal">
         <div class="partner"><span class="pw" data-rad="summit.collaborators.1ng5bg6"><?php rad_html( 'summit.collaborators.1ng5bg6' ); ?></span></div>
         <div class="partner"><span class="pw" data-rad="summit.collaborators.1ng10oo"><?php rad_html( 'summit.collaborators.1ng10oo' ); ?></span><span class="ps" data-rad="summit.collaborators.0zudt73"><?php rad_html( 'summit.collaborators.0zudt73' ); ?></span></div>
         <div class="partner"><span class="pw" data-rad="summit.collaborators.11pbpr0"><?php rad_html( 'summit.collaborators.11pbpr0' ); ?></span><span class="ps" data-rad="summit.collaborators.0eylwnh"><?php rad_html( 'summit.collaborators.0eylwnh' ); ?></span></div>
@@ -70,7 +73,8 @@
         <div class="pr"><div class="k" data-rad="summit.collaborators.1vodiey"><?php rad_html( 'summit.collaborators.1vodiey' ); ?></div><div class="v" data-rad="summit.collaborators.09n7lv6"><?php rad_html( 'summit.collaborators.09n7lv6' ); ?></div></div>
         <div class="pr"><div class="k" data-rad="summit.collaborators.0v1dw9l"><?php rad_html( 'summit.collaborators.0v1dw9l' ); ?></div><div class="v" data-rad="summit.collaborators.1nb5su0"><?php rad_html( 'summit.collaborators.1nb5su0' ); ?></div></div>
       </div>
-    </div>
+    <?php endif; ?>
+</div>
   </section>
 <?php endif; ?>
 
@@ -101,7 +105,6 @@
     <div class="container">
       <div class="other-head">
         <h3 data-rad="summit.other.1mx1n5x"><?php rad_html( 'summit.other.1mx1n5x' ); ?></h3>
-        <div class="small" data-rad="summit.other.1cd2rqb"><?php rad_html( 'summit.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
         <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t" data-rad="summit.other.1ozkbpl"><?php rad_html( 'summit.other.1ozkbpl' ); ?></span><span class="d" data-rad="summit.other.0ng9skz"><?php rad_html( 'summit.other.0ng9skz' ); ?></span><span class="arr">→</span></a>

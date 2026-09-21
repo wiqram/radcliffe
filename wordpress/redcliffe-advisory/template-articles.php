@@ -13,11 +13,13 @@
 <?php get_header(); ?>
 
 <?php if ( rad_section_enabled( 'articles.hero' ) ) : ?>
-<section class="page-hero">
+<section class="page-hero page-hero--split">
     <div class="container">
       <div class="crumb"><a href="<?php echo esc_url( rad_url( 'home' ) ); ?>" data-rad="articles.hero.1nfzvhp"><?php rad_html( 'articles.hero.1nfzvhp' ); ?></a><span class="sep">·</span><span data-rad="articles.hero.05ous6t"><?php rad_html( 'articles.hero.05ous6t' ); ?></span></div>
+      <div class="hero-split">
       <h1 data-rad="articles.hero.title"><?php rad_html( 'articles.hero.title' ); ?></h1>
       <p class="page-lede" data-rad="articles.hero.0jp2c80"><?php rad_html( 'articles.hero.0jp2c80' ); ?></p>
+      </div>
     </div>
   </section>
 <?php endif; ?>
@@ -63,7 +65,6 @@
     <div class="container">
       <div class="other-head">
         <h3 data-rad="articles.other.1mx1n5x"><?php rad_html( 'articles.other.1mx1n5x' ); ?></h3>
-        <div class="small" data-rad="articles.other.1cd2rqb"><?php rad_html( 'articles.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
         <a class="other-row" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span class="n">01</span><span class="t" data-rad="articles.other.0jt4grq"><?php rad_html( 'articles.other.0jt4grq' ); ?></span><span class="d" data-rad="articles.other.10qyuye"><?php rad_html( 'articles.other.10qyuye' ); ?></span><span class="arr">→</span></a>

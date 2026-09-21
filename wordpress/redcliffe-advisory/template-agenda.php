@@ -30,6 +30,7 @@
 <div class="rad-blocks entry-content rad-agenda">
 <?php rad_page_content(); ?>
 </div>
+<?php rad_agenda_actions(); ?>
 </div>
 </section>
 <?php else : ?>
@@ -118,11 +119,7 @@
       </div>
 
       <div class="agenda-note reveal">Our promise to you — no lingo, no jargon. Clear language for all non-scientists, panels that strive for gender balance, and pricing kept accessible. The programme above is the shape of the day; timings and speakers are confirmed nearer the date.</div>
-
-      <div class="cta-row" style="margin-top:36px;">
-        <a class="btn" href="<?php echo esc_url( rad_url( 'contact' ) ); ?>"><span>Enquire about attending</span><span class="arr">→</span></a>
-        <a class="btn-link" href="<?php echo esc_url( rad_url( 'summit' ) ); ?>"><span>Back to the Summit</span><span class="arr">↗</span></a>
-      </div>
+<?php rad_agenda_actions(); ?>
     </div>
   </section>
 <?php endif; ?>

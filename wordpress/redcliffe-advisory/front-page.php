@@ -134,6 +134,17 @@
     </div>
   </section>
 <?php endif; ?>
+  <?php if ( rad_section_enabled( 'home.linkedin' ) ) : ?>
+<section class="section linkedin-section" id="linkedin">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="label" data-rad="home.linkedin.1wm5bhh"><?php rad_html( 'home.linkedin.1wm5bhh' ); ?></div>
+        <h2 data-rad="home.linkedin.1vjkp2v"><?php rad_html( 'home.linkedin.1vjkp2v' ); ?></h2>
+      </div>
+      <?php rad_linkedin_feed(); ?>
+    </div>
+  </section>
+<?php endif; ?>
   <script>
     window.__TESTIMONIALS = [
       {q:'Karina Robinson is, in the best sense, a benign disruptor. Redcliffe Advisory arrive with the people, the patience and the questions — not with a thesis.', name:'A City Chair', org:'Under Chatham House rule'},

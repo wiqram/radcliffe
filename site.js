@@ -108,4 +108,42 @@
     if (next) next.addEventListener('click', () => { i = (i + 1) % data.length; render(); });
     if (data.length) render();
   }
+
+  // 6) LinkedIn posts (SociableKit) — the widget loads once it is close to
+  // being seen, so visitors who never scroll that far do not download it. The
+  // feed lists every recent post, so the page shows the first rows and a
+  // button opens the rest (the button only appears when there is more).
+  const linkedin = document.querySelector('.linkedin-feed[data-linkedin-src]');
+  if (linkedin) {
+    const toggle = document.querySelector('.linkedin-toggle');
+    const loadLinkedIn = () => {
+      if (linkedin.dataset.loaded) return;
+      linkedin.dataset.loaded = '1';
+      const script = document.createElement('script');
+      script.src = linkedin.dataset.linkedinSrc;
+      script.async = true;
+      linkedin.appendChild(script);
+    };
+    if (toggle) {
+      const sync = () => {
+        toggle.hidden = !(linkedin.classList.contains('is-collapsed') && linkedin.scrollHeight > linkedin.clientHeight + 24);
+      };
+      toggle.addEventListener('click', () => {
+        linkedin.classList.remove('is-collapsed');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.hidden = true;
+      });
+      if ('ResizeObserver' in window) new ResizeObserver(sync).observe(linkedin.firstElementChild);
+      else toggle.hidden = false;
+      window.addEventListener('resize', sync);
+    }
+    if ('IntersectionObserver' in window) {
+      const watcher = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) { watcher.disconnect(); loadLinkedIn(); }
+      }, { rootMargin: '400px 0px' });
+      watcher.observe(linkedin);
+    } else {
+      loadLinkedIn();
+    }
+  }
 })();

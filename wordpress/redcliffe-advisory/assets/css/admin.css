@@ -1,0 +1,67 @@
+/* Admin screens for Sponsors (see inc/sponsors.php). */
+
+/* The list of sponsors */
+.column-rad_logo { width: 140px; }
+.column-rad_order { width: 70px; }
+.rad-sponsor-thumb {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 120px;
+	height: 56px;
+	padding: 6px 10px;
+	border: 1px solid #dcdcde;
+	background: var(--tile-bg, #fff);
+	color: #646970;
+	font-size: 12px;
+}
+.rad-sponsor-thumb.is-card-dark { background: var(--tile-bg, #14304f); border-color: #14304f; }
+.rad-sponsor-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* The details box: what the tile will look like */
+.rad-sponsor-fields th { width: 220px; }
+.rad-sponsor-preview { margin-top: 8px; padding-top: 16px; border-top: 1px solid #dcdcde; }
+.rad-sponsor-preview__tile {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 260px;
+	max-width: 100%;
+	height: 110px;
+	margin: 10px 0 8px;
+	padding: 14px 22px;
+	border: 1px solid #dcdcde;
+	background: var(--tile-bg, #fff);
+}
+.rad-sponsor-preview__tile.is-card-dark { background: var(--tile-bg, #14304f); border-color: #14304f; }
+.rad-sponsor-preview__tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* "Add several logos at once" */
+.rad-import-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+	gap: 14px;
+	margin: 18px 0;
+}
+.rad-import-item {
+	display: block;
+	position: relative;
+	padding: 10px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	cursor: pointer;
+}
+.rad-import-item:has(input[type="checkbox"]:checked) { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; }
+.rad-import-item > input[type="checkbox"] { position: absolute; top: 8px; left: 8px; z-index: 1; }
+.rad-import-thumb {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100px;
+	margin-bottom: 8px;
+	background: repeating-conic-gradient(#f0f0f1 0% 25%, #fff 0% 50%) 50% / 16px 16px;
+}
+.rad-import-thumb img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.rad-import-item input[type="text"] { width: 100%; }

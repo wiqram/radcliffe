@@ -8,13 +8,20 @@
  * Customizer always starts from what the design actually says.
  */
 
+// Where the Register buttons go until the owner sets another address. Written
+// into the theme's defaults, so the template, the Agenda's closing button and
+// the Customizer field all start from this one value.
+const REGISTER_URL = 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register';
+
 // Which page each HTML file becomes in WordPress.
 const PAGES = [
   { file: 'Homepage.html', slug: 'home', title: 'Home', template: 'front-page.php', isFront: true },
   { file: 'Practice.html', slug: 'practice', title: 'Chair Advisory', template: 'template-practice.php' },
   { file: 'Whos-Who.html', slug: 'who', title: 'Who’s Who', template: 'template-who.php' },
   { file: 'The-City.html', slug: 'city', title: 'The City of London', template: 'template-city.php' },
-  { file: 'Summit.html', slug: 'summit', title: 'Summit', template: 'template-summit.php' },
+  // Sponsors added under Sponsors in the admin menu replace the placeholder
+  // names in the Collaborators section as soon as there is one.
+  { file: 'Summit.html', slug: 'summit', title: 'Summit', template: 'template-summit.php', sponsorSection: 'summit.collaborators' },
   // The programme is edited as blocks: the page's content replaces this
   // section when it has any, and is seeded from the HTML on first run.
   { file: 'Agenda.html', slug: 'agenda', title: 'Agenda', template: 'template-agenda.php', blockSection: 'agenda.programme' },
@@ -74,6 +81,8 @@ const PANELS = [
       ['home.hero.lede', 'Opening paragraph'],
       ['home.testimonial.1.quote', 'Testimonial quote'],
       ['home.testimonial.1.attribution', 'Testimonial attribution'],
+      ['home.linkedin.followLabel', 'LinkedIn link text'],
+      ['home.linkedin.moreLabel', 'LinkedIn “show more” button text'],
     ],
     images: [
       ['home.hero.portrait', 'Portrait photograph'],
@@ -84,6 +93,23 @@ const PANELS = [
       ['home.hero', 'Hero'],
       ['home.rooms', 'Six rooms index'],
       ['home.testimonials', 'Testimonials'],
+      ['home.linkedin', 'Karina’s LinkedIn posts'],
+    ],
+    extra: [
+      {
+        key: 'home.linkedin.profileUrl',
+        label: 'LinkedIn profile address',
+        description: 'The “Follow Karina on LinkedIn” link under the posts. Clear it to remove the link.',
+        type: 'url',
+        default: 'https://www.linkedin.com/in/karina-robinson/',
+      },
+      {
+        key: 'home.linkedin.embedId',
+        label: 'LinkedIn posts feed number (SociableKit)',
+        description: 'The number of the SociableKit feed that shows the posts. Only change it if the feed is replaced in the SociableKit account; leave as it is otherwise.',
+        type: 'text',
+        default: '114149',
+      },
     ],
   },
   {
@@ -127,6 +153,7 @@ const PANELS = [
     text: [
       ['summit.hero.title', 'Page headline'],
       ['summit.hero.sub', 'Subtitle'],
+      ['summit.hero.registerLabel', 'Register button text'],
       ['summit.gallery.1.caption', 'Gallery photo 1 caption'],
       ['summit.gallery.2.caption', 'Gallery photo 2 caption'],
       ['summit.gallery.3.caption', 'Gallery photo 3 caption'],
@@ -155,21 +182,42 @@ const PANELS = [
     extra: [
       {
         key: 'summit.hero.registerUrl',
-        label: 'Register button address',
-        description: 'Where the "Register" button beside "See the 2026 agenda" sends people. Leave empty to send them to the same address already in use.',
+        label: 'Registration page address',
+        description: 'Where the Register button beside "See the 2026 agenda" sends people; the closing button on the Agenda page uses it too. Clear it to hide the Register button.',
         type: 'url',
-        default: '',
+        default: REGISTER_URL,
       },
     ],
   },
   {
     id: 'agenda',
     title: 'Agenda page',
-    text: [['agenda.hero.title', 'Page headline']],
+    text: [
+      ['agenda.hero.title', 'Page headline'],
+      ['agenda.actions.primaryLabel', 'First closing button: text'],
+      ['agenda.actions.secondaryLabel', 'Second closing button: text'],
+    ],
     images: [],
     toggles: [
       ['agenda.hero', 'Hero'],
       ['agenda.programme', 'Programme'],
+      ['agenda.actions', 'Buttons at the end of the programme'],
+    ],
+    extra: [
+      {
+        key: 'agenda.actions.primaryUrl',
+        label: 'First closing button: address',
+        description: 'Leave empty to use the registration page address (under Summit page). Paste any web address to send people somewhere else.',
+        type: 'url',
+        default: '',
+      },
+      {
+        key: 'agenda.actions.secondaryUrl',
+        label: 'Second closing button: address',
+        description: 'Leave empty to go back to the Summit page.',
+        type: 'url',
+        default: '',
+      },
     ],
   },
   {
@@ -181,6 +229,15 @@ const PANELS = [
       ['articles.hero', 'Hero'],
       ['articles.journal', 'Journal'],
       ['articles.other', 'Other rooms'],
+    ],
+    extra: [
+      {
+        key: 'articles.byline.default',
+        label: 'Author shown on articles',
+        description: 'Shown under every article’s title and on its card, followed by the month and year of publication. An article written by someone else names them in the “Written by” box while it is being written.',
+        type: 'text',
+        default: 'Karina Robinson',
+      },
     ],
   },
   {
@@ -231,4 +288,4 @@ const PANELS = [
   },
 ];
 
-module.exports = { PAGES, NAV, PANELS };
+module.exports = { PAGES, NAV, PANELS, REGISTER_URL };

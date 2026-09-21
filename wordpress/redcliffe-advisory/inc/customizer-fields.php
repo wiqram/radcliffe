@@ -83,6 +83,14 @@ return array(
 				'Testimonial attribution',
 			),
 			array(
+				'home.linkedin.followLabel',
+				'LinkedIn link text',
+			),
+			array(
+				'home.linkedin.moreLabel',
+				'LinkedIn “show more” button text',
+			),
+			array(
 				'home.hero.0rlyyqm',
 				'The Summit · 7 Oct 2026',
 				true,
@@ -227,6 +235,16 @@ return array(
 				'01 / 04',
 				true,
 			),
+			array(
+				'home.linkedin.1wm5bhh',
+				'On LinkedIn',
+				true,
+			),
+			array(
+				'home.linkedin.1vjkp2v',
+				'Karina’s recent posts',
+				true,
+			),
 		),
 		'images' => array(
 			array(
@@ -275,8 +293,27 @@ return array(
 				'home.testimonials',
 				'Testimonials',
 			),
+			array(
+				'home.linkedin',
+				'Karina’s LinkedIn posts',
+			),
 		),
-		'extra' => array(),
+		'extra' => array(
+			array(
+				'key' => 'home.linkedin.profileUrl',
+				'label' => 'LinkedIn profile address',
+				'description' => 'The “Follow Karina on LinkedIn” link under the posts. Clear it to remove the link.',
+				'type' => 'url',
+				'default' => 'https://www.linkedin.com/in/karina-robinson/',
+			),
+			array(
+				'key' => 'home.linkedin.embedId',
+				'label' => 'LinkedIn posts feed number (SociableKit)',
+				'description' => 'The number of the SociableKit feed that shows the posts. Only change it if the feed is replaced in the SociableKit account; leave as it is otherwise.',
+				'type' => 'text',
+				'default' => '114149',
+			),
+		),
 	),
 	array(
 		'id' => 'practice',
@@ -385,11 +422,6 @@ return array(
 			array(
 				'practice.other.1mx1n5x',
 				'Other rooms',
-				true,
-			),
-			array(
-				'practice.other.1cd2rqb',
-				'Continue',
 				true,
 			),
 			array(
@@ -739,11 +771,6 @@ return array(
 				true,
 			),
 			array(
-				'who.other.1cd2rqb',
-				'Continue',
-				true,
-			),
-			array(
 				'who.other.0jt4grq',
 				'The City Quantum & AI Summit',
 				true,
@@ -871,11 +898,6 @@ return array(
 				true,
 			),
 			array(
-				'city.other.1cd2rqb',
-				'Continue',
-				true,
-			),
-			array(
 				'city.other.0jt4grq',
 				'The City Quantum & AI Summit',
 				true,
@@ -944,6 +966,10 @@ return array(
 			array(
 				'summit.hero.sub',
 				'Subtitle',
+			),
+			array(
+				'summit.hero.registerLabel',
+				'Register button text',
 			),
 			array(
 				'summit.gallery.1.caption',
@@ -1275,11 +1301,6 @@ return array(
 				true,
 			),
 			array(
-				'summit.other.1cd2rqb',
-				'Continue',
-				true,
-			),
-			array(
 				'summit.other.1ozkbpl',
 				'Who’s Who — Karina Robinson',
 				true,
@@ -1373,10 +1394,10 @@ return array(
 		'extra' => array(
 			array(
 				'key' => 'summit.hero.registerUrl',
-				'label' => 'Register button address',
-				'description' => 'Where the "Register" button beside "See the 2026 agenda" sends people. Leave empty to send them to the same address already in use.',
+				'label' => 'Registration page address',
+				'description' => 'Where the Register button beside "See the 2026 agenda" sends people; the closing button on the Agenda page uses it too. Clear it to hide the Register button.',
 				'type' => 'url',
-				'default' => '',
+				'default' => 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register',
 			),
 		),
 	),
@@ -1388,6 +1409,14 @@ return array(
 			array(
 				'agenda.hero.title',
 				'Page headline',
+			),
+			array(
+				'agenda.actions.primaryLabel',
+				'First closing button: text',
+			),
+			array(
+				'agenda.actions.secondaryLabel',
+				'Second closing button: text',
 			),
 			array(
 				'agenda.hero.1nfzvhp',
@@ -1425,8 +1454,27 @@ return array(
 				'agenda.programme',
 				'Programme',
 			),
+			array(
+				'agenda.actions',
+				'Buttons at the end of the programme',
+			),
 		),
-		'extra' => array(),
+		'extra' => array(
+			array(
+				'key' => 'agenda.actions.primaryUrl',
+				'label' => 'First closing button: address',
+				'description' => 'Leave empty to use the registration page address (under Summit page). Paste any web address to send people somewhere else.',
+				'type' => 'url',
+				'default' => '',
+			),
+			array(
+				'key' => 'agenda.actions.secondaryUrl',
+				'label' => 'Second closing button: address',
+				'description' => 'Leave empty to go back to the Summit page.',
+				'type' => 'url',
+				'default' => '',
+			),
+		),
 	),
 	array(
 		'id' => 'articles',
@@ -1455,11 +1503,6 @@ return array(
 			array(
 				'articles.other.1mx1n5x',
 				'Other rooms',
-				true,
-			),
-			array(
-				'articles.other.1cd2rqb',
-				'Continue',
 				true,
 			),
 			array(
@@ -1513,7 +1556,15 @@ return array(
 				'Other rooms',
 			),
 		),
-		'extra' => array(),
+		'extra' => array(
+			array(
+				'key' => 'articles.byline.default',
+				'label' => 'Author shown on articles',
+				'description' => 'Shown under every article’s title and on its card, followed by the month and year of publication. An article written by someone else names them in the “Written by” box while it is being written.',
+				'type' => 'text',
+				'default' => 'Karina Robinson',
+			),
+		),
 	),
 	array(
 		'id' => 'ethics',
@@ -1602,11 +1653,6 @@ return array(
 			array(
 				'ethics.other.1mx1n5x',
 				'Other rooms',
-				true,
-			),
-			array(
-				'ethics.other.1cd2rqb',
-				'Continue',
 				true,
 			),
 			array(

@@ -21,14 +21,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const { PAGES, NAV, PANELS } = require('./wordpress-fields');
+const { PAGES, NAV, PANELS, REGISTER_URL } = require('./wordpress-fields');
 
 const ROOT = path.join(__dirname, '..');
 const THEME = path.join(ROOT, 'wordpress', 'redcliffe-advisory');
 
 const SLUG_BY_FILE = Object.fromEntries(PAGES.map((page) => [page.file, page.slug]));
 
-const defaults = { text: {}, images: {}, imageAlt: {}, titles: {} };
+const defaults = { text: {}, images: {}, imageAlt: {}, titles: {}, links: { register: REGISTER_URL } };
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -281,7 +281,7 @@ function rewriteCmsText(html) {
 }
 
 /** Sections gain a show/hide switch, matching the CMS this theme replaces. */
-function rewriteCmsSections(html, blockSection = '', postSection = '') {
+function rewriteCmsSections(html, blockSection = '', postSection = '', sponsorSection = '') {
   const opening = /<section\b([^>]*?)\sdata-cms-section="([^"]+)"([^>]*)>/;
   let out = html;
   let match;
@@ -297,11 +297,28 @@ function rewriteCmsSections(html, blockSection = '', postSection = '') {
     // The page's own block content stands in for this section once it has
     // any, so the owner edits the section in the page editor.
     if (key === blockSection) {
+      // The buttons closing the Agenda are theme settings, not page content, so
+      // they look the same whether the programme is blocks or the design.
+      const actions = key === 'agenda.programme' ? `<?php rad_agenda_actions(); ?>\n` : '';
       body =
         `<?php if ( rad_page_has_content() ) : ?>\n` +
         `<section class="section rad-page-blocks">\n<div class="container">\n` +
-        `<div class="rad-blocks entry-content rad-${key.split('.')[0]}">\n<?php rad_page_content(); ?>\n</div>\n</div>\n</section>\n` +
+        `<div class="rad-blocks entry-content rad-${key.split('.')[0]}">\n<?php rad_page_content(); ?>\n</div>\n${actions}</div>\n</section>\n` +
         `<?php else : ?>\n${body}\n<?php endif; ?>`;
+    }
+
+    // Sponsors added under Sponsors in the admin menu replace the placeholder
+    // names in this section (its heading stays editable in the Customizer).
+    if (key === sponsorSection) {
+      const gridStart = body.indexOf('<div class="partner-grid');
+      const containerEnd = body.lastIndexOf('</div>', body.lastIndexOf('</section>'));
+      if (gridStart === -1 || containerEnd === -1 || gridStart > containerEnd) fail(`${key} has no .partner-grid to replace with sponsors`);
+      body =
+        body.slice(0, gridStart) +
+        `<?php if ( rad_has_sponsors() ) : ?>\n<?php rad_render_sponsors(); ?>\n<?php else : ?>\n` +
+        body.slice(gridStart, containerEnd) +
+        `<?php endif; ?>\n` +
+        body.slice(containerEnd);
     }
 
     // Real WordPress Posts stand in for this section once there are any, so
@@ -324,9 +341,10 @@ function rewriteCmsSections(html, blockSection = '', postSection = '') {
 }
 
 /**
- * A "Register" button beside "See the 2026 agenda" in the Summit hero, shown
- * whenever a registration address is set — the default is the address Ramon
- * already pasted into the Access field as plain text.
+ * A "Register" button beside "See the 2026 agenda" in the Summit hero. Its
+ * words are an ordinary editable field (with the pencil in the Customizer
+ * preview) and its address is a Customizer setting; clearing the address hides
+ * the button. The same address is what the Agenda's closing button uses.
  *
  * Runs on the *converted* template (after auto-tagging), not the raw design
  * HTML: its href carries PHP of its own, and auto-tagging's tag scanner does
@@ -339,13 +357,32 @@ function injectSummitRegisterButton(html) {
   if (start === -1) fail('template-summit.php has no .cine-cta to add the Register button to');
   const openEnd = start + ctaOpen.length;
   const { innerEnd } = findMatchingClose(html, 'div', openEnd);
-  const fallbackUrl = 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register';
+  defaults.text['summit.hero.registerLabel'] = 'Register';
   const button =
-    `\n<?php $rad_register_url = rad_setting_url( 'summit.hero.registerUrl', ${phpString(fallbackUrl)} ); if ( $rad_register_url ) : ?>\n` +
-    `<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span>Register</span><span class="arr">→</span></a>\n` +
+    `\n<?php $rad_register_url = rad_registration_url(); if ( $rad_register_url ) : ?>\n` +
+    `<a class="btn on-dark-ghost" href="<?php echo esc_url( $rad_register_url ); ?>" target="_blank" rel="noopener"><span data-rad="summit.hero.registerLabel"><?php rad_html( 'summit.hero.registerLabel' ); ?></span><span class="arr">→</span></a>\n` +
     `<?php endif; ?>\n`;
 
   return html.slice(0, innerEnd) + button + html.slice(innerEnd);
+}
+
+/**
+ * Defaults for the settings behind the closing buttons of the Agenda and the
+ * LinkedIn feed on the homepage (their markup lives in PHP; see
+ * inc/buttons.php and inc/linkedin.php).
+ */
+function registerHandWrittenDefaults() {
+  defaults.text['agenda.actions.primaryLabel'] = 'Reserve your spot';
+  defaults.text['agenda.actions.secondaryLabel'] = 'Back to the Summit';
+  defaults.text['home.linkedin.followLabel'] = 'Follow Karina on LinkedIn';
+  defaults.text['home.linkedin.moreLabel'] = 'Show more posts';
+}
+
+/** Marks where a hand-written PHP function takes over from the design. */
+function injectMarker(html, marker, php, label) {
+  const token = `<!--${marker}-->`;
+  if (!html.includes(token)) fail(`${label} lost its ${marker} marker`);
+  return html.replace(token, php);
 }
 
 /**
@@ -374,7 +411,7 @@ function rewriteContactForm(html) {
   );
 }
 
-function convert(html, label = '', blockSection = '', group = '', postSection = '') {
+function convert(html, label = '', blockSection = '', group = '', postSection = '', sponsorSection = '') {
   let out = html;
   if (group) out = autoTag(out, group, 'top', blockSection || postSection);
   out = rewriteCmsImages(out);
@@ -382,7 +419,7 @@ function convert(html, label = '', blockSection = '', group = '', postSection = 
   out = rewriteInternalLinks(out);
   out = rewriteContactForm(out);
   out = rewriteCmsText(out);
-  out = rewriteCmsSections(out, blockSection, postSection);
+  out = rewriteCmsSections(out, blockSection, postSection, sponsorSection);
   if (label) out = rewriteDynamicSectionMount(out, label, blockSection);
   return out;
 }
@@ -542,6 +579,9 @@ ${entries(defaults.imageAlt)}
 \t'titles' => array(
 ${entries(defaults.titles)}
 \t),
+\t'links' => array(
+${entries(defaults.links)}
+\t),
 );
 `;
 }
@@ -621,7 +661,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.3.0
+Version: 1.4.0
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -731,13 +771,7 @@ function buildAgendaSeed(sectionHtml) {
   const note = /<div class="agenda-note reveal">([\s\S]*?)<\/div>/.exec(sectionHtml);
   if (note) blocks.push(paragraph('rad-agenda-note', blockText(note[1])));
 
-  // Buttons: hrefs are filled in by PHP, since they depend on the site address.
-  blocks.push(
-    `<!-- wp:buttons {"className":"rad-agenda-actions"} -->\n<div class="wp-block-buttons rad-agenda-actions">` +
-      `<!-- wp:button {"className":"rad-button"} -->\n<div class="wp-block-button rad-button"><a class="wp-block-button__link wp-element-button" href="%1$s">Enquire about attending</a></div>\n<!-- /wp:button -->\n\n` +
-      `<!-- wp:button {"className":"rad-button is-style-outline"} -->\n<div class="wp-block-button is-style-outline rad-button"><a class="wp-block-button__link wp-element-button" href="%2$s">Back to the Summit</a></div>\n<!-- /wp:button -->` +
-      `</div>\n<!-- /wp:buttons -->`
-  );
+  // The buttons that close the Agenda are theme settings (inc/buttons.php), not page content.
 
   return blocks.join('\n\n');
 }
@@ -749,7 +783,7 @@ function buildSeed(page, mainHtml) {
   const { end } = findMatchingClose(mainHtml, 'section', mainHtml.indexOf('>', start) + 1);
   const sectionHtml = mainHtml.slice(sectionStart, end);
 
-  if (page.slug === 'agenda') return { markup: buildAgendaSeed(sectionHtml), links: ['contact', 'summit'] };
+  if (page.slug === 'agenda') return { markup: buildAgendaSeed(sectionHtml), links: [] };
   return fail(`No block seed builder for ${page.slug}`);
 }
 
@@ -925,8 +959,17 @@ function main() {
   }
 
   for (const { page, parts } of pages) {
-    let converted = convert(parts.main, page.template, page.blockSection || '', page.slug, page.postSection || '');
+    // The Agenda's closing buttons are theme settings rather than page text.
+    if (page.slug === 'agenda') {
+      const actions = /\s*<div class="cta-row"[^>]*>[\s\S]*?<\/div>/;
+      if (!actions.test(parts.main)) fail('Agenda.html no longer has its closing .cta-row');
+      parts.main = parts.main.replace(actions, '\n<!--rad-agenda-actions-->');
+    }
+
+    let converted = convert(parts.main, page.template, page.blockSection || '', page.slug, page.postSection || '', page.sponsorSection || '');
     if (page.slug === 'summit') converted = injectSummitRegisterButton(converted);
+    if (page.slug === 'agenda') converted = injectMarker(converted, 'rad-agenda-actions', '<?php rad_agenda_actions(); ?>', page.template);
+    if (page.slug === 'home') converted = injectMarker(converted, 'rad-linkedin-feed', '<?php rad_linkedin_feed(); ?>', page.template);
     const template = buildTemplate(page, converted);
     if (page.blockSection) seeds[page.slug] = buildSeed(page, parts.main);
     assertClean(page.template, template);
@@ -940,6 +983,7 @@ function main() {
   written.push(write('header.php', header));
   written.push(write('footer.php', footer));
 
+  registerHandWrittenDefaults();
   written.push(write('inc/content-defaults.php', buildDefaults()));
   written.push(write('inc/pages.php', buildPagesFile()));
   written.push(write('inc/customizer-fields.php', buildCustomizerFields()));

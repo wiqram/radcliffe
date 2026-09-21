@@ -115,7 +115,7 @@ function rad_seed_block_pages() {
 
 		// Site-relative links, so they still work once the real domain is connected.
 		$links = array_map( 'wp_make_link_relative', array_map( 'rad_url', $seed['links'] ) );
-		$html  = vsprintf( $seed['markup'], array_map( 'esc_url', $links ) );
+		$html  = $links ? vsprintf( $seed['markup'], array_map( 'esc_url', $links ) ) : $seed['markup'];
 
 		// Save exactly what the build produced, whoever is logged in.
 		kses_remove_filters();
@@ -213,6 +213,40 @@ function rad_enqueue_block_styles() {
 	wp_enqueue_style( 'rad-blocks', get_theme_file_uri( 'assets/css/blocks.css' ), array( 'rad-style' ), RAD_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'rad_enqueue_block_styles', 20 );
+
+/**
+ * Reading styles for articles (Posts): on the website, and inside the editor
+ * for posts only, so headings, text and quotations line up as they will on
+ * the page. Pages keep the larger, section-style typography of blocks.css.
+ */
+function rad_enqueue_article_styles() {
+	if ( is_singular( 'post' ) ) {
+		wp_enqueue_style( 'rad-article', get_theme_file_uri( 'assets/css/article.css' ), array( 'rad-blocks' ), RAD_VERSION );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'rad_enqueue_article_styles', 30 );
+
+/**
+ * Add the article styles to the block editor when a post is being edited.
+ *
+ * @param array                   $settings Editor settings.
+ * @param WP_Block_Editor_Context $context  What is being edited.
+ * @return array
+ */
+function rad_article_editor_styles( $settings, $context ) {
+	$post = isset( $context->post ) ? $context->post : null;
+
+	if ( $post instanceof WP_Post && 'post' === $post->post_type ) {
+		$file = get_theme_file_path( 'assets/css/article.css' );
+
+		if ( is_readable( $file ) ) {
+			$settings['styles'][] = array( 'css' => file_get_contents( $file ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions -- a local file of this theme.
+		}
+	}
+
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'rad_article_editor_styles', 10, 2 );
 
 /**
  * Ready-made sections in the pattern picker.
@@ -361,27 +395,6 @@ function rad_register_block_patterns() {
 <h3 class="wp-block-heading rad-agenda-part">Afternoon</h3>
 <!-- /wp:heading -->',
 		),
-		'sponsor-logos'     => array(
-			'title'       => __( 'Sponsor logos', 'redcliffe-advisory' ),
-			'description' => __( 'A label such as "Gold Sponsor" above a row of logos from the Media Library. Add one of these for each tier — Gold, Dinner, Silver, Bronze, Collaborators, Partners — with as many logos as you like; they keep a fixed height and are never cropped or stretched.', 'redcliffe-advisory' ),
-			'content'     => '<!-- wp:paragraph {"className":"rad-label"} -->
-<p class="rad-label">Gold Sponsor</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:gallery {"columns":4,"linkTo":"none","className":"rad-logos"} -->
-<figure class="wp-block-gallery has-nested-images columns-4 rad-logos"><!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="' . $photo . '" alt=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="' . $photo2 . '" alt=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="' . $photo3 . '" alt=""/></figure>
-<!-- /wp:image --></figure>
-<!-- /wp:gallery -->',
-		),
 		'speaker'           => array(
 			'title'       => __( 'Speaker', 'redcliffe-advisory' ),
 			'description' => __( 'A photograph, a name, a role and a line or two about a speaker. Add one per person.', 'redcliffe-advisory' ),
@@ -432,9 +445,9 @@ function rad_page_editor_notice() {
 	$message = __( 'Anything you add here appears as a new section at the bottom of this page on the website, underneath the designed part of the page. To change the words or photographs in the designed part, use Appearance → Customize and click the pencil next to them.', 'redcliffe-advisory' );
 
 	if ( $post instanceof WP_Post && isset( $seeds[ $post->post_name ] ) ) {
-		$message = __( 'This is the programme as it appears on the website. Click any time, title or description to change it. To add a slot, click the + and choose "Agenda: a time slot" under Redcliffe Advisory; to remove one, click it, press the three dots and choose Delete. Press Update when you are done.', 'redcliffe-advisory' );
+		$message = __( 'This is the programme as it appears on the website. Click any time, title or description to change it. To add a slot, click the + and choose "Agenda: a time slot" under Redcliffe Advisory; to remove one, click it, press the three dots and choose Delete. Press Update when you are done. The buttons at the very end of the programme are not here: change their words and addresses under Appearance → Customize → Agenda page.', 'redcliffe-advisory' );
 	} elseif ( $post instanceof WP_Post && 'summit' === $post->post_name ) {
-		$message = __( 'Anything you add here appears directly underneath Collaborators, above the photo gallery — this is where to add "Sponsor logos" sections for Gold, Dinner, Silver and Bronze Sponsors, Collaborators and Partners. Click the + and choose a pattern under Redcliffe Advisory.', 'redcliffe-advisory' );
+		$message = __( 'Anything you add here appears underneath the Collaborators section, above the photo gallery. Sponsors, collaborators and partners are not added here: use Sponsors in the menu on the left, where each logo is fitted to its tile automatically.', 'redcliffe-advisory' );
 	}
 
 	wp_add_inline_script(

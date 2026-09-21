@@ -77,7 +77,6 @@
     <div class="container">
       <div class="other-head">
         <h3 data-rad="practice.other.1mx1n5x"><?php rad_html( 'practice.other.1mx1n5x' ); ?></h3>
-        <div class="small" data-rad="practice.other.1cd2rqb"><?php rad_html( 'practice.other.1cd2rqb' ); ?></div>
       </div>
       <div class="other-list reveal">
         <a class="other-row" href="<?php echo esc_url( rad_url( 'who' ) ); ?>"><span class="n">02</span><span class="t" data-rad="practice.other.1ozkbpl"><?php rad_html( 'practice.other.1ozkbpl' ); ?></span><span class="d" data-rad="practice.other.0ng9skz"><?php rad_html( 'practice.other.0ng9skz' ); ?></span><span class="arr">→</span></a>

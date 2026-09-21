@@ -1,0 +1,175 @@
+/*
+ * How an article (a WordPress Post) reads — on the website and in the block
+ * editor while it is being written, so headings, paragraphs and quotations
+ * line up the same way in both places.
+ *
+ * blocks.css styles the sections of the designed pages: large headings, a huge
+ * pull-quote. Articles are running text, so this file, loaded after it, brings
+ * everything down to a reading size and sets one column that every block —
+ * the title included — sits in.
+ *
+ * On the website the wrapper is .rad-article (inside .prose-body); in the editor it is the
+ * .is-root-container inside .editor-styles-wrapper.
+ */
+
+.prose .prose-body.rad-article,
+.editor-styles-wrapper {
+  --col: 680px;   /* the width of the text column in the editor */
+}
+
+/* Running text flows down the page; the designed pages' grid spacing would
+   stack a second gap on top of the margins below. */
+.prose .prose-body.rad-article { display: block; max-width: 64ch; }
+
+/* ─── One column: every block the same width and the same left edge ─── */
+.editor-styles-wrapper .is-root-container > .wp-block,
+.editor-styles-wrapper .wp-block-post-title,
+.editor-styles-wrapper .editor-post-title,
+.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > * {
+  max-width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+.editor-styles-wrapper .is-root-container > .wp-block { margin-top: 0; }
+.editor-styles-wrapper .is-root-container > .wp-block.alignwide,
+.editor-styles-wrapper .is-root-container > .wp-block.alignfull { max-width: 1000px; }
+
+/* No leftover spacing from the page styles: spacing is set per element below. */
+.prose .prose-body.rad-article > * + *,
+.editor-styles-wrapper .is-root-container > * + * { margin-top: 0; }
+
+/* ─── The title, in the editor ─── */
+.editor-styles-wrapper .wp-block-post-title,
+.editor-styles-wrapper .editor-post-title__input {
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  text-transform: none;
+  color: var(--ink);
+  margin-bottom: 0.9em;
+}
+
+/* ─── Running text ─── */
+.prose .prose-body.rad-article p,
+.prose .prose-body.rad-article ul,
+.prose .prose-body.rad-article ol,
+.editor-styles-wrapper .is-root-container p,
+.editor-styles-wrapper .is-root-container ul,
+.editor-styles-wrapper .is-root-container ol {
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.25vw, 20px);
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: none;
+  margin: 0 0 1em;
+}
+.prose .prose-body.rad-article p + p,
+.editor-styles-wrapper .is-root-container p + p { margin-top: 0; }
+.prose .prose-body.rad-article ul, .prose .prose-body.rad-article ol,
+.editor-styles-wrapper .is-root-container ul, .editor-styles-wrapper .is-root-container ol { padding-left: 1.3em; }
+.prose .prose-body.rad-article li + li,
+.editor-styles-wrapper .is-root-container li + li { margin-top: 0.35em; }
+
+/* ─── Headings: the same column, the same left edge, a reading size ─── */
+.prose .prose-body.rad-article h1, .prose .prose-body.rad-article h2, .prose .prose-body.rad-article h3, .prose .prose-body.rad-article h4, .prose .prose-body.rad-article h5, .prose .prose-body.rad-article h6,
+.editor-styles-wrapper .is-root-container h1, .editor-styles-wrapper .is-root-container h2,
+.editor-styles-wrapper .is-root-container h3, .editor-styles-wrapper .is-root-container h4,
+.editor-styles-wrapper .is-root-container h5, .editor-styles-wrapper .is-root-container h6 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: none;
+  text-transform: none;
+  margin: 1.6em 0 0.5em;
+}
+.prose .prose-body.rad-article h1, .editor-styles-wrapper .is-root-container h1 { font-size: clamp(30px, 3vw, 40px); }
+.prose .prose-body.rad-article h2, .editor-styles-wrapper .is-root-container h2 { font-size: clamp(26px, 2.5vw, 34px); }
+.prose .prose-body.rad-article h3, .editor-styles-wrapper .is-root-container h3 { font-size: clamp(22px, 2vw, 27px); }
+.prose .prose-body.rad-article h4, .editor-styles-wrapper .is-root-container h4 { font-size: clamp(19px, 1.5vw, 22px); }
+.prose .prose-body.rad-article h5, .editor-styles-wrapper .is-root-container h5,
+.prose .prose-body.rad-article h6, .editor-styles-wrapper .is-root-container h6 { font-size: 17px; }
+.prose .prose-body.rad-article > :first-child,
+.editor-styles-wrapper .is-root-container > :first-child { margin-top: 0; }
+.prose .prose-body.rad-article h2 + p, .prose .prose-body.rad-article h3 + p, .prose .prose-body.rad-article h4 + p,
+.editor-styles-wrapper .is-root-container h2 + p, .editor-styles-wrapper .is-root-container h3 + p,
+.editor-styles-wrapper .is-root-container h4 + p { margin-top: 0; }
+
+/* ─── Quotations: centred, with a tenth of the column left free on each side ─── */
+.prose .prose-body.rad-article .wp-block-quote,
+.prose .prose-body.rad-article blockquote,
+.prose .prose-body.rad-article .wp-block-pullquote,
+.editor-styles-wrapper .is-root-container .wp-block-quote,
+.editor-styles-wrapper .is-root-container .wp-block-pullquote {
+  width: 80%;
+  max-width: calc(var(--col) * 0.8);
+  margin: 2.2em auto;
+  padding: 0;
+  border: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+.prose .prose-body.rad-article .wp-block-quote::before,
+.prose .prose-body.rad-article blockquote::before,
+.editor-styles-wrapper .is-root-container .wp-block-quote::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 0 auto 1.2em;
+  background: var(--gold);
+}
+.prose .prose-body.rad-article .wp-block-quote p,
+.prose .prose-body.rad-article blockquote p,
+.prose .prose-body.rad-article .wp-block-pullquote p,
+.editor-styles-wrapper .is-root-container .wp-block-quote p,
+.editor-styles-wrapper .is-root-container .wp-block-pullquote p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(21px, 1.7vw, 26px);
+  line-height: 1.32;
+  color: var(--ink);
+  text-align: center;
+  margin: 0 0 0.6em;
+}
+.prose .prose-body.rad-article .wp-block-quote p:last-of-type,
+.prose .prose-body.rad-article blockquote p:last-of-type,
+.editor-styles-wrapper .is-root-container .wp-block-quote p:last-of-type { margin-bottom: 0; }
+.prose .prose-body.rad-article .wp-block-quote cite,
+.prose .prose-body.rad-article blockquote cite,
+.prose .prose-body.rad-article .wp-block-pullquote cite,
+.editor-styles-wrapper .is-root-container .wp-block-quote cite,
+.editor-styles-wrapper .is-root-container .wp-block-pullquote cite {
+  display: block;
+  margin-top: 1em;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+/* A quotation inside a quotation is text, not another frame. */
+.prose .prose-body.rad-article .wp-block-quote .wp-block-quote,
+.prose .prose-body.rad-article blockquote blockquote,
+.editor-styles-wrapper .is-root-container .wp-block-quote .wp-block-quote {
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+.prose .prose-body.rad-article .wp-block-quote .wp-block-quote::before,
+.prose .prose-body.rad-article blockquote blockquote::before,
+.editor-styles-wrapper .is-root-container .wp-block-quote .wp-block-quote::before { display: none; }
+
+/* ─── Pictures and the rest ─── */
+.prose .prose-body.rad-article figure,
+.editor-styles-wrapper .is-root-container figure { margin: 2em 0; }
+.prose .prose-body.rad-article figure img,
+.editor-styles-wrapper .is-root-container figure img { max-width: 100%; height: auto; }
+.prose .prose-body.rad-article hr,
+.editor-styles-wrapper .is-root-container hr { margin: 2.4em 0; }
+.prose .prose-body.rad-article iframe { max-width: 100%; }
+.prose .prose-body.rad-article a { overflow-wrap: anywhere; }

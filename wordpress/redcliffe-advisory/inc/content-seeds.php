@@ -315,20 +315,7 @@ return array(
 
 <!-- wp:paragraph {"className":"rad-agenda-note"} -->
 <p class="rad-agenda-note">Our promise to you — no lingo, no jargon. Clear language for all non-scientists, panels that strive for gender balance, and pricing kept accessible. The programme above is the shape of the day; timings and speakers are confirmed nearer the date.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:buttons {"className":"rad-agenda-actions"} -->
-<div class="wp-block-buttons rad-agenda-actions"><!-- wp:button {"className":"rad-button"} -->
-<div class="wp-block-button rad-button"><a class="wp-block-button__link wp-element-button" href="%1$s">Enquire about attending</a></div>
-<!-- /wp:button -->
-
-<!-- wp:button {"className":"rad-button is-style-outline"} -->
-<div class="wp-block-button is-style-outline rad-button"><a class="wp-block-button__link wp-element-button" href="%2$s">Back to the Summit</a></div>
-<!-- /wp:button --></div>
-<!-- /wp:buttons -->',
-		'links' => array(
-			'contact',
-			'summit',
-		),
+<!-- /wp:paragraph -->',
+		'links' => array(),
 	),
 );

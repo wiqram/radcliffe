@@ -10,7 +10,9 @@
     "build": "node scripts/build-static.js",
     "build:wp": "node scripts/build-wordpress-theme.js",
     "package:wp": "npm run build:wp && node scripts/package-wordpress.js",
-    "guide:pdf": "node scripts/build-guide-pdf.js"
+    "guide:pdf": "node scripts/build-guide-pdf.js",
+    "test:wp": "node scripts/test/smoke.js",
+    "test:editor": "node scripts/test/editor-validate.js --page=agenda"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -21,5 +23,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.11.0"
   }
 }
