@@ -309,6 +309,66 @@ function rad_design_page( $slug ) {
 }
 
 /**
+ * Which of the site's nine parts a page plays ("who", "summit" ...), by the
+ * template it uses, or "home" for the front page. Empty for a page the owner
+ * has added, which has nothing designed to edit in the Customizer.
+ *
+ * @param WP_Post|int $page Page.
+ * @return string
+ */
+function rad_design_slug_for_page( $page ) {
+	$page = get_post( $page );
+
+	if ( ! $page instanceof WP_Post || 'page' !== $page->post_type ) {
+		return '';
+	}
+
+	$front = (int) get_option( 'page_on_front' );
+
+	if ( $front && (int) $page->ID === $front ) {
+		return 'home';
+	}
+
+	$template    = get_page_template_slug( $page );
+	$definitions = rad_pages();
+
+	foreach ( $definitions['pages'] as $definition ) {
+		if ( $template && $definition['template'] === $template ) {
+			return $definition['slug'];
+		}
+	}
+
+	return '';
+}
+
+/**
+ * The address that opens the Customizer with this page in the preview and its
+ * own section (its words and photographs) already open. Empty when the page is
+ * not one of the site's designed pages, or is not published.
+ *
+ * @param WP_Post|int $page Page.
+ * @return string
+ */
+function rad_customizer_link_for_page( $page ) {
+	$page = get_post( $page );
+	$slug = rad_design_slug_for_page( $page );
+
+	if ( '' === $slug || 'publish' !== $page->post_status || ! current_user_can( 'customize' ) ) {
+		return '';
+	}
+
+	return admin_url(
+		'customize.php?' . http_build_query(
+			array(
+				'url'       => get_permalink( $page ),
+				'return'    => admin_url( 'edit.php?post_type=page' ),
+				'autofocus' => array( 'section' => 'rad_section_' . $slug ),
+			)
+		)
+	);
+}
+
+/**
  * The template file a design slug uses ("summit" -> "template-summit.php").
  *
  * @param string $slug Slug from inc/pages.php.

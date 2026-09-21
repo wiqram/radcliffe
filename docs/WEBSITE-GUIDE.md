@@ -56,7 +56,7 @@ Almost everything you do lives in one of these places in the left-hand menu.
 
 | I want to… | Go to |
 | --- | --- |
-| Change **any words or any photograph** already on the website: a headline, a date, a name, a paragraph, the announcement strip, the footer | **Appearance → Customize** |
+| Change **any words or any photograph** already on the website: a headline, a date, a name, a paragraph, the announcement strip, the footer | **Appearance → Customize**, or **Pages → Edit words and photos** under a page's name |
 | Change the **Summit agenda** (times, sessions, speakers, the note at the bottom) | **Pages → Agenda → Edit** |
 | **Add something new** to a page: a new section of text, a speaker, a new photograph, a gallery, a quotation | **Pages** |
 | Add, change or remove a **sponsor or collaborator** (name, logo, which group it is in) | **Sponsors** |
@@ -109,6 +109,21 @@ Four useful things to know:
 - **Nothing changes on the live website until you click Publish.** If you get
   in a muddle, close the Customizer (the **×** at the top left) without
   publishing and nothing has happened.
+
+### The third way: from the Pages list
+
+Under **Pages**, every page of the website has an **Edit words and photos** link
+beside **Edit**, **Quick Edit**, **Bin** and **View**. It opens the Customizer
+with that page already showing and its section open, ready to change.
+
+**Why does *Edit* show an almost empty page?** The pages of the website are
+designed pages. Their words and photographs are edited in the Customizer, as
+above, which keeps the design safe. The page editor you reach with **Edit** is
+only for adding *new* sections underneath the designed part, so for Home, Chair
+Advisory, Who's Who, The City of London, Ethics and Contact it starts empty.
+Nothing is missing, and the page on the website is unaffected. A blue
+**Edit words and photos** button at the top of that editor takes you to the
+right place.
 
 **The one exception:** the programme on the **Agenda** page is not in the
 Customizer. It is edited under **Pages**, because it grows and changes. See
@@ -395,6 +410,7 @@ automatically once the domain is connected. There is nothing to set up.
 
 | What you see | What it means | What to do |
 | --- | --- | --- |
+| I click **Edit** on Who's Who (or Home, Contact…) and the page is blank | Those pages keep their words and photographs in the Customizer; the page editor is only for adding new sections underneath | **Pages** → **Edit words and photos** under the page's name, or the blue button at the top of the editor (section 3) |
 | A change does not appear on the website | It was not published | Customizer: click **Publish**. Page: click **Update** |
 | A change appears for you but not for someone else | The website keeps ready-made copies of its pages so they load quickly. Publishing a change clears the pages it affects, and every copy expires after ten minutes at most | Wait a few minutes, then ask them to press Ctrl+F5 (Cmd+Shift+R on a Mac). If it is still old after ten minutes, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
 | A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5, then **Purge All** as above |

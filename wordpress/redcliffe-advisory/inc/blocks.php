@@ -442,17 +442,73 @@ function rad_page_editor_notice() {
 	global $post;
 
 	$seeds   = file_exists( get_theme_file_path( 'inc/content-seeds.php' ) ) ? require get_theme_file_path( 'inc/content-seeds.php' ) : array();
+	$key     = $post instanceof WP_Post ? ( rad_design_slug_for_page( $post ) ? rad_design_slug_for_page( $post ) : $post->post_name ) : '';
 	$message = __( 'Anything you add here appears as a new section at the bottom of this page on the website, underneath the designed part of the page. To change the words or photographs in the designed part, use Appearance → Customize and click the pencil next to them.', 'redcliffe-advisory' );
 
-	if ( $post instanceof WP_Post && isset( $seeds[ $post->post_name ] ) ) {
+	if ( '' !== $key && isset( $seeds[ $key ] ) ) {
 		$message = __( 'This is the programme as it appears on the website. Click any time, title or description to change it. To add a slot, click the + and choose "Agenda: a time slot" under Redcliffe Advisory; to remove one, click it, press the three dots and choose Delete. Press Update when you are done. The buttons at the very end of the programme are not here: change their words and addresses under Appearance → Customize → Agenda page.', 'redcliffe-advisory' );
-	} elseif ( $post instanceof WP_Post && 'summit' === $post->post_name ) {
+	} elseif ( 'summit' === $key ) {
 		$message = __( 'Anything you add here appears underneath the Collaborators section, above the photo gallery. Sponsors, collaborators and partners are not added here: use Sponsors in the menu on the left, where each logo is fitted to its tile automatically.', 'redcliffe-advisory' );
+	}
+
+	// A button straight to where the designed words and photographs are edited.
+	$options = array(
+		'isDismissible' => true,
+		'id'            => 'rad-where-it-appears',
+	);
+	$link    = $post instanceof WP_Post ? rad_customizer_link_for_page( $post ) : '';
+
+	if ( '' !== $link ) {
+		$options['actions'] = array(
+			array(
+				'label'   => __( 'Edit words and photos', 'redcliffe-advisory' ),
+				'url'     => $link,
+				'variant' => 'primary',
+			),
+		);
 	}
 
 	wp_add_inline_script(
 		'wp-edit-post',
-		"wp.domReady(function(){ if (wp.data && wp.data.dispatch('core/notices')) { wp.data.dispatch('core/notices').createInfoNotice(" . wp_json_encode( $message ) . ", { isDismissible: true, id: 'rad-where-it-appears' }); } });"
+		"wp.domReady(function(){ if (wp.data && wp.data.dispatch('core/notices')) { wp.data.dispatch('core/notices').createInfoNotice(" . wp_json_encode( $message ) . ', ' . wp_json_encode( $options ) . '); } });'
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'rad_page_editor_notice' );
+
+/**
+ * "Edit words and photos" beside Edit, Quick Edit, Bin and View in the Pages
+ * list. The designed pages have nothing in the page editor to change, so this
+ * is the link that takes the owner to where their words and photographs are.
+ *
+ * @param array   $actions Row actions.
+ * @param WP_Post $post    Page.
+ * @return array
+ */
+function rad_page_row_actions( $actions, $post ) {
+	$link = rad_customizer_link_for_page( $post );
+
+	if ( '' === $link ) {
+		return $actions;
+	}
+
+	$action = sprintf(
+		'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+		esc_url( $link ),
+		/* translators: %s: page title. */
+		esc_attr( sprintf( __( 'Edit the words and photographs of “%s”', 'redcliffe-advisory' ), get_the_title( $post ) ) ),
+		esc_html__( 'Edit words and photos', 'redcliffe-advisory' )
+	);
+
+	$result = array();
+
+	foreach ( $actions as $key => $html ) {
+		$result[ $key ] = $html;
+
+		if ( 'edit' === $key ) {
+			$result['rad_customize'] = $action;
+		}
+	}
+
+	return isset( $result['rad_customize'] ) ? $result : array_merge( array( 'rad_customize' => $action ), $actions );
+}
+add_filter( 'page_row_actions', 'rad_page_row_actions', 10, 2 );

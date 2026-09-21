@@ -661,7 +661,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.4.2
+Version: 1.4.3
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
