@@ -65,3 +65,10 @@
 }
 .rad-import-thumb img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
 .rad-import-item input[type="text"] { width: 100%; }
+
+/* "Logos already on your Summit page" */
+.rad-import-page { max-width: 900px; }
+.rad-import-page td, .rad-import-page th { vertical-align: middle; }
+.rad-import-page .rad-import-thumb { width: 170px; }
+.rad-import-page .rad-import-thumb img { display: block; max-width: 150px; max-height: 70px; width: auto; height: auto; object-fit: contain; background: #fff; border: 1px solid #dcdcde; padding: 4px; }
+.rad-import-page select { min-width: 190px; }

@@ -3,6 +3,7 @@
 #   scripts/test/wp-env.sh up      build the theme zip, start the site, install + activate the theme
 #   scripts/test/wp-env.sh update  rebuild the zip and install it over the running site (the upgrade path)
 #   scripts/test/wp-env.sh seed    add sample sponsors (awkward logos of every kind) and enough articles for two pages
+#   scripts/test/wp-env.sh seed-legacy  put hand-placed sponsor logos on the Summit page, as the owner had before Sponsors existed
 #   scripts/test/wp-env.sh wp ...  run WP-CLI against the site
 #   scripts/test/wp-env.sh down    remove everything
 # The site answers on http://localhost:${RAD_TEST_PORT:-8092} with pretty permalinks.
@@ -49,14 +50,15 @@ update() {
 }
 
 seed() {
-  docker run --rm --network "$NET" -v "$VOL":/var/www/html -v "$HERE/seed.php":/seed.php:ro --user 33 \
+  docker run --rm --network "$NET" -v "$VOL":/var/www/html -v "$HERE":/seed:ro --user 33 \
     -e WORDPRESS_DB_HOST="$DB" -e WORDPRESS_DB_USER=wp -e WORDPRESS_DB_PASSWORD=wp -e WORDPRESS_DB_NAME=wp \
-    wordpress:cli wp eval-file /seed.php
+    wordpress:cli wp eval-file "/seed/${1:-seed.php}"
 }
 
 case "${1:-}" in
   up) up ;;
-  seed) seed ;;
+  seed) seed seed.php ;;
+  seed-legacy) seed seed-legacy-summit.php ;;
   update) update ;;
   down) down ;;
   wp) shift; wpcli "$@" ;;

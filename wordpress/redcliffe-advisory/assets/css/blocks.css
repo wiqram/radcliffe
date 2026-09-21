@@ -331,6 +331,23 @@
 .rad-blocks .is-style-outline .wp-block-button__link:hover,
 .editor-styles-wrapper .is-style-outline .wp-block-button__link:hover { background: var(--ink); color: var(--cream); }
 
+/* ─── Logo galleries made with the "Sponsor logos" pattern of theme 1.3 ───
+   That pattern is gone (logos are managed under Sponsors now), but pages that
+   already contain one keep looking right until their logos are moved: each
+   logo is fitted in its tile instead of cropped. The :not(#individual-image)
+   matches the selector core WordPress uses to crop gallery pictures, which
+   this has to outrank. */
+.rad-blocks .wp-block-gallery.rad-logos { gap: 20px; }
+.rad-blocks .wp-block-gallery.rad-logos figure.wp-block-image:not(#individual-image) {
+  display: flex; align-items: center; justify-content: center;
+  height: 96px; padding: 14px 22px; margin: 0;
+  background: #fff; border: 1px solid var(--rule);
+}
+.rad-blocks .wp-block-gallery.rad-logos figure.wp-block-image:not(#individual-image) img {
+  width: auto; height: auto; max-width: 100%; max-height: 100%;
+  flex: 0 1 auto; object-fit: contain; background: transparent; filter: none;
+}
+
 /* ─── Speakers ─── */
 .rad-blocks .rad-speaker,
 .editor-styles-wrapper .rad-speaker { gap: 32px; align-items: start; }

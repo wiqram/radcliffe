@@ -15,3 +15,8 @@ dist/
 # dist-wordpress/ is deliberately committed: the deployment team takes the
 # packaged theme straight from the repository. Rebuild it with
 # `npm run package:wp` after changing anything under wordpress/.
+
+# Screenshots written by scripts/test/*.js when run from the repo root
+admin-shots/
+import-shots/
+shots/

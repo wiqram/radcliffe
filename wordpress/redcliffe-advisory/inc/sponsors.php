@@ -176,6 +176,7 @@ function rad_register_sponsors() {
 			'show_in_rest'       => false,
 			'show_in_nav_menus'  => false,
 			'show_admin_column'  => true,
+			'show_in_quick_edit' => false, // Tiers are chosen in the Sponsor details box, from a list.
 			'show_tagcloud'      => false,
 			'hierarchical'       => false,
 			'meta_box_cb'        => false, // The Sponsor details box has its own, simpler picker.
@@ -874,7 +875,8 @@ function rad_sponsor_admin_assets() {
 add_action( 'admin_enqueue_scripts', 'rad_sponsor_admin_assets' );
 
 /* -------------------------------------------------------------------------
- * Add several sponsors from logos already in the Media Library
+ * Adding many at once: from the logos already placed on the Summit page, and
+ * from the Media Library
  * ---------------------------------------------------------------------- */
 
 /**
@@ -909,12 +911,267 @@ function rad_name_from_filename( $file ) {
 }
 
 /**
+ * A heading or label reduced to what identifies a tier: "Bronze Sponsors:" and
+ * "bronze sponsor" are the same.
+ *
+ * @param string $text Heading text or markup.
+ * @return string
+ */
+function rad_tier_key( $text ) {
+	$text = strtolower( trim( wp_strip_all_tags( html_entity_decode( (string) $text ) ) ) );
+	$text = preg_replace( '/[\s:\x{2013}\x{2014}.-]+$/u', '', $text );
+	$text = preg_replace( '/\s+/', ' ', $text );
+
+	return rtrim( $text, 's' );
+}
+
+/**
+ * The tier a heading or label names, or 0.
+ *
+ * @param string $text Heading text or markup.
+ * @return int Tier ID.
+ */
+function rad_tier_by_label( $text ) {
+	$key = rad_tier_key( $text );
+
+	if ( '' === $key ) {
+		return 0;
+	}
+
+	foreach ( rad_all_tiers() as $term ) {
+		if ( rad_tier_key( $term->name ) === $key ) {
+			return (int) $term->term_id;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * The attachment a picture block points at.
+ *
+ * @param array $block Parsed core/image block.
+ * @return int
+ */
+function rad_block_image_id( $block ) {
+	if ( ! empty( $block['attrs']['id'] ) ) {
+		return (int) $block['attrs']['id'];
+	}
+
+	return preg_match( '/wp-image-(\d+)/', (string) $block['innerHTML'], $m ) ? (int) $m[1] : 0;
+}
+
+/**
+ * Every attachment a gallery or picture block shows.
+ *
+ * @param array $block Parsed block.
+ * @return int[]
+ */
+function rad_block_image_ids( $block ) {
+	if ( 'core/image' === $block['blockName'] ) {
+		$id = rad_block_image_id( $block );
+		return $id ? array( $id ) : array();
+	}
+
+	$ids = array();
+
+	foreach ( (array) $block['innerBlocks'] as $inner ) {
+		$ids = array_merge( $ids, rad_block_image_ids( $inner ) );
+	}
+
+	if ( ! empty( $block['attrs']['ids'] ) ) { // Galleries saved before WordPress 5.9.
+		$ids = array_merge( $ids, array_map( 'intval', (array) $block['attrs']['ids'] ) );
+	}
+
+	return array_values( array_unique( array_filter( $ids ) ) );
+}
+
+/**
+ * Read the pictures placed by hand on the Summit page: each is filed under the
+ * last heading or label above it that names a tier ("Gold Sponsor:"). A
+ * picture that appears under two headings keeps the later one; pictures above
+ * any tier heading are not logos and are left alone.
+ *
+ * @param array[] $blocks Parsed blocks.
+ * @param int     $tier   The tier heading in force (by reference).
+ * @param array   $found  Attachment ID => tier ID (by reference).
+ */
+function rad_collect_page_logos( $blocks, &$tier, &$found ) {
+	foreach ( $blocks as $block ) {
+		$name = $block['blockName'];
+
+		if ( 'core/heading' === $name || 'core/paragraph' === $name ) {
+			$label = rad_tier_by_label( $block['innerHTML'] );
+			if ( $label ) {
+				$tier = $label;
+			}
+		} elseif ( $tier && ( 'core/image' === $name || 'core/gallery' === $name ) ) {
+			foreach ( rad_block_image_ids( $block ) as $id ) {
+				$found[ $id ] = $tier;
+			}
+		} elseif ( $name && ! empty( $block['innerBlocks'] ) ) {
+			rad_collect_page_logos( $block['innerBlocks'], $tier, $found );
+		}
+	}
+}
+
+/**
+ * The logos on the Summit page that are not sponsors yet.
+ *
+ * @return array[] Each: id (attachment), tier (ID).
+ */
+function rad_find_page_logos() {
+	$page = get_page_by_path( 'summit' );
+
+	if ( ! $page instanceof WP_Post || '' === trim( $page->post_content ) ) {
+		return array();
+	}
+
+	$tier  = 0;
+	$found = array();
+	rad_collect_page_logos( parse_blocks( $page->post_content ), $tier, $found );
+
+	$used = array();
+	foreach ( get_posts( array( 'post_type' => 'rad_sponsor', 'post_status' => 'any', 'posts_per_page' => -1, 'fields' => 'ids', 'no_found_rows' => true ) ) as $sponsor_id ) {
+		$used[] = (int) get_post_thumbnail_id( $sponsor_id );
+	}
+
+	$logos = array();
+	foreach ( $found as $id => $tier_id ) {
+		if ( ! in_array( (int) $id, $used, true ) && 'attachment' === get_post_type( $id ) ) {
+			$logos[] = array(
+				'id'   => (int) $id,
+				'tier' => (int) $tier_id,
+			);
+		}
+	}
+
+	return $logos;
+}
+
+/**
+ * Take the logos already made into sponsors, and the tier headings above them,
+ * off the Summit page. Everything else on the page stays. WordPress keeps the
+ * earlier version of the page as a revision.
+ *
+ * @param int[] $moved Attachment IDs that are now sponsors.
+ * @return int Number of blocks removed.
+ */
+function rad_strip_page_logos( $moved ) {
+	$page = get_page_by_path( 'summit' );
+
+	if ( ! $page instanceof WP_Post ) {
+		return 0;
+	}
+
+	$kept    = array();
+	$removed = 0;
+
+	foreach ( parse_blocks( $page->post_content ) as $block ) {
+		$name = $block['blockName'];
+
+		if ( null === $name ) {
+			if ( '' !== trim( $block['innerHTML'] ) ) {
+				$kept[] = $block;
+			}
+			continue;
+		}
+
+		if ( 'core/heading' === $name || 'core/paragraph' === $name ) {
+			$text = trim( wp_strip_all_tags( $block['innerHTML'] ) );
+			if ( '' === $text || rad_tier_by_label( $text ) ) {
+				$removed++;
+				continue;
+			}
+		} elseif ( 'core/image' === $name || 'core/gallery' === $name ) {
+			$ids = rad_block_image_ids( $block );
+			if ( $ids && ! array_diff( $ids, $moved ) ) {
+				$removed++;
+				continue;
+			}
+		}
+
+		$kept[] = $block;
+	}
+
+	if ( ! $removed ) {
+		return 0;
+	}
+
+	kses_remove_filters();
+	wp_update_post(
+		array(
+			'ID'           => $page->ID,
+			'post_content' => serialize_blocks( $kept ),
+		)
+	);
+	kses_init_filters();
+
+	return $removed;
+}
+
+/**
+ * Make one sponsor from a picture.
+ *
+ * @param int    $attachment_id The logo.
+ * @param string $name          The organisation's name.
+ * @param int    $tier          Tier ID.
+ * @param int    $order         Order within its tier.
+ * @return int Sponsor ID, or 0.
+ */
+function rad_create_sponsor( $attachment_id, $name, $tier, $order ) {
+	if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
+		return 0;
+	}
+
+	$name = '' !== trim( $name ) ? sanitize_text_field( $name ) : rad_name_from_filename( get_the_title( $attachment_id ) );
+	$post = wp_insert_post(
+		array(
+			'post_type'   => 'rad_sponsor',
+			'post_status' => 'publish',
+			'post_title'  => $name,
+			'menu_order'  => (int) $order,
+		)
+	);
+
+	if ( ! $post || is_wp_error( $post ) ) {
+		return 0;
+	}
+
+	set_post_thumbnail( $post, $attachment_id );
+
+	if ( $tier && term_exists( $tier, 'rad_tier' ) ) {
+		wp_set_object_terms( $post, array( (int) $tier ), 'rad_tier' );
+	}
+
+	return (int) $post;
+}
+
+/**
+ * The tier <select>, with one option preselected.
+ *
+ * @param string $name     Field name.
+ * @param int    $selected Tier ID.
+ * @return string
+ */
+function rad_tier_select( $name, $selected = 0 ) {
+	$html = '<select name="' . esc_attr( $name ) . '">';
+	foreach ( rad_all_tiers() as $term ) {
+		$html .= sprintf( '<option value="%d"%s>%s</option>', (int) $term->term_id, selected( (int) $selected, (int) $term->term_id, false ), esc_html( $term->name ) );
+	}
+	return $html . '</select>';
+}
+
+/**
  * The importer screen.
  */
 function rad_render_sponsor_import() {
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return;
 	}
+
+	$page_logos = rad_find_page_logos();
+	$in_page    = wp_list_pluck( $page_logos, 'id' );
 
 	$used = get_posts(
 		array(
@@ -926,7 +1183,7 @@ function rad_render_sponsor_import() {
 		)
 	);
 
-	$in_use = array_map( 'get_post_thumbnail_id', $used );
+	$exclude = array_filter( array_merge( array_map( 'intval', array_map( 'get_post_thumbnail_id', $used ) ), $in_page ) );
 
 	$images = get_posts(
 		array(
@@ -936,7 +1193,7 @@ function rad_render_sponsor_import() {
 			'posts_per_page' => 120,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
-			'post__not_in'   => array_filter( array_map( 'intval', $in_use ) ),
+			'post__not_in'   => $exclude,
 			'no_found_rows'  => true,
 		)
 	);
@@ -945,23 +1202,48 @@ function rad_render_sponsor_import() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Add several logos at once', 'redcliffe-advisory' ); ?></h1>
-		<p><?php esc_html_e( 'Tick the logos you have already uploaded to the Media Library, choose their tier, check the names and click the button. Each becomes a sponsor you can still edit afterwards.', 'redcliffe-advisory' ); ?></p>
 
+		<?php if ( $page_logos ) : ?>
+			<h2><?php esc_html_e( 'Logos already on your Summit page', 'redcliffe-advisory' ); ?></h2>
+			<p><?php esc_html_e( 'You placed these on the Summit page yourself. Each is listed under the heading you gave it. Check the names and tiers, then move them into Sponsors, where the website fits and arranges them for you.', 'redcliffe-advisory' ); ?></p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="rad_import_page_logos" />
+				<?php wp_nonce_field( 'rad_import_page_logos', 'rad_import_nonce' ); ?>
+				<table class="widefat striped rad-import-page">
+					<thead><tr><th class="check-column"></th><th><?php esc_html_e( 'Logo', 'redcliffe-advisory' ); ?></th><th><?php esc_html_e( 'Name', 'redcliffe-advisory' ); ?></th><th><?php esc_html_e( 'Tier', 'redcliffe-advisory' ); ?></th></tr></thead>
+					<tbody>
+					<?php foreach ( $page_logos as $logo ) : ?>
+						<tr>
+							<th class="check-column"><input type="checkbox" name="rad_page_ids[]" value="<?php echo esc_attr( $logo['id'] ); ?>" checked /></th>
+							<td class="rad-import-thumb"><?php echo wp_get_attachment_image( $logo['id'], 'medium' ); ?></td>
+							<td><input type="text" class="regular-text" name="rad_page_names[<?php echo esc_attr( $logo['id'] ); ?>]" value="<?php echo esc_attr( rad_name_from_filename( get_the_title( $logo['id'] ) ) ); ?>" /></td>
+							<td><?php echo rad_tier_select( 'rad_page_tiers[' . $logo['id'] . ']', $logo['tier'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- built from escaped parts. ?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+				<p>
+					<label><input type="checkbox" name="rad_strip_page" value="1" checked />
+					<?php esc_html_e( 'Then take these logos and their headings off the Summit page, so they are not shown twice. WordPress keeps the previous version of the page, which can be restored under Pages → Summit → Revisions.', 'redcliffe-advisory' ); ?></label>
+				</p>
+				<?php submit_button( __( 'Move these logos into Sponsors', 'redcliffe-advisory' ) ); ?>
+			</form>
+			<hr />
+		<?php endif; ?>
+
+		<h2><?php esc_html_e( 'Other pictures in the Media Library', 'redcliffe-advisory' ); ?></h2>
 		<?php if ( ! $images ) : ?>
-			<p><?php esc_html_e( 'There are no unused pictures in the Media Library. Upload logos under Media → Add New, or add a sponsor one at a time.', 'redcliffe-advisory' ); ?>
+			<p><?php esc_html_e( 'There are no other unused pictures in the Media Library. Upload logos under Media → Add New, or add a sponsor one at a time.', 'redcliffe-advisory' ); ?>
 				<a class="button" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=rad_sponsor' ) ); ?>"><?php esc_html_e( 'Add sponsor', 'redcliffe-advisory' ); ?></a></p>
 		<?php else : ?>
+			<p><?php esc_html_e( 'Tick the logos you have uploaded, choose their tier, check the names and click the button. Each becomes a sponsor you can still edit afterwards.', 'redcliffe-advisory' ); ?></p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="rad_import_sponsors" />
 				<?php wp_nonce_field( 'rad_import_sponsors', 'rad_import_nonce' ); ?>
 
 				<p>
 					<label for="rad_import_tier"><strong><?php esc_html_e( 'Put the ticked logos in this tier:', 'redcliffe-advisory' ); ?></strong></label>
-					<select id="rad_import_tier" name="rad_import_tier">
-						<?php foreach ( rad_all_tiers() as $term ) : ?>
-							<option value="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option>
-						<?php endforeach; ?>
-					</select>
+					<?php echo rad_tier_select( 'rad_import_tier' ); // phpcs:ignore WordPress.Security.EscapeOutput -- built from escaped parts. ?>
 				</p>
 
 				<div class="rad-import-grid">
@@ -982,12 +1264,21 @@ function rad_render_sponsor_import() {
 }
 
 /**
- * Create a sponsor for each ticked logo.
+ * Check the importer form's nonce and permission.
+ *
+ * @param string $action Nonce action.
  */
-function rad_handle_sponsor_import() {
-	if ( ! current_user_can( 'edit_posts' ) || ! isset( $_POST['rad_import_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['rad_import_nonce'] ) ), 'rad_import_sponsors' ) ) {
+function rad_import_guard( $action ) {
+	if ( ! current_user_can( 'edit_posts' ) || ! isset( $_POST['rad_import_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['rad_import_nonce'] ) ), $action ) ) {
 		wp_die( esc_html__( 'That did not work — please go back and try again.', 'redcliffe-advisory' ) );
 	}
+}
+
+/**
+ * Create a sponsor for each ticked logo from the Media Library.
+ */
+function rad_handle_sponsor_import() {
+	rad_import_guard( 'rad_import_sponsors' );
 
 	$tier  = isset( $_POST['rad_import_tier'] ) ? absint( wp_unslash( $_POST['rad_import_tier'] ) ) : 0;
 	$ids   = isset( $_POST['rad_import_ids'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['rad_import_ids'] ) ) : array();
@@ -995,37 +1286,55 @@ function rad_handle_sponsor_import() {
 	$added = 0;
 
 	foreach ( $ids as $attachment_id ) {
-		if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
-			continue;
+		$name = isset( $names[ $attachment_id ] ) ? (string) $names[ $attachment_id ] : '';
+
+		if ( rad_create_sponsor( $attachment_id, $name, $tier, ( $added + 1 ) * 10 ) ) {
+			$added++;
 		}
-
-		$name = isset( $names[ $attachment_id ] ) ? sanitize_text_field( $names[ $attachment_id ] ) : '';
-		$post = wp_insert_post(
-			array(
-				'post_type'   => 'rad_sponsor',
-				'post_status' => 'publish',
-				'post_title'  => '' !== $name ? $name : rad_name_from_filename( get_the_title( $attachment_id ) ),
-				'menu_order'  => ( $added + 1 ) * 10,
-			)
-		);
-
-		if ( ! $post || is_wp_error( $post ) ) {
-			continue;
-		}
-
-		set_post_thumbnail( $post, $attachment_id );
-
-		if ( $tier && term_exists( $tier, 'rad_tier' ) ) {
-			wp_set_object_terms( $post, array( $tier ), 'rad_tier' );
-		}
-
-		$added++;
 	}
 
 	wp_safe_redirect( add_query_arg( 'rad_added', $added, admin_url( 'edit.php?post_type=rad_sponsor' ) ) );
 	exit;
 }
 add_action( 'admin_post_rad_import_sponsors', 'rad_handle_sponsor_import' );
+
+/**
+ * Move the logos found on the Summit page into Sponsors, and optionally take
+ * them off the page.
+ */
+function rad_handle_page_logo_import() {
+	rad_import_guard( 'rad_import_page_logos' );
+
+	$ids   = isset( $_POST['rad_page_ids'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['rad_page_ids'] ) ) : array();
+	$names = isset( $_POST['rad_page_names'] ) ? (array) wp_unslash( $_POST['rad_page_names'] ) : array();
+	$tiers = isset( $_POST['rad_page_tiers'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['rad_page_tiers'] ) ) : array();
+	$moved = array();
+	$count = array();
+
+	foreach ( $ids as $attachment_id ) {
+		$tier         = isset( $tiers[ $attachment_id ] ) ? $tiers[ $attachment_id ] : 0;
+		$count[ $tier ] = isset( $count[ $tier ] ) ? $count[ $tier ] + 1 : 1;
+		$name         = isset( $names[ $attachment_id ] ) ? (string) $names[ $attachment_id ] : '';
+
+		if ( rad_create_sponsor( $attachment_id, $name, $tier, $count[ $tier ] * 10 ) ) {
+			$moved[] = $attachment_id;
+		}
+	}
+
+	$stripped = ( $moved && ! empty( $_POST['rad_strip_page'] ) ) ? rad_strip_page_logos( $moved ) : 0;
+
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'rad_added'    => count( $moved ),
+				'rad_stripped' => $stripped ? 1 : 0,
+			),
+			admin_url( 'edit.php?post_type=rad_sponsor' )
+		)
+	);
+	exit;
+}
+add_action( 'admin_post_rad_import_page_logos', 'rad_handle_page_logo_import' );
 
 /**
  * "3 sponsors added" after an import.
@@ -1036,6 +1345,7 @@ function rad_sponsor_import_notice() {
 	}
 
 	$count = absint( $_GET['rad_added'] ); // phpcs:ignore WordPress.Security.NonceVerification
+	$note  = ! empty( $_GET['rad_stripped'] ) ? ' ' . __( 'They have been taken off the Summit page.', 'redcliffe-advisory' ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 	printf(
 		'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
@@ -1044,11 +1354,44 @@ function rad_sponsor_import_notice() {
 				/* translators: %d: number of sponsors added. */
 				_n( '%d sponsor added. Check its name and tier below, then look at the Summit page.', '%d sponsors added. Check their names and tiers below, then look at the Summit page.', $count, 'redcliffe-advisory' ),
 				$count
-			)
+			) . $note
 		)
 	);
 }
 add_action( 'admin_notices', 'rad_sponsor_import_notice' );
+
+/**
+ * On the Dashboard and the Sponsors list: point out logos already sitting on
+ * the Summit page that could be moved into Sponsors.
+ */
+function rad_sponsor_move_notice() {
+	$screen = get_current_screen();
+
+	if ( ! $screen || ! in_array( $screen->id, array( 'dashboard', 'edit-rad_sponsor' ), true ) || ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+
+	$logos = rad_find_page_logos();
+
+	if ( ! $logos ) {
+		return;
+	}
+
+	printf(
+		'<div class="notice notice-warning"><p><strong>%1$s</strong> %2$s <a class="button button-primary" href="%3$s">%4$s</a></p></div>',
+		esc_html__( 'Your Summit page has logos that were placed by hand.', 'redcliffe-advisory' ),
+		esc_html(
+			sprintf(
+				/* translators: %d: number of logos. */
+				_n( '%d logo could be managed under Sponsors instead, where the website fits and arranges it by itself.', '%d logos could be managed under Sponsors instead, where the website fits and arranges them by itself.', count( $logos ), 'redcliffe-advisory' ),
+				count( $logos )
+			)
+		),
+		esc_url( admin_url( 'edit.php?post_type=rad_sponsor&page=rad-sponsor-import' ) ),
+		esc_html__( 'Review and move them', 'redcliffe-advisory' )
+	);
+}
+add_action( 'admin_notices', 'rad_sponsor_move_notice' );
 
 /* -------------------------------------------------------------------------
  * Logos: trimming, fitting and choosing a tile colour
@@ -1097,9 +1440,11 @@ function rad_analyse_logo( $file ) {
 	}
 
 	$info = @getimagesize( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
-	if ( ! $info || $info[0] < 1 || $info[1] < 1 || $info[0] * $info[1] > 24000000 ) {
-		return null;
+	if ( ! $info || $info[0] < 1 || $info[1] < 1 || $info[0] * $info[1] > 12000000 ) {
+		return null; // Too large to study safely: the picture is used as it is.
 	}
+
+	wp_raise_memory_limit( 'image' );
 
 	$data   = @file_get_contents( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors, WordPress.WP.AlternativeFunctions
 	$source = $data ? @imagecreatefromstring( $data ) : false; // phpcs:ignore WordPress.PHP.NoSilencedErrors

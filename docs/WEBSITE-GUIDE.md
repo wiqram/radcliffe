@@ -12,9 +12,10 @@ agenda](#15-example-updating-the-2026-summit-agenda), [changing or adding
 photographs](#16-example-changing-and-adding-photographs), [announcing
 something](#17-example-making-an-announcement), [adding
 speakers](#18-example-adding-the-speakers), [the Register
-button](#19-example-the-register-button), [sponsor and collaborator
-logos](#20-example-sponsor-and-collaborator-logos) and [writing an
-article](#21-example-writing-an-article).
+button](#19-example-the-register-button), [sponsors and
+collaborators](#20-example-sponsors-and-collaborators), [writing an
+article](#21-example-writing-an-article) and [Karina's LinkedIn
+posts](#22-example-karinas-linkedin-posts).
 
 ---
 
@@ -47,15 +48,16 @@ left-hand side. Near the top of that menu, just under **Dashboard**, is
 
 ---
 
-## 2. The four places you will use
+## 2. The places you will use
 
-Almost everything you do lives in one of four places in the left-hand menu.
+Almost everything you do lives in one of these places in the left-hand menu.
 
 | I want to… | Go to |
 | --- | --- |
 | Change **any words or any photograph** already on the website: a headline, a date, a name, a paragraph, the announcement strip, the footer | **Appearance → Customize** |
 | Change the **Summit agenda** (times, sessions, speakers, the note at the bottom) | **Pages → Agenda → Edit** |
-| **Add something new** to a page: a new section of text, a speaker, sponsor logos, a new photograph, a gallery, a quotation | **Pages** |
+| **Add something new** to a page: a new section of text, a speaker, a new photograph, a gallery, a quotation | **Pages** |
+| Add, change or remove a **sponsor or collaborator** (name, logo, which group it is in) | **Sponsors** |
 | **Write and publish an article** for the Articles page | **Posts → Add New** |
 | Read the messages sent through the contact form | **Enquiries** |
 
@@ -140,7 +142,6 @@ from an event, a quotation, a list of speakers, or anything else.
    | **Two columns of text** | Two short pieces of text side by side |
    | **Button** | A button that links to another page |
    | **Speaker** | A photograph, a name, a role and a line about one speaker |
-   | **Sponsor logos** | A label ("Gold Sponsor") above a row of logos that are never cropped or stretched |
    | **Agenda: a time slot** | One line of the Summit programme (Agenda page) |
    | **Agenda: part of the day** | A small heading such as *Afternoon* (Agenda page) |
 
@@ -393,7 +394,12 @@ automatically once the domain is connected. There is nothing to set up.
 | The Articles page shows a list of blog posts instead of the designed page | The "Posts page" setting is pointing at it | **Settings → Reading** → set **Posts page** to **— Select —** → **Save Changes** |
 | A post you added does not appear on the Articles page | It is still a **Draft** | Open **Posts**, click the post, then **Publish** (top right) |
 | An article should link to another website but opens on this site instead | The **External web address** box was left empty | Open the post, find **Where this article appears** on the right, paste the address, **Update** |
-| The Register button on the Summit page goes to the wrong place | The old address is still saved | **Appearance → Customize → Summit page → Register button address**, paste the correct one, **Publish** |
+| The Register button on the Summit page goes to the wrong place, or its wording is wrong | The old address or wording is still saved | **Appearance → Customize → Summit page**: **Register button text** and **Registration page address**, then **Publish** (section 19) |
+| The Register button has disappeared | The **Registration page address** was cleared, which hides the button | **Appearance → Customize → Summit page → Registration page address**, paste the booking link, **Publish** |
+| The two buttons at the bottom of the Agenda page point to the wrong place or say the wrong thing | Their wording and addresses are kept in the Customizer | **Appearance → Customize → Agenda page**, change **First closing button** and **Second closing button**, **Publish** (section 15) |
+| A sponsor you added is not on the Summit page | It is still a **Draft**, or the browser or the site is showing an old copy | **Sponsors**: the sponsor must say **Published** and show a tier. Then press Ctrl+F5; if it is still missing, hPanel → site **Dashboard** → **Clear cache** |
+| A logo looks the wrong colour or sits on the wrong tile | The website's automatic tile choice is not right for this logo | **Sponsors** → click the sponsor → **Tile colour** → choose **White tile** or **Dark blue tile** → **Update** (section 20) |
+| Karina's LinkedIn posts do not show on the homepage | The feed is loaded from LinkedIn's partner service and can be slow or blocked by an ad-blocker | Wait a few seconds and scroll down; try without an ad-blocker. If it never shows, see section 22 |
 | The Agenda page shows the old programme, not what you typed | The page has not been updated, or the browser is showing an old copy | Open **Pages → Agenda → Edit** and click **Update**; then Ctrl+F5 |
 | A block on the Agenda page says "unexpected or invalid content" | Something was pasted in that the editor does not understand | Click **Attempt recovery**. If that does not help, click the three dots on that block, choose **Delete**, and add a fresh **Agenda: a time slot** |
 | Enquiries arrive in WordPress but no email comes | Email sending is off | Check spam first. Then ask Hostinger's help chat (the **Agent** button in hPanel) to "enable email sending from WordPress". The messages are safe under **Enquiries** in the meantime |
@@ -499,12 +505,25 @@ its own section on the Summit page, see [section 18](#18-example-adding-the-spea
   **Redcliffe Advisory → Summit page** in the Customizer, where each piece of
   text is listed with its wording as the label.
 
-### Changing the note at the bottom, or the buttons
+### Changing the note at the bottom
 
-The italic note under the programme and the two buttons (*Enquire about
-attending* and *Back to the Summit*) are ordinary text in the same editor.
-Click and type, then **Update**. To change where a button points, click the
-button, click the **link** icon in its toolbar, and paste the new address.
+The italic note under the programme is ordinary text in the same editor.
+Click and type, then **Update**.
+
+### Changing the two buttons at the bottom of the programme
+
+The two buttons under the programme (by default *Register here* and *Back to
+the Summit*) are set in the Customizer, not in the page editor, so they can
+never be broken by accident:
+
+1. **Appearance → Customize → Agenda page**.
+2. Under **First closing button: text**, type what the button should say,
+   for example *Reserve your spot*. Its address is in **First closing button:
+   address**. Leave that empty to use the registration page address you set
+   for the Register button (section 19), or paste a different web address.
+3. Do the same for the **Second closing button**. Leave its address empty to
+   send people back to the Summit page.
+4. To hide a button, clear its text. Click **Publish**.
 
 ### If you would rather start again
 
@@ -651,51 +670,109 @@ their session on the Agenda page (section 15).
 
 Beside **See the 2026 agenda** in the Summit page's opening section there is a
 second button, **Register**, that sends people straight to wherever booking
-happens — Cvent, Eventbrite, a form, anywhere.
+happens: Cvent, Eventbrite, a form, anywhere. The first button under the
+programme on the Agenda page sends people to the same place.
 
 1. **Appearance → Customize → Summit page**.
-2. Find **Register button address** and paste the booking link.
-3. Click **Publish**.
+2. Find **Register button text** and type what the button should say, for
+   example *Register* or *Reserve your place*.
+3. Find **Registration page address** and paste the booking link.
+4. Click **Publish**.
 
-The button always shows the current address, so **Access** in the same hero
-no longer needs to hold a pasted web address. Open the same Customizer
-section, find the **Access** text field (it may currently hold a long web
-address), and change it back to a short phrase such as *Open to all* or *By
-invitation*, then **Publish**.
+The website always uses the current address, so nothing else needs to change.
+**Clear the address and the Register button disappears**, which is useful
+between events; paste a new one and it comes back.
+
+**Access** in the same opening section is ordinary text again. If it still
+holds a long web address from an earlier version, change it to a short phrase
+such as *Open to all* or *By invitation*, then **Publish**.
 
 ---
 
-## 20. Example: sponsor and collaborator logos
+## 20. Example: sponsors and collaborators
 
-Gold, Dinner, Silver and Bronze Sponsors, Collaborators and Partners each get
-their own label and a row of logos, added the same way as any new section
-(section 4), directly under the existing **Collaborators · 2026** names on the
-Summit page:
+Every sponsor and collaborator is kept under **Sponsors** in the left-hand
+menu, one entry for each organisation. The Summit page shows them
+automatically, grouped under a heading for each level (a **tier**): Gold
+Sponsor, Dinner Sponsor, Silver Sponsor, Bronze Sponsors, Collaborators and
+Partners. Each logo sits in a tile of the same shape, and the website works
+out the rest: it trims the empty space around a logo, fits it inside its tile
+without stretching or cutting it, chooses a white or a dark blue tile so that
+the logo can be seen, puts as many logos on a row as fit the screen, and
+stacks them on a phone. **You never have to resize or crop a logo.**
 
-1. **Pages** → hover over **Summit** → **Edit**. Close the blue note — it now
-   tells you new sections appear here, just under Collaborators.
-2. Click **+** → **Patterns → Redcliffe Advisory → Sponsor logos**. A label
-   ("Gold Sponsor") and three placeholder logos appear.
-3. Click the label and type the tier: **Gold Sponsor**, **Dinner Sponsor**,
-   **Silver Sponsor**, **Bronze Sponsors**, **Collaborators**, or **Partners**.
-4. Click a logo → **Replace** → choose the file from the Media Library, or
-   **Upload** a new one. Repeat for the other logos. Click the **+** that
-   appears at the end of the row to add a fourth logo, or click a logo, three
-   dots, **Delete**, to remove one.
-5. For **Partners**, where names should show under the logos: click a logo
-   once to select it, then use the caption field that appears underneath to
-   type the partner's name.
-6. Press **+** below and add another **Sponsor logos** pattern for the next
-   tier. Click **Update**, then **View page**.
+### Adding one sponsor
 
-**Logo tips:** a PNG with a transparent background looks best; logos of very
-different heights all still line up, since each sits in its own box and is
-never stretched or cropped.
+1. **Sponsors → Add sponsor**.
+2. Type the organisation's **name** at the top.
+3. In the **About this sponsor** box, open the **Tier** list and choose the
+   level (Gold Sponsor, Collaborators, and so on).
+4. On the right, in the **Logo** box, click **Choose the logo** and pick the
+   file from the Media Library, or **Upload** a new one.
+5. Optionally, fill in **Website address** (the logo then links there) and,
+   for Partners, **A few words about the role**.
+6. Click **Publish**. Once a logo is chosen, **How the logo will look** at the
+   bottom of the **About this sponsor** box shows the finished tile.
 
-**Once sponsors and Partners are set up this way,** the existing
-**Collaborators · 2026** names further up can be turned off if they are no
-longer wanted: **Appearance → Customize → Summit page**, untick **Show:
-Collaborators**, **Publish**.
+A PNG with a transparent background is best, but any image works. **Tile
+colour** is set to **Automatic**; change it only if a logo looks wrong: **White
+tile** for dark or coloured logos, **Dark blue tile** for white logos.
+
+### Adding many logos in one go
+
+**Sponsors → Add several logos** lists pictures in the Media Library that are
+not yet sponsors. Tick the ones you want, choose their tier, check the names
+the website guessed from the file names, and click **Add the ticked logos as
+sponsors**.
+
+### Logos you placed on the Summit page yourself
+
+If you placed logos directly on the Summit page in the page editor, the
+**Add several logos** screen has a section at the top, **Logos already on your
+Summit page**. Each logo is listed under the heading you gave it, with a
+suggested name and tier. Check them, then click **Move these logos into
+Sponsors**. They become ordinary sponsors and are taken off the page so they
+are not shown twice. WordPress keeps the earlier version of the page, which
+you can bring back under **Pages → Summit → Revisions** if you change your
+mind. Until you do this, logos placed by hand still show, but they are not
+arranged for you.
+
+### Changing the order, the tier, or removing a sponsor
+
+- **Order inside a tier:** open the sponsor and set **Order in its tier** on
+  the right (10, 20, 30…). Smaller numbers come first; the same number falls
+  into alphabetical order.
+- **Move a sponsor to another tier:** open it and choose a different **Tier** in the **About this sponsor** box.
+- **Remove a sponsor:** hover over it in the list and click **Trash**.
+- **Hide it for now:** open it, change **Status** to **Draft**, and **Update**.
+
+### Tiers
+
+**Sponsors → Tiers** shows the six levels. For each you can change:
+
+| Setting | What it does |
+| --- | --- |
+| **Name** | The heading above the logos |
+| **Position on the page** | A number: smaller comes first (Gold 10, Dinner 20, Silver 30…). Leave gaps so a new tier can go between |
+| **Logo size** | From **Small** (fits the most across the page) to **Largest** (for one or two headline sponsors) |
+| **Show names** | Writes the organisation's name under each logo. Partners have this on by default |
+
+To add a level such as *Media partner*, fill in the **Add a tier** form on the
+left (name, position, size) and click the button at its foot. A tier with no
+sponsors is never shown on the website.
+
+### Where they appear
+
+On the Summit page, in the blue **Collaborators · 2026** band. Its heading and
+introduction are ordinary text you can change in **Appearance → Customize →
+Summit page**. The original list of example names in that band is replaced by
+your sponsors as soon as the first one is published, so the two never appear
+together; if every sponsor is removed, the example names come back. To hide the
+whole band, untick **Show: Collaborators** on the same Customizer page.
+
+**If a new sponsor does not show:** check that its status says **Published**
+and that a tier is chosen. If the site has a cache, press Ctrl+F5, or in
+hPanel open the site's **Dashboard** and click **Clear cache** (section 13).
 
 ---
 
@@ -715,21 +792,37 @@ showing this way.
    opening of the piece instead.
 4. Under **Categories**, tick one (**Karina's Column**, for example) — its
    name is the small label shown above the title on the card. Add a new
-   category by typing its name and clicking **Add new category**.
+   category by typing its name and clicking **Add new category**. Under
+   **Tags**, type any tags you want (for example *quantum*); they are shown
+   with the article.
 5. Under **Featured image**, set a photograph — this is the picture shown on
    the card and, for the article at the top, the large photograph.
-6. If the piece was written for somewhere else — The Quantum Insider, LSE, a
-   partner site — find **Where this article appears** on the right, paste
-   that page's web address into **External web address**. The card then
-   sends readers straight there instead of to a page on this site; leave it
-   empty for an article people read here. You can also type a **Byline** by
-   hand there, such as *Karina Robinson, LSE · 2026* — leave it empty to show
-   your account name and the year automatically instead.
-7. Click **Publish** (top right).
+6. **Author and date.** Every article shows **Karina Robinson** and the month
+   and year it was published, for example *Karina Robinson · September 2026*.
+   You do not have to do anything. If someone else wrote the piece, find
+   **Author and link** on the right and type their name in **Written by**;
+   leave it empty for Karina. The month and year come from the date of
+   publication; to backdate a piece, click the date next to **Publish** in the
+   right-hand panel and choose an earlier one.
+7. If the piece was written for somewhere else — The Quantum Insider, LSE, a
+   partner site — type that page's web address into **Published elsewhere?
+   Web address** in the same **Author and link** box. The card then sends
+   readers straight there instead of to a page on this site; leave it empty
+   for an article people read here.
+8. Click **Publish** (top right).
 
-**To change your name as it appears on articles,** go to **Users → Profile**,
-change **Nickname**, and choose it under **Display name publicly as**, then
-**Update Profile**.
+**To change the default author** for the whole site (for example, if Karina
+is replaced by someone else), go to **Appearance → Customize → Articles
+page → Author shown on articles**, type the name, and **Publish**.
+
+**Long articles** are laid out for comfortable reading: a narrow column of
+text, and quotations set in the middle with extra space on each side. The
+**Headings** in the editor (Heading 1, 2 and 3) all line up with the text.
+Use **Quote** for a quotation; the website centres it for you.
+
+**The Articles page** shows the ten newest articles, the newest one large at
+the top. Older ones are on **Page 2** and so on, and the small buttons above
+the list filter by category.
 
 **To edit or unpublish an article** later, open **Posts**, click it, make the
 change, and **Update**. Moving it to **Trash** removes its card from the
@@ -737,3 +830,31 @@ Articles page.
 
 **If the Articles page ever has no posts on it,** it shows the original
 designed content instead, so it can never look empty.
+
+---
+
+## 22. Example: Karina's LinkedIn posts
+
+The homepage has a section, **Karina's recent posts**, that shows her most
+recent LinkedIn posts, live. New posts appear on the website by
+themselves a little after Karina publishes them on LinkedIn; **there is nothing
+for you to update.**
+
+Only the first few posts show at first, so the page stays short. **Show more
+posts** opens the rest. A **Follow Karina on LinkedIn** link sits underneath.
+
+**To change any of it,** go to **Appearance → Customize → Homepage**:
+
+| To change… | Find… |
+| --- | --- |
+| The wording of the **Show more posts** button | **LinkedIn “show more” button text** |
+| The wording of the follow link | **LinkedIn link text** |
+| Where the follow link goes (or remove it) | **LinkedIn profile address** (clear it to remove the link) |
+| Hide the whole section | Untick **Show: Karina's LinkedIn posts** |
+| The feed itself | **LinkedIn posts feed number (SociableKit)** — leave this alone unless the feed is replaced |
+
+The posts come from a service called SociableKit, connected to Karina's public
+LinkedIn profile. **If the posts stop showing,** the SociableKit subscription
+may have lapsed or the feed was deleted; the rest of the homepage is not
+affected. Ask whoever manages that SociableKit account, and if the feed number
+changes, paste the new number into **LinkedIn posts feed number**.
