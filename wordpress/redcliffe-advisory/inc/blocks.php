@@ -103,7 +103,7 @@ function rad_seed_block_pages() {
 			continue;
 		}
 
-		$page = get_page_by_path( $slug );
+		$page = rad_design_page( $slug );
 
 		if ( ! $page instanceof WP_Post ) {
 			continue; // Not created yet — try again on the next request.

@@ -26,6 +26,59 @@
     );
   }
 
+  // 2a) A menu with more links than fit beside the logo. The owner can add as many as they like, so when the
+  //     links no longer fit on one line the header switches to the menu button that phones use, at any width.
+  const headerInner = header && header.querySelector('.header-inner');
+  const root = document.documentElement;
+  function fitNav() {
+    if (!headerInner || !nav || !btn) return;
+    root.classList.remove('nav-collapsed');
+    if (window.matchMedia('(max-width: 980px)').matches) return; // the phone layout already
+    const links = Array.from(nav.children);
+    if (!links.length) return;
+    const style = (el) => getComputedStyle(el);
+    const brand = headerInner.querySelector('.brand');
+    const need = links.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + (parseFloat(style(nav).columnGap) || 0) * (links.length - 1);
+    const room = headerInner.clientWidth - (brand ? brand.getBoundingClientRect().width : 0) - (parseFloat(style(headerInner).columnGap) || 0);
+    if (need + 32 > room) root.classList.add('nav-collapsed'); // 32px in hand: the logo is a little smaller once scrolled
+  }
+  let fitQueued = false;
+  function queueFitNav() {
+    if (fitQueued) return;
+    fitQueued = true;
+    requestAnimationFrame(() => { fitQueued = false; fitNav(); });
+  }
+  if (btn && nav) {
+    fitNav();
+    window.addEventListener('resize', queueFitNav);
+    window.addEventListener('load', queueFitNav);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueFitNav);
+    btn.addEventListener('click', () => {
+      // The open menu hangs from the bottom edge of the header, wherever that is, and scrolls if the screen is short.
+      const box = header.getBoundingClientRect();
+      nav.style.setProperty('--nav-top', Math.round(box.height) + 'px'); // fixed inside the header, so measured from its top
+      nav.style.setProperty('--nav-room', Math.max(160, Math.round(window.innerHeight - box.bottom)) + 'px');
+    }, true);
+  }
+
+  // 2b) A sponsor logo the browser cannot show (a format it does not read, a file removed from the server) is replaced by
+  //     the sponsor's name, instead of a broken-picture icon.
+  document.querySelectorAll('.sponsor-logo img').forEach((img) => {
+    const swap = () => {
+      const tile = img.closest('.sponsor');
+      if (!tile || tile.classList.contains('is-image-missing')) return;
+      tile.classList.add('is-image-missing', 'is-name-only');
+      if (!tile.querySelector('.sponsor-name')) {
+        const name = document.createElement('span');
+        name.className = 'sponsor-name';
+        name.textContent = img.dataset.name || img.alt || '';
+        tile.querySelector('.sponsor-card').appendChild(name);
+      }
+    };
+    img.addEventListener('error', swap);
+    if (img.complete && img.naturalWidth === 0 && img.currentSrc) swap();
+  });
+
   // 3) Reveal on scroll (JS-gated — content is visible by default in CSS)
   document.documentElement.classList.add('js-reveal');
 

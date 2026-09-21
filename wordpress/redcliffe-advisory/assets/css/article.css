@@ -173,3 +173,9 @@
 .editor-styles-wrapper .is-root-container hr { margin: 2.4em 0; }
 .prose .prose-body.rad-article iframe { max-width: 100%; }
 .prose .prose-body.rad-article a { overflow-wrap: anywhere; }
+
+/* Whatever is pasted in stays inside the column on a phone: a long web address breaks, a wide table or a line of code scrolls in its own box. */
+.prose .prose-body.rad-article { overflow-wrap: anywhere; min-width: 0; }
+.prose .prose-body.rad-article pre,
+.prose .prose-body.rad-article .wp-block-table { max-width: 100%; overflow-x: auto; }
+.prose .prose-body.rad-article pre { white-space: pre; overflow-wrap: normal; }

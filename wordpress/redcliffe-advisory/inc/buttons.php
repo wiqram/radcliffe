@@ -82,7 +82,7 @@ add_filter( 'render_block_core/buttons', 'rad_hide_retired_agenda_buttons', 10, 
  * @return bool
  */
 function rad_href_points_to( $href, $slug ) {
-	$page = get_page_by_path( $slug );
+	$page = rad_design_page( $slug );
 
 	if ( ! $page instanceof WP_Post || '' === $href ) {
 		return false;
@@ -105,7 +105,7 @@ function rad_migrate_agenda_buttons() {
 		return;
 	}
 
-	$page = get_page_by_path( 'agenda' );
+	$page = rad_design_page( 'agenda' );
 
 	if ( ! $page instanceof WP_Post ) {
 		return; // Not created yet — try again on the next request.

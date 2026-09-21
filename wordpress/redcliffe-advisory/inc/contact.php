@@ -276,7 +276,7 @@ function rad_send_enquiry_email( $recipient, $fields ) {
  * @return string
  */
 function rad_mail_from_name() {
-	return wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+	return rad_brand_name();
 }
 
 /**

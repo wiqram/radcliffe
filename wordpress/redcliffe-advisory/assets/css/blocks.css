@@ -79,7 +79,7 @@
 .rad-blocks .rad-section-head,
 .editor-styles-wrapper .rad-section-head {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 200px minmax(0, 1fr);
   gap: 48px;
   align-items: start;
   margin-bottom: 40px;
@@ -99,7 +99,7 @@
 }
 @media (max-width: 720px) {
   .rad-blocks .rad-section-head,
-  .editor-styles-wrapper .rad-section-head { grid-template-columns: 1fr; gap: 18px; }
+  .editor-styles-wrapper .rad-section-head { grid-template-columns: minmax(0, 1fr); gap: 18px; }
 }
 
 /* ─── Photographs ─── */

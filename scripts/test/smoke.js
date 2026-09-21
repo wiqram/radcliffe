@@ -61,6 +61,13 @@ const version = require('fs').readFileSync(require('path').join(__dirname, '../.
   check('the LinkedIn widget is loaded lazily, not in the page head', !/<script[^>]+sociablekit/.test(home) && home.includes('data-linkedin-src="https://widgets.sociablekit.com/'));
   check('a plain link to the LinkedIn profile is always there', home.includes('href="https://www.linkedin.com/in/karina-robinson/"'));
 
+  // ── Search and sharing: every page says what it is, once, and has a picture to show when shared
+  const noTags = Object.keys(pages).filter((path) => !(count(html[path], '<meta name="description"') === 1 && count(html[path], 'property="og:title"') === 1 && count(html[path], 'property="og:image"') === 1 && count(html[path], 'name="twitter:card"') === 1));
+  check('every page has one description and the share tags', noTags.length === 0, noTags.join(', '));
+  const shareImage = (html['/summit/'].match(/property="og:image" content="([^"]+)"/) || [])[1];
+  const shareRes = shareImage ? await fetch(shareImage) : { status: 0 };
+  check('the picture shown when a page is shared can be fetched', shareRes.status === 200, `${shareImage} -> ${shareRes.status}`);
+
   // ── Articles
   const articles = html['/articles/'];
   check('Articles hero is the compact two-column one', articles.includes('page-hero page-hero--split') && articles.includes('class="hero-split"'));
@@ -73,6 +80,9 @@ const version = require('fs').readFileSync(require('path').join(__dirname, '../.
     check('an article shows author and month, and its tags', /<div class="byline">Karina Robinson · [A-Z][a-z]+ \d{4}<\/div>/.test(post.html));
     check('an article body is wrapped for reading (rad-article)', post.html.includes('rad-article'));
     check('article.css is loaded for articles', post.html.includes('assets/css/article.css'));
+    const postTitle = (post.html.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+    check('an article\'s title ends with the firm\'s name, never a temporary web address', /\u2014 [^<]+$/.test(postTitle) && !/\.hostingersite\.com\s*$/.test(postTitle), postTitle);
+    check('an article says it is an article when shared', post.html.includes('property="og:type" content="article"'));
   }
   const cat = await get('/category/cisi/');
   check('a category page lists its articles in the site style', cat.status === 200 ? cat.html.includes('journal-item') && cat.html.includes('page-hero--article') : cat.status === 404 ? true : false, `status ${cat.status}`);

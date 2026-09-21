@@ -21,7 +21,7 @@ function rad_activate_theme() {
 	$ids         = array();
 
 	foreach ( $definitions['pages'] as $page ) {
-		$existing = get_page_by_path( $page['slug'] );
+		$existing = rad_design_page( $page['slug'] );
 
 		if ( $existing ) {
 			$id = $existing->ID;

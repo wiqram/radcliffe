@@ -253,10 +253,77 @@ function rad_url( $slug ) {
 		return $cache[ $slug ];
 	}
 
-	$page           = get_page_by_path( $slug );
+	$page           = rad_design_page( $slug );
 	$cache[ $slug ] = $page ? get_permalink( $page ) : home_url( '/' );
 
 	return $cache[ $slug ];
+}
+
+/**
+ * The page that plays one of the site's nine parts ("summit", "agenda" ...).
+ *
+ * Found by its address first. If the owner has changed that address (Pages >
+ * Quick Edit, or the address under the title), it is found by the template it
+ * uses instead, so links to it, its sponsors, its buttons and the cache all keep
+ * working instead of quietly pointing at the homepage.
+ *
+ * @param string $slug One of the slugs in inc/pages.php.
+ * @return WP_Post|null
+ */
+function rad_design_page( $slug ) {
+	static $pages = array();
+
+	if ( array_key_exists( $slug, $pages ) ) {
+		return $pages[ $slug ];
+	}
+
+	$page = get_page_by_path( $slug );
+
+	if ( ! $page instanceof WP_Post ) {
+		$page = null;
+
+		if ( 'home' === $slug ) {
+			$front = (int) get_option( 'page_on_front' );
+			$page  = $front ? get_post( $front ) : null;
+		} else {
+			$template = rad_template_for_slug( $slug );
+			$found    = $template ? get_posts(
+				array(
+					'post_type'     => 'page',
+					'post_status'   => 'publish',
+					'numberposts'   => 1,
+					'orderby'       => 'ID',
+					'order'         => 'ASC',
+					'meta_key'      => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery
+					'meta_value'    => $template, // phpcs:ignore WordPress.DB.SlowDBQuery
+					'no_found_rows' => true,
+				)
+			) : array();
+			$page     = $found ? $found[0] : null;
+		}
+	}
+
+	$pages[ $slug ] = $page instanceof WP_Post ? $page : null;
+
+	return $pages[ $slug ];
+}
+
+/**
+ * The template file a design slug uses ("summit" -> "template-summit.php").
+ *
+ * @param string $slug Slug from inc/pages.php.
+ * @return string Empty when the slug is not one of the site's parts.
+ */
+function rad_template_for_slug( $slug ) {
+	$definitions = rad_pages();
+
+	foreach ( $definitions['pages'] as $page ) {
+		if ( $page['slug'] === $slug && ! empty( $page['template'] ) && 'front-page.php' !== $page['template'] ) {
+			return $page['template'];
+		}
+	}
+
+	return '';
 }
 
 /**
@@ -271,7 +338,22 @@ function rad_page_slug() {
 
 	$object = get_queried_object();
 
-	return ( $object instanceof WP_Post ) ? $object->post_name : '';
+	if ( ! $object instanceof WP_Post ) {
+		return '';
+	}
+
+	// A page on one of the site's templates is that part of the site, whatever its address has been changed to.
+	if ( 'page' === $object->post_type ) {
+		$template = get_page_template_slug( $object );
+
+		foreach ( rad_pages()['pages'] as $page ) {
+			if ( $template && $page['template'] === $template ) {
+				return $page['slug'];
+			}
+		}
+	}
+
+	return $object->post_name;
 }
 
 /**

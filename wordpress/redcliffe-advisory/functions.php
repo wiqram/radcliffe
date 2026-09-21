@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RAD_VERSION', '1.4.1' );
+define( 'RAD_VERSION', '1.4.2' );
 
 require_once get_theme_file_path( 'inc/content.php' );
 require_once get_theme_file_path( 'inc/customizer.php' );
@@ -26,6 +26,8 @@ require_once get_theme_file_path( 'inc/sponsors.php' );
 require_once get_theme_file_path( 'inc/buttons.php' );
 require_once get_theme_file_path( 'inc/linkedin.php' );
 require_once get_theme_file_path( 'inc/redirects.php' );
+require_once get_theme_file_path( 'inc/cache.php' );
+require_once get_theme_file_path( 'inc/seo.php' );
 
 /**
  * Theme supports and menu locations.
@@ -99,24 +101,6 @@ function rad_favicon() {
 	printf( '<link rel="apple-touch-icon" href="%s" />' . "\n", $icon ); // phpcs:ignore WordPress.Security.EscapeOutput
 }
 add_action( 'wp_head', 'rad_favicon' );
-
-/**
- * Keep the original page titles, which were written for search results.
- *
- * @param string $title Document title.
- * @return string
- */
-function rad_document_title( $title ) {
-	if ( ! is_front_page() && ! is_page() ) {
-		return $title;
-	}
-
-	$titles = rad_defaults( 'titles' );
-	$slug   = rad_page_slug();
-
-	return isset( $titles[ $slug ] ) ? $titles[ $slug ] : $title;
-}
-add_filter( 'pre_get_document_title', 'rad_document_title' );
 
 /**
  * Menu markup for this design: bare anchors inside <nav class="nav">, with no

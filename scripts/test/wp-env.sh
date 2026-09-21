@@ -4,6 +4,8 @@
 #   scripts/test/wp-env.sh update  rebuild the zip and install it over the running site (the upgrade path)
 #   scripts/test/wp-env.sh seed    add sample sponsors (awkward logos of every kind) and enough articles for two pages
 #   scripts/test/wp-env.sh seed-legacy  put hand-placed sponsor logos on the Summit page, as the owner had before Sponsors existed
+#   scripts/test/wp-env.sh stress-seed [wide|tall|tiny|square|mixed]  swap every editable picture for an awkward one, lengthen all text, extend the menu, add a kitchen-sink article (scripts/test/stress.js checks the result)
+#   scripts/test/wp-env.sh sponsor-matrix  the things owners do with sponsors (odd logos, unreadable files, deleted tiers, edited pictures), PASS/FAIL each
 #   scripts/test/wp-env.sh wp ...  run WP-CLI against the site (scripts/test/upgrade.sh rehearses the 1.3 -> current upgrade)
 #   scripts/test/wp-env.sh down    remove everything
 # The site answers on http://localhost:${RAD_TEST_PORT:-8092} with pretty permalinks.
@@ -35,6 +37,9 @@ up() {
     "$IMAGE" >/dev/null
   for i in $(seq 1 90); do curl -s -o /dev/null "http://localhost:$PORT/" && break; sleep 2; done
   sleep 6
+  # A stand-in for the LiteSpeed plugin that records what the theme asks the cache to do (scripts/test/cache.sh).
+  docker cp "$HERE/rad-test-litespeed.php" "$WP":/var/www/html/wp-content/mu-plugins/rad-test-litespeed.php
+  docker exec "$WP" chown 33:33 /var/www/html/wp-content/mu-plugins/rad-test-litespeed.php
   wpcli core install --url="http://localhost:$PORT" --title="Redcliffe Advisory" --admin_user=admin --admin_password=admin --admin_email=test@example.com --skip-email >/dev/null
   wpcli theme install /package/redcliffe-advisory.zip --activate >/dev/null
   wpcli rewrite structure '/%postname%/' --hard >/dev/null 2>&1 || true
@@ -52,13 +57,15 @@ update() {
 seed() {
   docker run --rm --network "$NET" -v "$VOL":/var/www/html -v "$HERE":/seed:ro --user 33 \
     -e WORDPRESS_DB_HOST="$DB" -e WORDPRESS_DB_USER=wp -e WORDPRESS_DB_PASSWORD=wp -e WORDPRESS_DB_NAME=wp \
-    wordpress:cli wp eval-file "/seed/${1:-seed.php}"
+    wordpress:cli wp eval-file "/seed/${1:-seed.php}" "${@:2}"
 }
 
 case "${1:-}" in
   up) up ;;
   seed) seed seed.php ;;
   seed-legacy) seed seed-legacy-summit.php ;;
+  stress-seed) seed stress-seed.php "${2:-mixed}" ;;
+  sponsor-matrix) seed sponsor-matrix.php "${2:-}" ;;
   update) update ;;
   down) down ;;
   wp) shift; wpcli "$@" ;;

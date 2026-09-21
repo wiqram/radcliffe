@@ -801,6 +801,90 @@ function rad_sponsor_admin_clauses( $clauses, $query ) {
 add_filter( 'posts_clauses', 'rad_sponsor_admin_clauses', 10, 2 );
 
 /**
+ * A tier is being deleted: move its sponsors to another one first, so none of them
+ * vanishes from the page or is left under no heading. They go to Collaborators, or
+ * to the first tier left if that is the one being deleted.
+ *
+ * @param int    $term_id  The tier being deleted.
+ * @param string $taxonomy Taxonomy.
+ */
+function rad_tier_before_delete( $term_id, $taxonomy ) {
+	if ( 'rad_tier' !== $taxonomy ) {
+		return;
+	}
+
+	$sponsors = get_objects_in_term( (int) $term_id, 'rad_tier' );
+
+	if ( is_wp_error( $sponsors ) || ! $sponsors ) {
+		return;
+	}
+
+	$target   = 0;
+	$fallback = get_term_by( 'slug', 'collaborators', 'rad_tier' );
+
+	if ( $fallback && (int) $fallback->term_id !== (int) $term_id ) {
+		$target = (int) $fallback->term_id;
+	} else {
+		foreach ( rad_all_tiers() as $tier ) {
+			if ( (int) $tier->term_id !== (int) $term_id ) {
+				$target = (int) $tier->term_id;
+				break;
+			}
+		}
+	}
+
+	if ( ! $target ) {
+		return; // The last tier: the page shows the sponsors without a heading.
+	}
+
+	foreach ( $sponsors as $sponsor_id ) {
+		wp_set_object_terms( (int) $sponsor_id, array( $target ), 'rad_tier' );
+	}
+
+	$to = get_term( $target, 'rad_tier' );
+	set_transient(
+		'rad_tier_moved_' . get_current_user_id(),
+		array(
+			'count' => count( $sponsors ),
+			'to'    => $to instanceof WP_Term ? $to->name : '',
+		),
+		MINUTE_IN_SECONDS
+	);
+}
+add_action( 'pre_delete_term', 'rad_tier_before_delete', 10, 2 );
+
+/**
+ * Tell the owner where the sponsors of a deleted tier went.
+ */
+function rad_tier_moved_notice() {
+	$moved = get_transient( 'rad_tier_moved_' . get_current_user_id() );
+
+	if ( ! $moved ) {
+		return;
+	}
+
+	delete_transient( 'rad_tier_moved_' . get_current_user_id() );
+
+	printf(
+		'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+		esc_html(
+			sprintf(
+				/* translators: 1: number of sponsors, 2: tier name. */
+				_n(
+					'%1$d sponsor was in the tier you deleted. It has been moved to %2$s so it still shows on the Summit page; open it under Sponsors to choose another tier.',
+					'%1$d sponsors were in the tier you deleted. They have been moved to %2$s so they still show on the Summit page; open one under Sponsors to choose another tier.',
+					(int) $moved['count'],
+					'redcliffe-advisory'
+				),
+				(int) $moved['count'],
+				$moved['to']
+			)
+		)
+	);
+}
+add_action( 'admin_notices', 'rad_tier_moved_notice' );
+
+/**
  * Say what the Order box means.
  *
  * @param WP_Post $post The sponsor being edited.
@@ -1021,7 +1105,7 @@ function rad_collect_page_logos( $blocks, &$tier, &$found ) {
  * @return array[] Each: id (attachment), tier (ID).
  */
 function rad_find_page_logos() {
-	$page = get_page_by_path( 'summit' );
+	$page = rad_design_page( 'summit' );
 
 	if ( ! $page instanceof WP_Post || '' === trim( $page->post_content ) ) {
 		return array();
@@ -1058,7 +1142,7 @@ function rad_find_page_logos() {
  * @return int Number of blocks removed.
  */
 function rad_strip_page_logos( $moved ) {
-	$page = get_page_by_path( 'summit' );
+	$page = rad_design_page( 'summit' );
 
 	if ( ! $page instanceof WP_Post ) {
 		return 0;
@@ -1591,6 +1675,7 @@ function rad_analyse_logo( $file ) {
 function rad_build_logo( $post_id, $attachment_id ) {
 	$data = array(
 		'att'    => (int) $attachment_id,
+		'stamp'  => rad_logo_stamp( $attachment_id ),
 		'ver'    => RAD_LOGO_VERSION,
 		'file'   => '',
 		'width'  => 0,
@@ -1643,6 +1728,24 @@ function rad_build_logo( $post_id, $attachment_id ) {
 }
 
 /**
+ * A fingerprint of the picture file behind an attachment. Editing a picture in
+ * the Media Library (cropping, rotating) keeps the same attachment but changes
+ * the file, and the trimmed copy made from the old one must then be made again.
+ *
+ * @param int $attachment_id Attachment ID.
+ * @return string
+ */
+function rad_logo_stamp( $attachment_id ) {
+	$file = get_attached_file( $attachment_id );
+
+	if ( ! $file || ! is_readable( $file ) ) {
+		return '';
+	}
+
+	return md5( wp_basename( $file ) . '|' . (int) filemtime( $file ) . '|' . (int) filesize( $file ) );
+}
+
+/**
  * Everything needed to draw a sponsor's logo: the picture to use, its size,
  * and which tile colour to put it on. Builds (and remembers) the trimmed
  * picture the first time.
@@ -1664,6 +1767,7 @@ function rad_sponsor_logo( $post_id ) {
 		&& isset( $data['att'], $data['ver'], $data['file'] )
 		&& array_key_exists( 'bg', $data )
 		&& (int) $data['att'] === $attachment_id
+		&& isset( $data['stamp'] ) && $data['stamp'] === rad_logo_stamp( $attachment_id )
 		&& (int) $data['ver'] === RAD_LOGO_VERSION
 		&& ( '' === $data['file'] || file_exists( $dir['path'] . '/' . $data['file'] ) );
 
@@ -1708,12 +1812,16 @@ function rad_sponsor_logo( $post_id ) {
 /**
  * The tiers that have sponsors, in page order, each with its sponsors.
  *
+ * Worked out once per page view. Pass true to work it out again (after sponsors
+ * have been changed within the same request).
+ *
+ * @param bool $refresh Whether to ignore the copy already worked out.
  * @return array[] Each: name, slug, size, names (bool), sponsors (WP_Post[]).
  */
-function rad_sponsor_tiers() {
+function rad_sponsor_tiers( $refresh = false ) {
 	static $cache = null;
 
-	if ( null !== $cache ) {
+	if ( null !== $cache && ! $refresh ) {
 		return $cache;
 	}
 
@@ -1807,7 +1915,22 @@ function rad_balanced_columns( $count, $maximum ) {
  * @return string
  */
 function rad_tile_style( $logo ) {
-	return $logo && ! empty( $logo['bg'] ) ? ' style="--tile-bg:' . esc_attr( $logo['bg'] ) . '"' : '';
+	if ( ! $logo ) {
+		return '';
+	}
+
+	$style = '';
+
+	if ( ! empty( $logo['bg'] ) ) {
+		$style .= '--tile-bg:' . esc_attr( $logo['bg'] ) . ';';
+	}
+
+	// The picture's own size, so a small logo is not blown up until it blurs (see .sponsor-logo img).
+	if ( ! empty( $logo['width'] ) && ! empty( $logo['height'] ) ) {
+		$style .= '--lw:' . (int) $logo['width'] . ';--lh:' . (int) $logo['height'] . ';';
+	}
+
+	return '' === $style ? '' : ' style="' . $style . '"';
 }
 
 /**

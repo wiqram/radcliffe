@@ -14,8 +14,10 @@ something](#17-example-making-an-announcement), [adding
 speakers](#18-example-adding-the-speakers), [the Register
 button](#19-example-the-register-button), [sponsors and
 collaborators](#20-example-sponsors-and-collaborators), [writing an
-article](#21-example-writing-an-article) and [Karina's LinkedIn
-posts](#22-example-karinas-linkedin-posts).
+article](#21-example-writing-an-article), [Karina's LinkedIn
+posts](#22-example-karinas-linkedin-posts) and [what Google and LinkedIn
+show](#23-example-search-results-and-shared-links). **Before the website goes
+public,** work through the [go-live checklist](#24-checklist-before-you-go-live).
 
 ---
 
@@ -229,6 +231,15 @@ To add a picture on its own, press **+**, type **Image**, and choose the
    click **Add to Menu**.
 4. Click **Save Menu**.
 
+The menu looks after itself. With the usual handful of items it runs along the
+top; if you add so many that they would not fit, or the screen is narrow, it
+folds into a **Menu** button that opens a list. You never need to adjust that.
+
+You can also change a page's web address (for example from `summit` to
+`summit-2026`) in the page editor. Links to it from the rest of the website
+follow automatically. Only links you typed by hand elsewhere would need
+updating.
+
 The dark blue **Enquire** button at the end of the menu is just an ordinary
 link with a special marking. If it ever stops looking like a button: click the arrow on
 that item, find the box called **CSS Classes** and type `cta` into it, then
@@ -385,7 +396,7 @@ automatically once the domain is connected. There is nothing to set up.
 | What you see | What it means | What to do |
 | --- | --- | --- |
 | A change does not appear on the website | It was not published | Customizer: click **Publish**. Page: click **Update** |
-| A change appears for you but not for someone else | Their browser is showing an old copy | Ask them to press Ctrl+F5 (Cmd+Shift+R on a Mac). If it persists, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
+| A change appears for you but not for someone else | The website keeps ready-made copies of its pages so they load quickly. Publishing a change clears the pages it affects, and every copy expires after ten minutes at most | Wait a few minutes, then ask them to press Ctrl+F5 (Cmd+Shift+R on a Mac). If it is still old after ten minutes, in WordPress hover **LiteSpeed Cache** in the top bar and click **Purge All**, or in hPanel open the site's **Dashboard** and click **Clear cache** |
 | A new section appears but looks unstyled | The browser is showing an old copy | Press Ctrl+F5, then **Purge All** as above |
 | Pages look plain, with no colours or fonts | The design is not switched on | **Appearance → Themes** → click **Activate** on **Redcliffe Advisory** |
 | The menu at the top is empty | The menu was unassigned | **Appearance → Menus** → at the bottom tick **Primary menu** → **Save Menu** |
@@ -397,7 +408,9 @@ automatically once the domain is connected. There is nothing to set up.
 | The Register button on the Summit page goes to the wrong place, or its wording is wrong | The old address or wording is still saved | **Appearance → Customize → Summit page**: **Register button text** and **Registration page address**, then **Publish** (section 19) |
 | The Register button has disappeared | The **Registration page address** was cleared, which hides the button | **Appearance → Customize → Summit page → Registration page address**, paste the booking link, **Publish** |
 | The two buttons at the bottom of the Agenda page point to the wrong place or say the wrong thing | Their wording and addresses are kept in the Customizer | **Appearance → Customize → Agenda page**, change **First closing button** and **Second closing button**, **Publish** (section 15) |
-| A sponsor you added is not on the Summit page | It is still a **Draft**, or the browser or the site is showing an old copy | **Sponsors**: the sponsor must say **Published** and show a tier. Then press Ctrl+F5; if it is still missing, hPanel → site **Dashboard** → **Clear cache** |
+| A sponsor you added is not on the Summit page | It is still a **Draft**, or a visitor's browser is showing an old copy | **Sponsors**: the sponsor must say **Published** and show a tier. The Summit page refreshes itself when you press **Publish**; allow a few minutes, then Ctrl+F5. If it is still missing after ten minutes, hPanel → site **Dashboard** → **Clear cache** |
+| A sponsor's logo is missing but its name shows | The picture was deleted from the Media Library, or the file cannot be read | **Sponsors** → click the sponsor → set the **Featured image** again with a PNG, JPG or WebP file |
+| A page's title or description in Google is not what you want | Each page has one written for it, and Google takes days or weeks to notice changes | **Appearance → Customize → Search and sharing** (section 23) |
 | A logo looks the wrong colour or sits on the wrong tile | The website's automatic tile choice is not right for this logo | **Sponsors** → click the sponsor → **Tile colour** → choose **White tile** or **Dark blue tile** → **Update** (section 20) |
 | Karina's LinkedIn posts do not show on the homepage | The feed is loaded from LinkedIn's partner service and can be slow or blocked by an ad-blocker | Wait a few seconds and scroll down; try without an ad-blocker. If it never shows, see section 22 |
 | The Agenda page shows the old programme, not what you typed | The page has not been updated, or the browser is showing an old copy | Open **Pages → Agenda → Edit** and click **Update**; then Ctrl+F5 |
@@ -761,6 +774,10 @@ To add a level such as *Media partner*, fill in the **Add a tier** form on the
 left (name, position, size) and click the button at its foot. A tier with no
 sponsors is never shown on the website.
 
+If you delete a tier that still has sponsors in it, they are moved to
+**Collaborators** (WordPress tells you) so that no logo disappears.
+Move them to another tier from **Sponsors** afterwards if you wish.
+
 ### Where they appear
 
 On the Summit page, in the blue **Collaborators · 2026** band. Its heading and
@@ -771,8 +788,16 @@ together; if every sponsor is removed, the example names come back. To hide the
 whole band, untick **Show: Collaborators** on the same Customizer page.
 
 **If a new sponsor does not show:** check that its status says **Published**
-and that a tier is chosen. If the site has a cache, press Ctrl+F5, or in
-hPanel open the site's **Dashboard** and click **Clear cache** (section 13).
+and that a tier is chosen. The Summit page refreshes itself when you publish or
+change a sponsor, and visitors see the change within a few minutes at most.
+If it is still missing after ten minutes, press Ctrl+F5, then in hPanel open
+the site's **Dashboard** and click **Clear cache** (section 13).
+
+**Awkward logos are fine.** Very wide, very tall, very small or very large
+pictures are all fitted to the tiles, and a logo that cannot be read simply
+shows the organisation's name instead. A very small logo is not stretched far
+beyond its own size, so it stays sharp; use the largest version you have. If you replace a logo's
+picture in the Media Library, the Summit page picks up the new one.
 
 ---
 
@@ -858,3 +883,77 @@ LinkedIn profile. **If the posts stop showing,** the SociableKit subscription
 may have lapsed or the feed was deleted; the rest of the homepage is not
 affected. Ask whoever manages that SociableKit account, and if the feed number
 changes, paste the new number into **LinkedIn posts feed number**.
+
+---
+
+## 23. Example: search results and shared links
+
+Every page already has a **title** and a short **description** written for
+Google, and a picture and wording for when a page is shared on LinkedIn, in an
+email or in a message. You do not have to do anything.
+
+**To change them,** go to **Appearance → Customize → Redcliffe Advisory →
+Search and sharing**. For each page there are two boxes: the title, and the
+description. The original wording is shown in grey inside the box. Type
+your own to replace it; clear the box to go back. Click **Publish**.
+
+| To change… | Find… |
+| --- | --- |
+| The picture shown when a page is shared | **Picture shown when a page is shared** (a wide picture, about twice as wide as it is tall, works best; the default is the photograph of the Summit hall) |
+| Google's title for a page | **…: title in search results** |
+| Google's description of a page | **…: description in search results** (one or two sentences; Google shows about 150 characters) |
+
+**Articles** use their own **Excerpt** as the description and their own
+**Featured image** as the picture (section 21), so each article looks right
+when it is shared.
+
+**The firm's name.** Titles end with *— Redcliffe Advisory*. This comes from
+**Settings → General → Site Title**. Until that is set to the firm's name, the
+website uses *Redcliffe Advisory* itself, so a temporary web address never
+appears in a title or in the "From" name of an enquiry email.
+
+**Two things to know.** Google takes days or weeks to notice a change, and
+you cannot hurry it. LinkedIn remembers a page's preview for about a week; to
+refresh it, paste the page's address into LinkedIn's *Post Inspector*
+(linkedin.com/post-inspector).
+
+---
+
+## 24. Checklist: before you go live
+
+Work down this list once, before **Connect domain** (section 12). None of it
+is difficult; each line says where to go.
+
+1. **Read every page** on the temporary address once, on a phone as well as a
+   computer.
+2. **Sponsors.** Open **Sponsors** and check that each organisation sits in
+   the tier you want and that its logo looks right (section 20).
+3. **The Register button.** Click it on the Summit page and check it opens the
+   right booking page (section 19).
+4. **Send a test enquiry** through the Contact page, and check the email arrives
+   (section 7). Check spam too.
+5. **Settings → General.** Set **Site Title** to *Redcliffe Advisory* and write
+   a **Tagline** if you would like one.
+6. **Settings → Reading.** Make sure **Discourage search engines from indexing
+   this site** is *not* ticked.
+7. **Connect the domain** (section 12). Then open
+   `https://www.redcliffeadvisory.com/robots.txt` in a browser: it must not
+   contain a line that says `Disallow: /` on its own. If it does, ask
+   Hostinger's help chat (the **Agent** button in hPanel) to remove it.
+8. **The LinkedIn posts** come from a SociableKit account (section 22). Check
+   who owns it, and that the subscription will not lapse. That feed loads
+   content from outside the website; if you need a cookie notice for
+   visitors, add one now.
+9. **Updates and backups.** In hPanel open the site's **Dashboard**, and
+   install any pending plugin updates. Then look at **Tools → Site Health**
+   in WordPress and follow anything it marks as needing action (section 10).
+   Confirm backups are on (section 9).
+10. **Old addresses.** Old Summit and Who's Who links forward to the new pages
+    automatically. A few older pages on the previous website (for example the
+    testimonials pages and older articles) have no page here yet, and their old
+    addresses will show *page not found*. Decide whether any of them need
+    recreating.
+
+After the domain is connected, visit the website once more from your phone,
+without logging in.
+
