@@ -29,6 +29,7 @@ let warned = 0;
   if (shotsDir) fs.mkdirSync(shotsDir, { recursive: true });
   const browser = await puppeteer.launch({ executablePath: chrome, headless: 'new', args: ['--no-sandbox', '--force-color-profile=srgb'] });
   const page = await browser.newPage();
+  await page.setCacheEnabled(false); // a CDN answers a repeat visit with 304 Not Modified, which is not a page to measure
   for (const width of widths) {
     await page.setViewport({ width, height: 900, deviceScaleFactor: 1, isMobile: width < 600 });
     for (const url of pages) {
