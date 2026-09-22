@@ -34,7 +34,12 @@ function rad_legacy_redirects() {
  * Send a visitor on an old address to the matching page, permanently.
  *
  * Runs only when nothing else already answered the request (is_404()), so it
- * can never intercept a real page, post or file.
+ * can never intercept a real page, post or file. Registered at priority 1, so
+ * it runs and exits before core's own redirect_canonical() (priority 10 on
+ * this same hook): otherwise, for a mapped address that happens to share
+ * words with an old post's slug, WordPress's own "did you mean this post?"
+ * guess (redirect_guess_404_permalink()) fires first and wins, sending the
+ * visitor to that unrelated post instead of the page we deliberately chose.
  */
 function rad_redirect_legacy_urls() {
 	if ( ! is_404() || empty( $_SERVER['REQUEST_URI'] ) ) {
@@ -50,4 +55,4 @@ function rad_redirect_legacy_urls() {
 		exit;
 	}
 }
-add_action( 'template_redirect', 'rad_redirect_legacy_urls' );
+add_action( 'template_redirect', 'rad_redirect_legacy_urls', 1 );
