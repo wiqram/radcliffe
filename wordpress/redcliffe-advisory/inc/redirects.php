@@ -16,9 +16,14 @@ defined( 'ABSPATH' ) || exit;
  */
 function rad_legacy_redirects() {
 	return array(
+		'the-city-quantum-and-ai-summit'             => 'summit',
 		'the-city-quantum-and-ai-summit-2026'        => 'summit',
 		'the-city-quantum-and-ai-summit-2025'        => 'summit',
 		'the-city-quantum-and-ai-summit-2026-agenda' => 'agenda',
+		'the-city-quantum-and-ai-summit-2025-agenda' => 'agenda',
+		'summit-2024'                                => 'summit',
+		'summit-2023'                                => 'summit',
+		'summit-2023-old'                            => 'summit',
 		'whos-who'                                   => 'who',
 		'the-city'                                   => 'city',
 		'chairman-avisory'                           => 'practice',

@@ -92,7 +92,7 @@ const version = require('fs').readFileSync(require('path').join(__dirname, '../.
   if (/class="navigation pagination"/.test(pageOne.html)) check('page 2 differs from page 1 and has no featured card', paged.status === 200 && !paged.html.includes('journal-feature'));
 
   // ── legacy Squarespace addresses still land on the right page
-  for (const [from, to] of [['/the-city-quantum-and-ai-summit-2026/', '/summit/'], ['/the-city-quantum-and-ai-summit-2026-agenda/', '/agenda/'], ['/whos-who/', '/who/']]) {
+  for (const [from, to] of [['/the-city-quantum-and-ai-summit/', '/summit/'], ['/the-city-quantum-and-ai-summit-2026/', '/summit/'], ['/the-city-quantum-and-ai-summit-2026-agenda/', '/agenda/'], ['/the-city-quantum-and-ai-summit-2025-agenda/', '/agenda/'], ['/summit-2024/', '/summit/'], ['/summit-2023/', '/summit/'], ['/summit-2023-old/', '/summit/'], ['/whos-who/', '/who/']]) {
     const r = await get(from);
     check(`${from} redirects to ${to}`, r.status === 301 && r.location.endsWith(to), `${r.status} ${r.location}`);
   }
