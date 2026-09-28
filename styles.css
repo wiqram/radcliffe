@@ -1366,6 +1366,12 @@ html.nav-collapsed .nav-toggle .lines span { width: 22px; height: 1px; backgroun
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
+.test-set { position: relative; }
+.test-item { margin: 0; }
+.test-item[hidden] { display: none; }
+/* Inside the Customizer every quote is shown at once, so each one has its own
+   pencil and an edit can be seen (assets/js/customize-preview.js). */
+.test-set.rad-all-testimonials { display: grid; gap: 72px; }
 .test-quote {
   font-family: var(--serif);
   font-style: italic;
@@ -1384,6 +1390,7 @@ html.nav-collapsed .nav-toggle .lines span { width: 22px; height: 1px; backgroun
   text-align: center;
 }
 .test-attrib .name { color: var(--ink); }
+.test-controls[hidden] { display: none; }
 .test-controls {
   display: flex; justify-content: center; align-items: center; gap: 18px;
   margin-top: 32px;

@@ -68,8 +68,44 @@ function rad_get_html( $key ) {
 		);
 	}
 
+	/**
+	 * A piece of text on its way to the page.
+	 *
+	 * @param string $value Text, with the design's own wording as the fallback.
+	 * @param string $key   Content key.
+	 */
+	return apply_filters( 'rad_content_html', $value, $key );
+}
+
+/**
+ * Keep a quotation printing correctly however it was typed.
+ *
+ * The homepage quotations used to carry their own decoration inside the field:
+ * the gold quote marks, and a <span> around the name. The quote marks are part
+ * of the page's markup now, and the name is emphasised for whoever typed it, so
+ * an owner can type a quotation plainly — and a quotation saved before theme
+ * 1.4.7 still prints one pair of quote marks, not two.
+ *
+ * @param string $value Text about to be printed.
+ * @param string $key   Content key.
+ * @return string
+ */
+function rad_testimonial_wording( $value, $key ) {
+	if ( preg_match( '/^home\.testimonial\.\d+\.quote$/', $key ) ) {
+		// Only ever a quote mark's worth of characters: a half-deleted tag in a
+		// saved quotation must not let this swallow the words themselves.
+		return preg_replace( '#<span class="(?:open|close)-q">[^<]{0,4}</span>#', '', $value );
+	}
+
+	if ( preg_match( '/^home\.testimonial\.\d+\.attribution$/', $key ) && false === strpos( $value, 'class="name"' ) ) {
+		// "A City Chair · Under Chatham House rule" — the name is what precedes
+		// the first separator, and there may not be one.
+		return preg_replace( '#^\s*([^·<]+?)\s*·#u', '<span class="name">$1</span> ·', $value );
+	}
+
 	return $value;
 }
+add_filter( 'rad_content_html', 'rad_testimonial_wording', 10, 2 );
 
 /**
  * Print an editable piece of text.

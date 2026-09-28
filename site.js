@@ -134,32 +134,33 @@
     );
   }
 
-  // 5) Testimonial rotator (Articles page) — only if present
-  const tq = document.getElementById('t-quote');
-  if (tq) {
-    const data = window.__TESTIMONIALS || [];
-    const aEl = document.getElementById('t-attrib');
+  // 5) Testimonial rotator — only if present.
+  // Every quote is already on the page, one per slot, so each can be edited on
+  // its own; this only changes which one is showing. It never writes the words
+  // itself, or an edited quote would be replaced the moment the page loaded.
+  const tSet = document.getElementById('t-set');
+  if (tSet) {
+    const items = Array.from(tSet.querySelectorAll('.test-item'));
     const cEl = document.getElementById('t-count');
+    const controls = document.querySelector('.test-controls');
+    const pad = (n) => String(n).padStart(2, '0');
     let i = 0;
-    function render() {
-      const t = data[i];
-      tq.style.opacity = 0;
-      aEl.style.opacity = 0;
-      setTimeout(() => {
-        tq.innerHTML = '<span class="open-q">“</span>' + t.q + '<span class="close-q">”</span>';
-        aEl.innerHTML = '<span class="name">' + t.name + '</span> · ' + t.org;
-        if (cEl) cEl.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(data.length).padStart(2, '0');
-        tq.style.opacity = 1;
-        aEl.style.opacity = 1;
-      }, 220);
+    function show() {
+      items.forEach((item, n) => { item.hidden = n !== i; });
+      if (cEl) cEl.textContent = pad(i + 1) + ' / ' + pad(items.length);
+      tSet.style.opacity = 1;
     }
-    tq.style.transition = 'opacity 320ms ease';
-    aEl.style.transition = 'opacity 320ms ease';
+    function render() {
+      tSet.style.opacity = 0;
+      setTimeout(show, 220);
+    }
+    tSet.style.transition = 'opacity 320ms ease';
     const prev = document.getElementById('t-prev');
     const next = document.getElementById('t-next');
-    if (prev) prev.addEventListener('click', () => { i = (i - 1 + data.length) % data.length; render(); });
-    if (next) next.addEventListener('click', () => { i = (i + 1) % data.length; render(); });
-    if (data.length) render();
+    if (prev) prev.addEventListener('click', () => { i = (i - 1 + items.length) % items.length; render(); });
+    if (next) next.addEventListener('click', () => { i = (i + 1) % items.length; render(); });
+    if (items.length > 1) show();
+    else if (controls) controls.hidden = true; // one quote needs no arrows
   }
 
   // 6) LinkedIn posts (SociableKit) — the widget loads once it is close to

@@ -68,6 +68,9 @@ function findMatchingClose(html, tag, from) {
  *   - Fewer than three letters or digits ("02", "→") is decoration, not text.
  *   - Scripts, forms, SVG, the primary nav and anything already tagged are
  *     left alone, as is the section a page edits as blocks.
+ *   - `data-cms-auto="off"` opts an element out: text the page works out for
+ *     itself (the "01 / 04" counter under the quotations) is not something the
+ *     owner can usefully type into, and a field nothing reads would be a lie.
  *   - Keys are <group>.<section>.<hash of the text>, so they survive the HTML
  *     being reordered; if the wording in the HTML changes, the default changes
  *     with it and a fresh key is right.
@@ -166,7 +169,7 @@ function autoTag(html, group, section, skipSection) {
       continue;
     }
 
-    if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-key=/.test(openTag)) {
+    if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-key=/.test(openTag) || /\sdata-cms-auto="off"/.test(openTag)) {
       out += html.slice(child.start, child.end);
       continue;
     }
@@ -421,6 +424,7 @@ function convert(html, label = '', blockSection = '', group = '', postSection = 
   out = rewriteCmsText(out);
   out = rewriteCmsSections(out, blockSection, postSection, sponsorSection);
   if (label) out = rewriteDynamicSectionMount(out, label, blockSection);
+  out = out.replace(/\sdata-cms-auto="[^"]*"/g, ''); // its only job was to be seen by autoTag
   return out;
 }
 
@@ -661,7 +665,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.4.6
+Version: 1.4.7
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4

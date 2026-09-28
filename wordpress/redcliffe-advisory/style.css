@@ -3,7 +3,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.4.6
+Version: 1.4.7
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -1381,6 +1381,12 @@ html.nav-collapsed .nav-toggle .lines span { width: 22px; height: 1px; backgroun
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
+.test-set { position: relative; }
+.test-item { margin: 0; }
+.test-item[hidden] { display: none; }
+/* Inside the Customizer every quote is shown at once, so each one has its own
+   pencil and an edit can be seen (assets/js/customize-preview.js). */
+.test-set.rad-all-testimonials { display: grid; gap: 72px; }
 .test-quote {
   font-family: var(--serif);
   font-style: italic;
@@ -1399,6 +1405,7 @@ html.nav-collapsed .nav-toggle .lines span { width: 22px; height: 1px; backgroun
   text-align: center;
 }
 .test-attrib .name { color: var(--ink); }
+.test-controls[hidden] { display: none; }
 .test-controls {
   display: flex; justify-content: center; align-items: center; gap: 18px;
   margin-top: 32px;

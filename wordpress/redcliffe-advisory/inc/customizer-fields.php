@@ -76,11 +76,35 @@ return array(
 			),
 			array(
 				'home.testimonial.1.quote',
-				'Testimonial quote',
+				'Quotation 1 — the words',
 			),
 			array(
 				'home.testimonial.1.attribution',
-				'Testimonial attribution',
+				'Quotation 1 — who said it',
+			),
+			array(
+				'home.testimonial.2.quote',
+				'Quotation 2 — the words',
+			),
+			array(
+				'home.testimonial.2.attribution',
+				'Quotation 2 — who said it',
+			),
+			array(
+				'home.testimonial.3.quote',
+				'Quotation 3 — the words',
+			),
+			array(
+				'home.testimonial.3.attribution',
+				'Quotation 3 — who said it',
+			),
+			array(
+				'home.testimonial.4.quote',
+				'Quotation 4 — the words',
+			),
+			array(
+				'home.testimonial.4.attribution',
+				'Quotation 4 — who said it',
 			),
 			array(
 				'home.linkedin.followLabel',
@@ -228,11 +252,6 @@ return array(
 			array(
 				'home.rooms.16a6gsa',
 				'The principles by which the practice is held — discretion…',
-				true,
-			),
-			array(
-				'home.testimonials.04b0ryg',
-				'01 / 04',
 				true,
 			),
 			array(

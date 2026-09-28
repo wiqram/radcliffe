@@ -61,6 +61,7 @@ const check = (name, ok, detail = '') => { if (!ok) failed += 1; console.log(`${
   check('Customizer: Agenda closing buttons (words, addresses, show/hide)', has(/agenda[._]actions[._]primaryLabel/) && has(/agenda[._]actions[._]primaryUrl/) && has(/agenda[._]actions[._]secondaryLabel/) && has(/agenda[._]actions[._]secondaryUrl/) && has(/section[._]agenda[._]actions/));
   check('Customizer: LinkedIn feed number, profile address, link text, show/hide', has(/home[._]linkedin[._]embedId/) && has(/home[._]linkedin[._]profileUrl/) && has(/home[._]linkedin[._]followLabel/) && has(/section[._]home[._]linkedin/));
   check('Customizer: default author name for articles', has(/articles[._]byline[._]default/));
+  check('Customizer: all four homepage quotations, words and attribution', [1, 2, 3, 4].every((n) => has(new RegExp(`home[._]testimonial[._]${n}[._]quote`)) && has(new RegExp(`home[._]testimonial[._]${n}[._]attribution`))));
   await browser.close();
   console.log(failed ? `\n${failed} failed` : '\nall passed');
   process.exit(failed ? 1 : 0);

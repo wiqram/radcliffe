@@ -44,11 +44,32 @@
 		} );
 	}
 
+	/*
+	 * The homepage shows its quotations one at a time, with arrows. In here all
+	 * four are shown at once and the arrows are put away, so every quote has its
+	 * own pencil and a change to any of them can be seen straight away.
+	 */
+	function showEveryTestimonial() {
+		var set = $( '#t-set' );
+
+		if ( ! set.length ) {
+			return;
+		}
+
+		set.addClass( 'rad-all-testimonials' ).css( 'opacity', 1 );
+		set.find( '.test-item' ).prop( 'hidden', false );
+		$( '.test-controls' ).prop( 'hidden', true );
+	}
+
 	// api.preview only exists once the preview has connected to the Customizer.
 	api.bind( 'preview-ready', function () {
 		addPencils();
+		showEveryTestimonial();
 		if ( api.selectiveRefresh ) {
-			api.selectiveRefresh.bind( 'partial-content-rendered', addPencils );
+			api.selectiveRefresh.bind( 'partial-content-rendered', function () {
+				addPencils();
+				showEveryTestimonial();
+			} );
 		}
 	} );
 } )( window.wp && window.wp.customize, window.jQuery );

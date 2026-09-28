@@ -36,6 +36,8 @@ echo "old release $OLD_VERSION -> current build $NEW_VERSION"
 # 2. What the owner had done there.
 wp theme mod set rad_summit_hero_registerUrl "" >/dev/null   # the Customizer saved the empty address
 wp theme mod set rad_summit_hero_title "Owner headline" >/dev/null
+# A homepage quotation, typed into the old field that carried the gold quote marks inside it.
+wp theme mod set rad_home_testimonial_1_quote '<span class="open-q">“</span>The owner typed this one.<span class="close-q">”</span>' >/dev/null
 AGENDA="$(wp post list --post_type=page --name=agenda --field=ID)"
 wp eval '
 $p = get_post((int) '"$AGENDA"');
@@ -66,6 +68,10 @@ check "the Agenda has one pair of closing buttons" "$([ "$closing" = 2 ] && echo
 check "the owner's edited Agenda button keeps its words and address" "$(echo "$agenda" | grep -q "href=\"$OWNER_URL\"[^>]*><span data-rad=\"agenda.actions.primaryLabel\">Register here" && echo 1 || echo 0)"
 
 check "the owner's posts are on the Articles page with an author and month" "$([ "$(curl -s "$BASE/articles/" | count 'Karina Robinson · ')" -ge 3 ] && echo 1 || echo 0)"
+
+home="$(curl -s "$BASE/")"
+check "the owner's own quotation is on the homepage, with one pair of quote marks" "$(echo "$home" | grep -q 'The owner typed this one.' && [ "$(echo "$home" | count '<span class="open-q">')" = 4 ] && echo 1 || echo 0)" "$(echo "$home" | count '<span class="open-q">')"
+check "and the other three quotations can now be edited as well" "$([ "$(echo "$home" | count 'data-rad="home\.testimonial\.[2-4]\.quote"')" = 3 ] && echo 1 || echo 0)"
 
 # Deliberately clearing the address afterwards still hides the button (the migration runs once).
 wp theme mod set rad_summit_hero_registerUrl "" >/dev/null

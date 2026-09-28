@@ -61,6 +61,10 @@ const version = require('fs').readFileSync(require('path').join(__dirname, '../.
   check('the LinkedIn widget is loaded lazily, not in the page head', !/<script[^>]+sociablekit/.test(home) && home.includes('data-linkedin-src="https://widgets.sociablekit.com/'));
   check('a plain link to the LinkedIn profile is always there', home.includes('href="https://www.linkedin.com/in/karina-robinson/"'));
 
+  // ── Home: the four quotations, each its own pair of fields (scripts/test/testimonials.sh, .js)
+  check('Home has four quotations, each with words and an attribution of its own', count(home, '<figure class="test-item"') === 4 && [1, 2, 3, 4].every((n) => home.includes(`data-rad="home.testimonial.${n}.quote"`) && home.includes(`data-rad="home.testimonial.${n}.attribution"`)));
+  check('the quotations are in the page, not written over it once it loads', !home.includes('__TESTIMONIALS'));
+
   // ── Search and sharing: every page says what it is, once, and has a picture to show when shared
   const noTags = Object.keys(pages).filter((path) => !(count(html[path], '<meta name="description"') === 1 && count(html[path], 'property="og:title"') === 1 && count(html[path], 'property="og:image"') === 1 && count(html[path], 'name="twitter:card"') === 1));
   check('every page has one description and the share tags', noTags.length === 0, noTags.join(', '));

@@ -15,9 +15,11 @@ speakers](#18-example-adding-the-speakers), [the Register
 button](#19-example-the-register-button), [sponsors and
 collaborators](#20-example-sponsors-and-collaborators), [writing an
 article](#21-example-writing-an-article), [Karina's LinkedIn
-posts](#22-example-karinas-linkedin-posts) and [what Google and LinkedIn
-show](#23-example-search-results-and-shared-links). **Before the website goes
-public,** work through the [go-live checklist](#24-checklist-before-you-go-live).
+posts](#22-example-karinas-linkedin-posts), [what Google and LinkedIn
+show](#23-example-search-results-and-shared-links) and [the quotations on the
+homepage](#24-example-the-four-quotations-on-the-homepage). **Before the website
+goes public,** work through the
+[go-live checklist](#25-checklist-before-you-go-live).
 
 ---
 
@@ -936,7 +938,37 @@ refresh it, paste the page's address into LinkedIn's *Post Inspector*
 
 ---
 
-## 24. Checklist: before you go live
+## 24. Example: the four quotations on the homepage
+
+Under the six rooms, the homepage shows a quotation at a time, with **‹** and
+**›** to move between them and a counter — *01 / 04* — underneath. There are
+four, and **each one is edited on its own.**
+
+Go to **Appearance → Customize → Homepage**. Eight boxes sit together:
+
+| Box | Holds |
+| --- | --- |
+| **Quotation 1 — the words** | What was said. Type it plainly: the gold quote marks are added for you. |
+| **Quotation 1 — who said it** | Who said it, then a `·`, then where they are from — for example *A City Chair · Under Chatham House rule*. The name before the `·` is picked out in darker ink. |
+| …and the same pair for **Quotation 2**, **3** and **4** | |
+
+Change a box, click **Publish**, and that quotation changes on the website.
+Clearing a box puts the designed wording back, as everywhere else.
+
+**Seeing them while you edit.** On the website the quotations take turns, so
+only one is on screen at a time. Inside the Customizer all four are shown at
+once, one under the other, each with its own pencil — so you can see the one
+you are changing. The arrows come back as soon as you close the Customizer.
+
+**The counter** (*01 / 04*) is worked out by the page and cannot be typed into:
+it always matches which quotation is showing.
+
+**To take the quotations off the homepage altogether,** untick **Show:
+Testimonials** in the same place and click **Publish**.
+
+---
+
+## 25. Checklist: before you go live
 
 Work down this list once, before **Connect domain** (section 12). None of it
 is difficult; each line says where to go.

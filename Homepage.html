@@ -157,11 +157,27 @@
 
   <section class="test" data-cms-section="home.testimonials">
     <div class="container">
-      <blockquote class="test-quote" id="t-quote" data-cms-key="home.testimonial.1.quote" data-cms-mode="html"><span class="open-q">“</span>Karina Robinson is, in the best sense, a benign disruptor.<span class="close-q">”</span></blockquote>
-      <div class="test-attrib" id="t-attrib" data-cms-key="home.testimonial.1.attribution" data-cms-mode="html"><span class="name">A City Chair</span> · Under Chatham House rule</div>
+      <div class="test-set" id="t-set">
+        <figure class="test-item">
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-cms-key="home.testimonial.1.quote" data-cms-mode="html">Karina Robinson is, in the best sense, a benign disruptor. Redcliffe Advisory arrive with the people, the patience and the questions — not with a thesis.</span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-cms-key="home.testimonial.1.attribution" data-cms-mode="html"><span class="name">A City Chair</span> · Under Chatham House rule</figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-cms-key="home.testimonial.2.quote" data-cms-mode="html">The Summit is the only convening I attend where physicists, naval officers, treasurers and founders speak to each other without an interpreter.</span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-cms-key="home.testimonial.2.attribution" data-cms-mode="html"><span class="name">A NATO advisor</span> · Quantum Strategy working group</figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-cms-key="home.testimonial.3.quote" data-cms-mode="html">Clear language. Gender balance. Accessible pricing. A standard of room that everyone else now quietly tries to copy.</span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-cms-key="home.testimonial.3.attribution" data-cms-mode="html"><span class="name">A sovereign fund principal</span> · Mansion House · returning delegate</figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-cms-key="home.testimonial.4.quote" data-cms-mode="html">Redcliffe Advisory connects worlds that, on paper, do not share a vocabulary — and somehow leaves them having decided things.</span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-cms-key="home.testimonial.4.attribution" data-cms-mode="html"><span class="name">A frontier-technology CEO</span> · European Innovation Council portfolio</figcaption>
+        </figure>
+      </div>
       <div class="test-controls">
         <button id="t-prev" aria-label="Previous">‹</button>
-        <span id="t-count">01 / 04</span>
+        <span id="t-count" data-cms-auto="off">01 / 04</span>
         <button id="t-next" aria-label="Next">›</button>
       </div>
     </div>
@@ -175,15 +191,6 @@
       <!--rad-linkedin-feed-->
     </div>
   </section>
-  <script>
-    window.__TESTIMONIALS = [
-      {q:'Karina Robinson is, in the best sense, a benign disruptor. Redcliffe Advisory arrive with the people, the patience and the questions — not with a thesis.', name:'A City Chair', org:'Under Chatham House rule'},
-      {q:'The Summit is the only convening I attend where physicists, naval officers, treasurers and founders speak to each other without an interpreter.', name:'A NATO advisor', org:'Quantum Strategy working group'},
-      {q:'Clear language. Gender balance. Accessible pricing. A standard of room that everyone else now quietly tries to copy.', name:'A sovereign fund principal', org:'Mansion House · returning delegate'},
-      {q:'Redcliffe Advisory connects worlds that, on paper, do not share a vocabulary — and somehow leaves them having decided things.', name:'A frontier-technology CEO', org:'European Innovation Council portfolio'}
-    ];
-  </script>
-
   <div class="cms-sections" data-cms-sections></div>
 
   <footer class="footer">

@@ -124,11 +124,27 @@
   <?php if ( rad_section_enabled( 'home.testimonials' ) ) : ?>
 <section class="test">
     <div class="container">
-      <blockquote class="test-quote" id="t-quote" data-rad="home.testimonial.1.quote"><?php rad_html( 'home.testimonial.1.quote' ); ?></blockquote>
-      <div class="test-attrib" id="t-attrib" data-rad="home.testimonial.1.attribution"><?php rad_html( 'home.testimonial.1.attribution' ); ?></div>
+      <div class="test-set" id="t-set">
+        <figure class="test-item">
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-rad="home.testimonial.1.quote"><?php rad_html( 'home.testimonial.1.quote' ); ?></span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-rad="home.testimonial.1.attribution"><?php rad_html( 'home.testimonial.1.attribution' ); ?></figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-rad="home.testimonial.2.quote"><?php rad_html( 'home.testimonial.2.quote' ); ?></span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-rad="home.testimonial.2.attribution"><?php rad_html( 'home.testimonial.2.attribution' ); ?></figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-rad="home.testimonial.3.quote"><?php rad_html( 'home.testimonial.3.quote' ); ?></span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-rad="home.testimonial.3.attribution"><?php rad_html( 'home.testimonial.3.attribution' ); ?></figcaption>
+        </figure>
+        <figure class="test-item" hidden>
+          <blockquote class="test-quote"><span class="open-q">“</span><span class="test-quote-text" data-rad="home.testimonial.4.quote"><?php rad_html( 'home.testimonial.4.quote' ); ?></span><span class="close-q">”</span></blockquote>
+          <figcaption class="test-attrib" data-rad="home.testimonial.4.attribution"><?php rad_html( 'home.testimonial.4.attribution' ); ?></figcaption>
+        </figure>
+      </div>
       <div class="test-controls">
         <button id="t-prev" aria-label="Previous">‹</button>
-        <span id="t-count" data-rad="home.testimonials.04b0ryg"><?php rad_html( 'home.testimonials.04b0ryg' ); ?></span>
+        <span id="t-count">01 / 04</span>
         <button id="t-next" aria-label="Next">›</button>
       </div>
     </div>
@@ -145,14 +161,6 @@
     </div>
   </section>
 <?php endif; ?>
-  <script>
-    window.__TESTIMONIALS = [
-      {q:'Karina Robinson is, in the best sense, a benign disruptor. Redcliffe Advisory arrive with the people, the patience and the questions — not with a thesis.', name:'A City Chair', org:'Under Chatham House rule'},
-      {q:'The Summit is the only convening I attend where physicists, naval officers, treasurers and founders speak to each other without an interpreter.', name:'A NATO advisor', org:'Quantum Strategy working group'},
-      {q:'Clear language. Gender balance. Accessible pricing. A standard of room that everyone else now quietly tries to copy.', name:'A sovereign fund principal', org:'Mansion House · returning delegate'},
-      {q:'Redcliffe Advisory connects worlds that, on paper, do not share a vocabulary — and somehow leaves them having decided things.', name:'A frontier-technology CEO', org:'European Innovation Council portfolio'}
-    ];
-  </script>
 
 <?php rad_extra_sections(); ?>
 
