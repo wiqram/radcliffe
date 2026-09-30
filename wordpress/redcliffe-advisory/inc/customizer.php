@@ -37,6 +37,8 @@ function rad_sanitize_checkbox( $value ) {
  * @param WP_Customize_Manager $wp_customize Customizer manager.
  */
 function rad_customize_register( $wp_customize ) {
+	require_once get_theme_file_path( 'inc/customizer-list-control.php' );
+
 	$panels = require get_theme_file_path( 'inc/customizer-fields.php' );
 
 	$wp_customize->add_panel(
@@ -121,16 +123,16 @@ function rad_customize_register( $wp_customize ) {
 				);
 
 				$wp_customize->add_control(
-					$setting,
-					array(
-						'label'       => $label,
-						'section'     => $section_id,
-						'type'        => 'textarea',
-						'description' => sprintf(
-							/* translators: %s: the parts of a row, e.g. "Role | Organisation". */
-							__( 'One row per line, its parts separated by a | sign: %s. Add a line to add a row, delete a line to remove one, and move lines to reorder. A part can be left empty. Clear the whole box to put the original list back.', 'redcliffe-advisory' ),
-							implode( ' | ', $columns )
-						),
+					new RAD_List_Control(
+						$wp_customize,
+						$setting,
+						array(
+							'label'       => $label,
+							'section'     => $section_id,
+							'list_key'    => $key,
+							'columns'     => $columns,
+							'description' => __( 'Each line is one row of the list. Change the words in the boxes, use Remove to take a row away, the arrows to move it, and Add a row for a new one. A box can be left empty. Click Publish when you are happy.', 'redcliffe-advisory' ),
+						)
 					)
 				);
 
@@ -257,3 +259,29 @@ function rad_customize_preview_scripts() {
 	);
 }
 add_action( 'customize_preview_init', 'rad_customize_preview_scripts' );
+
+/**
+ * The row-by-row list editor, in the Customizer's own pane.
+ */
+function rad_customize_controls_scripts() {
+	wp_enqueue_script(
+		'rad-customize-controls',
+		get_theme_file_uri( 'assets/js/customize-controls.js' ),
+		array( 'customize-controls', 'jquery' ),
+		RAD_VERSION,
+		true
+	);
+
+	$css = '
+		.rad-list-rows { margin: 8px 0 0; padding: 0; list-style: none; }
+		.rad-list-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 8px 0; border-bottom: 1px solid #dcdcde; }
+		.rad-list-cells { display: flex; flex-direction: column; gap: 4px; flex: 1 1 100%; }
+		.rad-list-cell input[type="text"] { width: 100%; }
+		.rad-list-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+		.rad-list-actions .button { min-width: 30px; padding: 0 6px; line-height: 26px; height: 28px; }
+		.rad-list-actions .rad-list-remove { margin-left: 4px; }
+		.rad-list-buttons { display: flex; align-items: center; gap: 12px; margin: 10px 0 0; }
+	';
+	wp_add_inline_style( 'customize-controls', $css );
+}
+add_action( 'customize_controls_enqueue_scripts', 'rad_customize_controls_scripts' );

@@ -977,29 +977,29 @@ three career lists — **Quantum & Deep Tech**, **The City of London** and
 so each one is edited as **a single box, one row per line.**
 
 Go to **Appearance → Customize → Who's Who page** (or click the pencil beside
-the list itself). Under the page headline you will find four boxes, one per
-list. Each line in a box is one row of the list, and the parts of a row are
-separated by a **|** sign (the vertical bar, usually above the Enter key). The
-line under the box says which parts a row has:
+the list itself). Under the page headline you will find the four lists, each
+shown row by row. Every row has a box for each of its parts, and its own
+buttons:
 
-| List | A line looks like |
+| List | The boxes in each row |
 | --- | --- |
-| **Currently** | `Exec. Advisor \| Global India Business Corridor (GIBC UK)` — the role, then the organisation |
-| **Quantum & Deep Tech**, **The City of London**, **Earlier career** | `London School of Economics \| Emeritus Governor. \| Co-Founder of The Inclusion Initiative.` — the organisation, the role, then a note |
+| **Currently** | *Role* (for example *Exec. Advisor*), then *Organisation* (*Global India Business Corridor (GIBC UK)*) |
+| **Quantum & Deep Tech**, **The City of London**, **Earlier career** | *Organisation*, then *Role* (*Emeritus Governor.*), then a *Note* (*Co-Founder of The Inclusion Initiative.*) |
 
-- **To remove a row,** delete its line. The rows underneath move up by
-  themselves.
-- **To add a row,** start a new line and type it in the same shape.
-- **To reorder,** cut a line and paste it where it should go.
-- **A part can be left empty.** `Morgan Grenfell | Began her career at the
-  merchant bank. |` has no note, and none is printed — no blank space, no
-  placeholder wording.
+- **To change a row,** type in its boxes. The page on the right updates as you
+  go.
+- **To remove a row,** click **Remove** beside it. The rows underneath move up
+  by themselves.
+- **To add a row,** click **+ Add a row** under the list and fill in the boxes.
+- **To reorder,** use the **↑** and **↓** arrows beside a row.
+- **A box can be left empty.** *Morgan Grenfell* has no note, and none is
+  printed — no blank space, no placeholder wording.
 - **A change in one list stays in that list.** The GIBC line under *Currently*
   and the GIBC entry under *Quantum & Deep Tech* are separate rows in separate
-  boxes; change one and the other is untouched.
+  lists; change one and the other is untouched.
 
-Click **Publish** when you are happy. Clearing the whole box puts the designed
-list back, as everywhere else — so the original is never lost.
+Click **Publish** when you are happy. **Put the original list back**, under
+each list, restores the designed rows — so the original is never lost.
 
 ---
 

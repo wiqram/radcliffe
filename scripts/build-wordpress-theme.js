@@ -10,8 +10,9 @@
  *
  * Hand-written and left untouched by this script:
  *   functions.php, index.php, page.php, single.php, 404.php,
- *   inc/content.php, inc/customizer.php, inc/contact.php, inc/setup.php,
- *   inc/blocks.php, inc/guide.php, assets/css/blocks.css, template-parts/*.php
+ *   inc/content.php, inc/customizer.php, inc/customizer-list-control.php,
+ *   inc/contact.php, inc/setup.php, inc/blocks.php, inc/guide.php,
+ *   assets/css/blocks.css, assets/js/customize-*.js, template-parts/*.php
  *
  * The conversion is mechanical and deliberately strict: anything it does not
  * recognise raises an error rather than being silently dropped, so the theme
