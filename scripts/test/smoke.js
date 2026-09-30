@@ -55,6 +55,13 @@ const version = require('fs').readFileSync(require('path').join(__dirname, '../.
   check('Agenda has exactly one set of closing buttons', count(agenda, 'agenda-actions') === 1 && !agenda.includes('wp-block-buttons rad-agenda-actions'));
   check('the first Agenda button is worded "Reserve your spot" and goes to registration', /class="btn" href="https:\/\/web\.cvent\.com[^"]+"[^>]*><span data-rad="agenda\.actions\.primaryLabel">Reserve your spot/.test(agenda));
 
+  // ── Who's Who: the four lists are editable as lists, rows intact
+  const who = html['/who/'];
+  const currently = (who.match(/<ul[^>]*data-rad-list="who\.currently"[^>]*>([\s\S]*?)<\/ul>/) || [])[1] || '';
+  check('Who\'s Who "Currently" is an editable list with its eight designed rows', count(currently, '<li>') === 8 && currently.includes('<span class="k">CEO</span><span class="v">Redcliffe Advisory</span>'));
+  check('Who\'s Who has its three career lists', ['who.quantum', 'who.city', 'who.earlier'].every((key) => who.includes(`data-rad-list="${key}"`)));
+  check('a career entry without a note prints no empty note', /<span class="cv-role">Past Master\.<\/span>\s*<\/div>/.test(who) && !who.includes('<span class="cv-note"></span>'));
+
   // ── Home: LinkedIn posts
   const home = html['/'];
   check('Home has the LinkedIn posts feed with its embed number', /class="sk-ww-linkedin-profile-post" data-embed-id="114149"/.test(home));

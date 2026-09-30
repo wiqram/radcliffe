@@ -51,6 +51,7 @@ nine pages share byte-identical chrome, and then rewrites:
 | --- | --- |
 | `data-cms-key="home.hero.title"` | `<?php rad_html( 'home.hero.title' ); ?>`, with the element's current content captured as the Customizer default, plus `data-rad="home.hero.title"` for the Customizer's edit-shortcut pencil |
 | `data-cms-image="who.hero.photo"` | `rad_image_url()` / `rad_image_alt()`, defaulting to the original file |
+| `data-cms-list="who.currently"` (with `data-cms-list-label` and `data-cms-list-columns="Role \| Organisation"`) | `<?php rad_list( 'who.currently' ); ?>` inside the container, plus `data-rad-list` for the pencil. Each child is a row and each innermost classed element a part; the fullest row's markup becomes the template. In the Customizer the list is one box, a row per line with parts separated by `\|`, so rows can be added, removed and reordered; the design's rows are the default |
 | `data-cms-section="summit.gallery"` | wrapped in `if ( rad_section_enabled( … ) )` |
 | `href="Contact.html#x"` | `<?php echo esc_url( rad_url( 'contact' ) ); ?>#x` |
 | `src="images/…"` | `get_theme_file_uri()` |

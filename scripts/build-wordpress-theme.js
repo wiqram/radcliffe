@@ -28,7 +28,8 @@ const THEME = path.join(ROOT, 'wordpress', 'redcliffe-advisory');
 
 const SLUG_BY_FILE = Object.fromEntries(PAGES.map((page) => [page.file, page.slug]));
 
-const defaults = { text: {}, images: {}, imageAlt: {}, titles: {}, links: { register: REGISTER_URL } };
+const defaults = { text: {}, images: {}, imageAlt: {}, titles: {}, links: { register: REGISTER_URL }, lists: {} };
+const listFields = {}; // group -> [{ key, label, columns }]
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -169,7 +170,7 @@ function autoTag(html, group, section, skipSection) {
       continue;
     }
 
-    if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-key=/.test(openTag) || /\sdata-cms-auto="off"/.test(openTag)) {
+    if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-(key|list)=/.test(openTag) || /\sdata-cms-auto="off"/.test(openTag)) {
       out += html.slice(child.start, child.end);
       continue;
     }
@@ -203,6 +204,121 @@ function autoTag(html, group, section, skipSection) {
   }
 
   return out + html.slice(cursor);
+}
+
+/* ------------------------------------------------------------------- lists */
+
+/**
+ * A list whose rows the owner can add, remove and reorder — the roles beside
+ * the portrait on Who's Who, or one of its career lists:
+ *
+ *   <ul data-cms-list="who.currently" data-cms-list-label="Currently"
+ *       data-cms-list-columns="Role | Organisation">
+ *     <li><span class="k">CEO</span><span class="v">Redcliffe Advisory</span></li>
+ *
+ * Each child of the container is a row; each innermost element with a class
+ * inside a row is one of its parts, in the order the columns are named. The
+ * fullest row lends its markup as the template for every row, and a part left
+ * empty is left out of the page. In the Customizer the list is one box, a row
+ * per line with the parts separated by "|"; the design's rows are the default.
+ */
+function decodeEntities(text) {
+  return text
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&rsquo;/g, '’')
+    .replace(/&lsquo;/g, '‘')
+    .replace(/&rdquo;/g, '”')
+    .replace(/&ldquo;/g, '“')
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
+    .replace(/&#(\d+);/g, (_all, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_all, code) => String.fromCodePoint(parseInt(code, 16)))
+    .replace(/&amp;/g, '&');
+}
+
+/** The innermost elements of a fragment, each with its class name, in order. */
+function leafElements(html, offset = 0) {
+  const out = [];
+  for (const child of childElements(html)) {
+    const inner = html.slice(child.openEnd, child.innerEnd);
+    if (childElements(inner).length) {
+      out.push(...leafElements(inner, offset + child.openEnd));
+      continue;
+    }
+    const cls = /\sclass="([^"]+)"/.exec(child.openTag);
+    if (!cls) fail(`A list row part needs a class name to be told apart by: ${child.openTag}`);
+    out.push({
+      name: cls[1],
+      start: offset + child.start,
+      end: offset + child.end,
+      openTag: child.openTag,
+      closing: html.slice(child.innerEnd, child.end),
+      inner,
+    });
+  }
+  return out;
+}
+
+function rewriteCmsLists(html, group) {
+  const opening = /<([a-zA-Z0-9]+)\b([^>]*?)\sdata-cms-list="([^"]+)"([^>]*)>/;
+  let out = html;
+  let match;
+
+  while ((match = opening.exec(out))) {
+    const [openTag, tag, before, key, after] = match;
+    if (!group) fail(`data-cms-list="${key}" is outside any page`);
+    const openEnd = match.index + openTag.length;
+    const { innerEnd, end } = findMatchingClose(out, tag, openEnd);
+    const inner = out.slice(openEnd, innerEnd);
+    const attrs = `${before}${after}`;
+
+    const label = /\sdata-cms-list-label="([^"]*)"/.exec(attrs);
+    const columnsAttr = /\sdata-cms-list-columns="([^"]*)"/.exec(attrs);
+    if (!label || !columnsAttr) fail(`data-cms-list="${key}" needs data-cms-list-label and data-cms-list-columns`);
+    const columns = columnsAttr[1].split('|').map((name) => plainText(name));
+
+    const rows = childElements(inner).map((row) => ({ row, leaves: leafElements(inner.slice(row.openEnd, row.innerEnd)) }));
+    if (!rows.length) fail(`data-cms-list="${key}" has no rows`);
+
+    const model = rows.reduce((fullest, row) => (row.leaves.length > fullest.leaves.length ? row : fullest));
+    if (model.leaves.length !== columns.length) {
+      fail(`data-cms-list="${key}" names ${columns.length} columns but its fullest row has ${model.leaves.length} parts`);
+    }
+    const names = model.leaves.map((leaf) => leaf.name);
+
+    const rowInner = inner.slice(model.row.openEnd, model.row.innerEnd);
+    const cells = [];
+    let template = '';
+    let cursor = 0;
+    model.leaves.forEach((leaf, n) => {
+      template += `${rowInner.slice(cursor, leaf.start)}{{${n}}}`;
+      cursor = leaf.end;
+      cells.push([leaf.openTag, leaf.closing]);
+    });
+    template = model.row.openTag + template + rowInner.slice(cursor) + inner.slice(model.row.innerEnd, model.row.end);
+
+    const values = rows.map(({ leaves }) => {
+      const byName = {};
+      for (const leaf of leaves) {
+        if (!names.includes(leaf.name)) fail(`data-cms-list="${key}" has a row with an unexpected part: ${leaf.openTag}`);
+        if (/<[a-z]/i.test(leaf.inner)) fail(`data-cms-list="${key}": a row part must be plain text: ${leaf.inner}`);
+        byName[leaf.name] = decodeEntities(leaf.inner.trim());
+      }
+      return names.map((name) => byName[name] || '');
+    });
+
+    defaults.lists[key] = { columns, template, cells, rows: values };
+    listFields[group] = listFields[group] || [];
+    listFields[group].push({ key, label: plainText(label[1]), columns });
+
+    const cleaned = attrs.replace(/\sdata-cms-list(-[a-z]+)?="[^"]*"/g, '').replace(/\s+/g, ' ').trimEnd();
+    out =
+      out.slice(0, match.index) +
+      `<${tag}${cleaned} data-rad-list="${key}">\n<?php rad_list( '${key}' ); ?>\n</${tag}>` +
+      out.slice(end);
+  }
+
+  return out;
 }
 
 /* ------------------------------------------------------------- transformers */
@@ -417,6 +533,7 @@ function rewriteContactForm(html) {
 function convert(html, label = '', blockSection = '', group = '', postSection = '', sponsorSection = '') {
   let out = html;
   if (group) out = autoTag(out, group, 'top', blockSection || postSection);
+  out = rewriteCmsLists(out, group);
   out = rewriteCmsImages(out);
   out = rewriteStaticAssets(out);
   out = rewriteInternalLinks(out);
@@ -586,6 +703,7 @@ ${entries(defaults.titles)}
 \t'links' => array(
 ${entries(defaults.links)}
 \t),
+\t'lists' => ${phpValue(defaults.lists, 2)},
 );
 `;
 }
@@ -647,12 +765,13 @@ function buildCustomizerFields() {
       // order. The third element marks an automatically found field.
       text: [...panel.text, ...auto.filter((f) => f.kind === 'text').map((f) => [f.key, f.label, true])],
       images: [...panel.images, ...auto.filter((f) => f.kind === 'image').map((f) => [f.key, f.label, true])],
+      lists: (listFields[panel.id] || []).map((f) => [f.key, f.label, f.columns]),
       toggles: panel.toggles,
       extra: panel.extra || [],
     };
   });
 
-  const unplaced = Object.keys(autoFields).filter((group) => !PANELS.some((panel) => panel.id === group));
+  const unplaced = [...Object.keys(autoFields), ...Object.keys(listFields)].filter((group) => !PANELS.some((panel) => panel.id === group));
   if (unplaced.length) fail(`Auto-tagged fields have no Customizer section: ${unplaced.join(', ')}`);
 
   return buildGeneratedPhp('The layout of Appearance > Customize > Redcliffe Advisory.', panels);
@@ -665,7 +784,7 @@ Theme Name: Redcliffe Advisory
 Theme URI: https://www.redcliffeadvisory.com
 Author: Redcliffe Advisory
 Description: The Redcliffe Advisory website — an editorial theme covering the practice, the City Quantum & AI Summit, and the contact form. The words and photographs of the designed pages are edited under Appearance › Customize › Redcliffe Advisory; new sections and pictures are added to any page with the page editor.
-Version: 1.4.7
+Version: 1.4.8
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -1005,7 +1124,7 @@ function main() {
   console.log(
     `\n${Object.keys(defaults.text).length} text fields, ` +
       `${Object.keys(defaults.images).length} images ` +
-      `(${autoCount} found automatically), ${pages.length} page templates.`
+      `(${autoCount} found automatically), ${Object.keys(defaults.lists).length} lists, ${pages.length} page templates.`
   );
 }
 

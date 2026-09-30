@@ -16,10 +16,11 @@ button](#19-example-the-register-button), [sponsors and
 collaborators](#20-example-sponsors-and-collaborators), [writing an
 article](#21-example-writing-an-article), [Karina's LinkedIn
 posts](#22-example-karinas-linkedin-posts), [what Google and LinkedIn
-show](#23-example-search-results-and-shared-links) and [the quotations on the
-homepage](#24-example-the-four-quotations-on-the-homepage). **Before the website
+show](#23-example-search-results-and-shared-links), [the quotations on the
+homepage](#24-example-the-four-quotations-on-the-homepage) and [the lists on
+Who's Who](#25-example-the-lists-on-the-whos-who-page). **Before the website
 goes public,** work through the
-[go-live checklist](#25-checklist-before-you-go-live).
+[go-live checklist](#26-checklist-before-you-go-live).
 
 ---
 
@@ -968,7 +969,41 @@ Testimonials** in the same place and click **Publish**.
 
 ---
 
-## 25. Checklist: before you go live
+## 25. Example: the lists on the Who's Who page
+
+The Who's Who page has four lists: **Currently**, beside the portrait, and the
+three career lists — **Quantum & Deep Tech**, **The City of London** and
+**Earlier career**. Unlike a headline or a paragraph, a list grows and shrinks,
+so each one is edited as **a single box, one row per line.**
+
+Go to **Appearance → Customize → Who's Who page** (or click the pencil beside
+the list itself). Under the page headline you will find four boxes, one per
+list. Each line in a box is one row of the list, and the parts of a row are
+separated by a **|** sign (the vertical bar, usually above the Enter key). The
+line under the box says which parts a row has:
+
+| List | A line looks like |
+| --- | --- |
+| **Currently** | `Exec. Advisor \| Global India Business Corridor (GIBC UK)` — the role, then the organisation |
+| **Quantum & Deep Tech**, **The City of London**, **Earlier career** | `London School of Economics \| Emeritus Governor. \| Co-Founder of The Inclusion Initiative.` — the organisation, the role, then a note |
+
+- **To remove a row,** delete its line. The rows underneath move up by
+  themselves.
+- **To add a row,** start a new line and type it in the same shape.
+- **To reorder,** cut a line and paste it where it should go.
+- **A part can be left empty.** `Morgan Grenfell | Began her career at the
+  merchant bank. |` has no note, and none is printed — no blank space, no
+  placeholder wording.
+- **A change in one list stays in that list.** The GIBC line under *Currently*
+  and the GIBC entry under *Quantum & Deep Tech* are separate rows in separate
+  boxes; change one and the other is untouched.
+
+Click **Publish** when you are happy. Clearing the whole box puts the designed
+list back, as everywhere else — so the original is never lost.
+
+---
+
+## 26. Checklist: before you go live
 
 Work down this list once, before **Connect domain** (section 12). None of it
 is difficult; each line says where to go.

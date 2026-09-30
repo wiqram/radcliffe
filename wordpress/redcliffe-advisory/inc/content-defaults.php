@@ -89,54 +89,11 @@ return array(
 		'who.profile.167aimu' => 'Karina Robinson',
 		'who.profile.0rb0bjv' => 'London · 2026',
 		'who.profile.0v1u3by' => 'Currently',
-		'who.profile.1s803t7' => 'CEO',
-		'who.profile.1ks56qn' => 'Redcliffe Advisory',
-		'who.profile.0uvr00z' => 'Founder',
-		'who.profile.16mbh1l' => 'The City Quantum &amp; AI Summit',
-		'who.profile.1jhobbt' => 'Sr. Advisor',
-		'who.profile.05u8is3' => 'Multiverse Computing SL',
-		'who.profile.1s80g5p' => 'NED',
-		'who.profile.05ld2cc' => 'Atlanti — Anglo-Swiss fund management',
-		'who.profile.17vn2bf' => 'Judge',
-		'who.profile.0jop1y2' => 'EIC Accelerator',
-		'who.profile.1uwza03' => 'Exec. Advisor',
-		'who.profile.0tgity2' => 'Global India Business Corridor (GIBC&nbsp;UK)',
-		'who.profile.1bie6nq' => 'Advisor',
-		'who.profile.0m06fam' => 'MissionLink',
-		'who.profile.0ypq7jq' => 'Emeritus Gov.',
-		'who.profile.1nbz2uj' => 'London School of Economics',
 		'who.profile.0qaodcf' => 'CEO · Redcliffe Advisory · FCSI (Hon.)',
 		'who.profile.16ta0o5' => 'Karina connects the worlds of Finance, Deep Tech and Defence — with a deep belief in the power of sensible <em>Diversity &amp; Inclusion</em>.',
 		'who.profile.093jaiy' => 'Quantum &amp; Deep Tech',
-		'who.profile.130y85p' => '<span class="cv-role">Senior Advisor.</span> Europe&rsquo;s largest Quantum &amp; AI software firm. Winner of Europe&rsquo;s Future Unicorn Award 2024.',
-		'who.profile.0knd0lp' => '<span class="cv-role">Founder.</span> Now in its Sixth Anniversary year.',
-		'who.profile.0pv7hcr' => 'UKQuantum',
-		'who.profile.015neqb' => '<span class="cv-role">Member.</span> Working Group on International Cooperation and Trade.',
-		'who.profile.1ng5bg6' => 'NATO',
-		'who.profile.0c6odn4' => '<span class="cv-role">Contributor.</span> Involved in brainstorming its Quantum Strategy.',
-		'who.profile.1js7umb' => '<span class="cv-role">Judge.</span> Targeting funds at promising Deep Tech in critical fields like space.',
-		'who.profile.0j59epk' => 'MissionLink &amp; The Entrepreneurs Network',
-		'who.profile.056iw9k' => 'Advisor.',
-		'who.profile.0q2t7cw' => '<span class="cv-role">Executive Advisor to the Board.</span> Deepening trade and investment between the UK and India.',
 		'who.profile.16oxrst' => 'The City of London',
-		'who.profile.0i9qu6j' => 'The Lord Mayor&rsquo;s Appeal',
-		'who.profile.1p9gv65' => '<span class="cv-role">Chair, Advisory Board.</span> Former Trustee.',
-		'who.profile.1gp28gz' => 'Worshipful Company of International Bankers',
-		'who.profile.0p5gduu' => 'Past Master.',
-		'who.profile.1nfu06q' => 'CISI',
-		'who.profile.1r6z46h' => 'Honorary Fellow.',
-		'who.profile.1ltj4qx' => 'Atlanti',
-		'who.profile.080hjfi' => 'Non-Executive Director.',
-		'who.profile.0yyqlqe' => '<span class="cv-role">Emeritus Governor.</span> Co-Founder of The Inclusion Initiative.',
 		'who.profile.1jzrthg' => 'Earlier career',
-		'who.profile.0p2suqb' => 'Robinson Hambro',
-		'who.profile.0lnpvc9' => '<span class="cv-role">Co-Founded with City legend Rupert Hambro CBE.</span> Ran the firm for over a decade.',
-		'who.profile.04i0oqd' => 'Cambridge Quantum',
-		'who.profile.1e1d42c' => 'Senior Advisor.',
-		'who.profile.0a1pz6c' => 'Journalism',
-		'who.profile.1htjaaf' => '<span class="cv-role">Senior Editor, The Banker.</span> Banking columnist for the International Herald Tribune; correspondent at Bloomberg.',
-		'who.profile.1k6s2rr' => 'Morgan Grenfell',
-		'who.profile.0xju9by' => 'Began her career at the merchant bank.',
 		'who.profile.0c0179p' => 'Educated in Madrid, at the Hotchkiss School in the US, and at the London School of Economics. Fluent in four languages.',
 		'who.other.1mx1n5x' => 'Other <em>rooms</em>',
 		'who.other.0jt4grq' => 'The City Quantum &amp; AI <em>Summit</em>',
@@ -374,5 +331,210 @@ return array(
 	),
 	'links' => array(
 		'register' => 'https://web.cvent.com/event/71e8f910-3826-4a2e-8e49-638654fbd4e6/register',
+	),
+	'lists' => array(
+		'who.currently' => array(
+			'columns' => array(
+				'Role',
+				'Organisation',
+			),
+			'template' => '<li>{{0}}{{1}}</li>',
+			'cells' => array(
+				array(
+					'<span class="k">',
+					'</span>',
+				),
+				array(
+					'<span class="v">',
+					'</span>',
+				),
+			),
+			'rows' => array(
+				array(
+					'CEO',
+					'Redcliffe Advisory',
+				),
+				array(
+					'Founder',
+					'The City Quantum & AI Summit',
+				),
+				array(
+					'Sr. Advisor',
+					'Multiverse Computing SL',
+				),
+				array(
+					'NED',
+					'Atlanti — Anglo-Swiss fund management',
+				),
+				array(
+					'Judge',
+					'EIC Accelerator',
+				),
+				array(
+					'Exec. Advisor',
+					'Global India Business Corridor (GIBC UK)',
+				),
+				array(
+					'Advisor',
+					'MissionLink',
+				),
+				array(
+					'Emeritus Gov.',
+					'London School of Economics',
+				),
+			),
+		),
+		'who.quantum' => array(
+			'columns' => array(
+				'Organisation',
+				'Role',
+				'Note',
+			),
+			'template' => '<div class="cv-entry">{{0}}<div class="cv-desc">{{1}} {{2}}</div></div>',
+			'cells' => array(
+				array(
+					'<div class="cv-org">',
+					'</div>',
+				),
+				array(
+					'<span class="cv-role">',
+					'</span>',
+				),
+				array(
+					'<span class="cv-note">',
+					'</span>',
+				),
+			),
+			'rows' => array(
+				array(
+					'Multiverse Computing SL',
+					'Senior Advisor.',
+					'Europe’s largest Quantum & AI software firm. Winner of Europe’s Future Unicorn Award 2024.',
+				),
+				array(
+					'The City Quantum & AI Summit',
+					'Founder.',
+					'Now in its Sixth Anniversary year.',
+				),
+				array(
+					'UKQuantum',
+					'Member.',
+					'Working Group on International Cooperation and Trade.',
+				),
+				array(
+					'NATO',
+					'Contributor.',
+					'Involved in brainstorming its Quantum Strategy.',
+				),
+				array(
+					'EIC Accelerator',
+					'Judge.',
+					'Targeting funds at promising Deep Tech in critical fields like space.',
+				),
+				array(
+					'MissionLink & The Entrepreneurs Network',
+					'Advisor.',
+					'',
+				),
+				array(
+					'Global India Business Corridor (GIBC UK)',
+					'Executive Advisor to the Board.',
+					'Deepening trade and investment between the UK and India.',
+				),
+			),
+		),
+		'who.city' => array(
+			'columns' => array(
+				'Organisation',
+				'Role',
+				'Note',
+			),
+			'template' => '<div class="cv-entry">{{0}}<div class="cv-desc">{{1}} {{2}}</div></div>',
+			'cells' => array(
+				array(
+					'<div class="cv-org">',
+					'</div>',
+				),
+				array(
+					'<span class="cv-role">',
+					'</span>',
+				),
+				array(
+					'<span class="cv-note">',
+					'</span>',
+				),
+			),
+			'rows' => array(
+				array(
+					'The Lord Mayor’s Appeal',
+					'Chair, Advisory Board.',
+					'Former Trustee.',
+				),
+				array(
+					'Worshipful Company of International Bankers',
+					'Past Master.',
+					'',
+				),
+				array(
+					'CISI',
+					'Honorary Fellow.',
+					'',
+				),
+				array(
+					'Atlanti',
+					'Non-Executive Director.',
+					'',
+				),
+				array(
+					'London School of Economics',
+					'Emeritus Governor.',
+					'Co-Founder of The Inclusion Initiative.',
+				),
+			),
+		),
+		'who.earlier' => array(
+			'columns' => array(
+				'Organisation',
+				'Role',
+				'Note',
+			),
+			'template' => '<div class="cv-entry">{{0}}<div class="cv-desc">{{1}} {{2}}</div></div>',
+			'cells' => array(
+				array(
+					'<div class="cv-org">',
+					'</div>',
+				),
+				array(
+					'<span class="cv-role">',
+					'</span>',
+				),
+				array(
+					'<span class="cv-note">',
+					'</span>',
+				),
+			),
+			'rows' => array(
+				array(
+					'Robinson Hambro',
+					'Co-Founded with City legend Rupert Hambro CBE.',
+					'Ran the firm for over a decade.',
+				),
+				array(
+					'Cambridge Quantum',
+					'Senior Advisor.',
+					'',
+				),
+				array(
+					'Journalism',
+					'Senior Editor, The Banker.',
+					'Banking columnist for the International Herald Tribune; correspondent at Bloomberg.',
+				),
+				array(
+					'Morgan Grenfell',
+					'Began her career at the merchant bank.',
+					'',
+				),
+			),
+		),
 	),
 );

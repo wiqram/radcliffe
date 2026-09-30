@@ -106,6 +106,51 @@ function rad_customize_register( $wp_customize ) {
 			}
 		}
 
+		if ( ! empty( $panel['lists'] ) ) {
+			foreach ( $panel['lists'] as $field ) {
+				list( $key, $label, $columns ) = $field;
+				$setting                       = rad_mod_name( $key );
+
+				$wp_customize->add_setting(
+					$setting,
+					array(
+						'default'           => rad_list_default_text( $key ),
+						'sanitize_callback' => 'rad_sanitize_list',
+						'transport'         => 'postMessage',
+					)
+				);
+
+				$wp_customize->add_control(
+					$setting,
+					array(
+						'label'       => $label,
+						'section'     => $section_id,
+						'type'        => 'textarea',
+						'description' => sprintf(
+							/* translators: %s: the parts of a row, e.g. "Role | Organisation". */
+							__( 'One row per line, its parts separated by a | sign: %s. Add a line to add a row, delete a line to remove one, and move lines to reorder. A part can be left empty. Clear the whole box to put the original list back.', 'redcliffe-advisory' ),
+							implode( ' | ', $columns )
+						),
+					)
+				);
+
+				// A pencil on the list; the rows redraw without a page reload.
+				if ( isset( $wp_customize->selective_refresh ) ) {
+					$wp_customize->selective_refresh->add_partial(
+						$setting,
+						array(
+							'selector'            => '[data-rad-list="' . $key . '"]',
+							'container_inclusive' => false,
+							'fallback_refresh'    => true,
+							'render_callback'     => function () use ( $key ) {
+								return rad_get_list_html( $key );
+							},
+						)
+					);
+				}
+			}
+		}
+
 		if ( isset( $panel['extra'] ) ) {
 			foreach ( $panel['extra'] as $field ) {
 				$setting = rad_mod_name( $field['key'] );

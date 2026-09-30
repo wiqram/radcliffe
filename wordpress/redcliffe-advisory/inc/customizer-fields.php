@@ -41,6 +41,7 @@ return array(
 				true,
 			),
 		),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'global.announcement',
@@ -299,6 +300,7 @@ return array(
 				true,
 			),
 		),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'home.hero',
@@ -475,6 +477,7 @@ return array(
 			),
 		),
 		'images' => array(),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'practice.hero',
@@ -535,86 +538,6 @@ return array(
 				true,
 			),
 			array(
-				'who.profile.1s803t7',
-				'CEO',
-				true,
-			),
-			array(
-				'who.profile.1ks56qn',
-				'Redcliffe Advisory',
-				true,
-			),
-			array(
-				'who.profile.0uvr00z',
-				'Founder',
-				true,
-			),
-			array(
-				'who.profile.16mbh1l',
-				'The City Quantum & AI Summit',
-				true,
-			),
-			array(
-				'who.profile.1jhobbt',
-				'Sr. Advisor',
-				true,
-			),
-			array(
-				'who.profile.05u8is3',
-				'Multiverse Computing SL',
-				true,
-			),
-			array(
-				'who.profile.1s80g5p',
-				'NED',
-				true,
-			),
-			array(
-				'who.profile.05ld2cc',
-				'Atlanti — Anglo-Swiss fund management',
-				true,
-			),
-			array(
-				'who.profile.17vn2bf',
-				'Judge',
-				true,
-			),
-			array(
-				'who.profile.0jop1y2',
-				'EIC Accelerator',
-				true,
-			),
-			array(
-				'who.profile.1uwza03',
-				'Exec. Advisor',
-				true,
-			),
-			array(
-				'who.profile.0tgity2',
-				'Global India Business Corridor (GIBC UK)',
-				true,
-			),
-			array(
-				'who.profile.1bie6nq',
-				'Advisor',
-				true,
-			),
-			array(
-				'who.profile.0m06fam',
-				'MissionLink',
-				true,
-			),
-			array(
-				'who.profile.0ypq7jq',
-				'Emeritus Gov.',
-				true,
-			),
-			array(
-				'who.profile.1nbz2uj',
-				'London School of Economics',
-				true,
-			),
-			array(
 				'who.profile.0qaodcf',
 				'CEO · Redcliffe Advisory · FCSI (Hon.)',
 				true,
@@ -630,148 +553,13 @@ return array(
 				true,
 			),
 			array(
-				'who.profile.130y85p',
-				'Senior Advisor. Europe’s largest Quantum & AI software fi…',
-				true,
-			),
-			array(
-				'who.profile.0knd0lp',
-				'Founder. Now in its Sixth Anniversary year.',
-				true,
-			),
-			array(
-				'who.profile.0pv7hcr',
-				'UKQuantum',
-				true,
-			),
-			array(
-				'who.profile.015neqb',
-				'Member. Working Group on International Cooperation and Tr…',
-				true,
-			),
-			array(
-				'who.profile.1ng5bg6',
-				'NATO',
-				true,
-			),
-			array(
-				'who.profile.0c6odn4',
-				'Contributor. Involved in brainstorming its Quantum Strategy.',
-				true,
-			),
-			array(
-				'who.profile.1js7umb',
-				'Judge. Targeting funds at promising Deep Tech in critical…',
-				true,
-			),
-			array(
-				'who.profile.0j59epk',
-				'MissionLink & The Entrepreneurs Network',
-				true,
-			),
-			array(
-				'who.profile.056iw9k',
-				'Advisor.',
-				true,
-			),
-			array(
-				'who.profile.0q2t7cw',
-				'Executive Advisor to the Board. Deepening trade and inves…',
-				true,
-			),
-			array(
 				'who.profile.16oxrst',
 				'The City of London',
 				true,
 			),
 			array(
-				'who.profile.0i9qu6j',
-				'The Lord Mayor’s Appeal',
-				true,
-			),
-			array(
-				'who.profile.1p9gv65',
-				'Chair, Advisory Board. Former Trustee.',
-				true,
-			),
-			array(
-				'who.profile.1gp28gz',
-				'Worshipful Company of International Bankers',
-				true,
-			),
-			array(
-				'who.profile.0p5gduu',
-				'Past Master.',
-				true,
-			),
-			array(
-				'who.profile.1nfu06q',
-				'CISI',
-				true,
-			),
-			array(
-				'who.profile.1r6z46h',
-				'Honorary Fellow.',
-				true,
-			),
-			array(
-				'who.profile.1ltj4qx',
-				'Atlanti',
-				true,
-			),
-			array(
-				'who.profile.080hjfi',
-				'Non-Executive Director.',
-				true,
-			),
-			array(
-				'who.profile.0yyqlqe',
-				'Emeritus Governor. Co-Founder of The Inclusion Initiative.',
-				true,
-			),
-			array(
 				'who.profile.1jzrthg',
 				'Earlier career',
-				true,
-			),
-			array(
-				'who.profile.0p2suqb',
-				'Robinson Hambro',
-				true,
-			),
-			array(
-				'who.profile.0lnpvc9',
-				'Co-Founded with City legend Rupert Hambro CBE. Ran the fi…',
-				true,
-			),
-			array(
-				'who.profile.04i0oqd',
-				'Cambridge Quantum',
-				true,
-			),
-			array(
-				'who.profile.1e1d42c',
-				'Senior Advisor.',
-				true,
-			),
-			array(
-				'who.profile.0a1pz6c',
-				'Journalism',
-				true,
-			),
-			array(
-				'who.profile.1htjaaf',
-				'Senior Editor, The Banker. Banking columnist for the Inte…',
-				true,
-			),
-			array(
-				'who.profile.1k6s2rr',
-				'Morgan Grenfell',
-				true,
-			),
-			array(
-				'who.profile.0xju9by',
-				'Began her career at the merchant bank.',
 				true,
 			),
 			array(
@@ -824,6 +612,43 @@ return array(
 			array(
 				'who.hero.photo',
 				'Hero photograph',
+			),
+		),
+		'lists' => array(
+			array(
+				'who.currently',
+				'Currently (the list beside the portrait)',
+				array(
+					'Role',
+					'Organisation',
+				),
+			),
+			array(
+				'who.quantum',
+				'Quantum & Deep Tech (the list)',
+				array(
+					'Organisation',
+					'Role',
+					'Note',
+				),
+			),
+			array(
+				'who.city',
+				'The City of London (the list)',
+				array(
+					'Organisation',
+					'Role',
+					'Note',
+				),
+			),
+			array(
+				'who.earlier',
+				'Earlier career (the list)',
+				array(
+					'Organisation',
+					'Role',
+					'Note',
+				),
 			),
 		),
 		'toggles' => array(
@@ -953,6 +778,7 @@ return array(
 				'Feature photograph',
 			),
 		),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'city.hero',
@@ -1384,6 +1210,7 @@ return array(
 				'Gallery photo 6 (full width)',
 			),
 		),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'summit.hero',
@@ -1464,6 +1291,7 @@ return array(
 			),
 		),
 		'images' => array(),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'agenda.hero',
@@ -1561,6 +1389,7 @@ return array(
 				'Hero photograph',
 			),
 		),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'articles.hero',
@@ -1706,6 +1535,7 @@ return array(
 			),
 		),
 		'images' => array(),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'ethics.hero',
@@ -1783,6 +1613,7 @@ return array(
 			),
 		),
 		'images' => array(),
+		'lists' => array(),
 		'toggles' => array(
 			array(
 				'contact.hero',
@@ -1900,6 +1731,7 @@ return array(
 			),
 		),
 		'images' => array(),
+		'lists' => array(),
 		'toggles' => array(),
 		'extra' => array(),
 	),

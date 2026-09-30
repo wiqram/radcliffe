@@ -130,6 +130,134 @@ function rad_text( $key ) {
 }
 
 /**
+ * A list the owner can add rows to and take rows away from: the roles beside
+ * the portrait on Who's Who, and its three career lists.
+ *
+ * Saved as text, one row per line with the parts separated by "|". The design's
+ * own rows are the default and come back when the box is cleared, and a part
+ * left empty on a line is left out of the page rather than printed blank.
+ *
+ * @param string $key List key.
+ * @return array|null columns, template, cells and rows — or null for an unknown key.
+ */
+function rad_list_definition( $key ) {
+	$lists = rad_defaults( 'lists' );
+
+	return isset( $lists[ $key ] ) ? $lists[ $key ] : null;
+}
+
+/**
+ * The design's rows for a list, as the text the Customizer box starts with.
+ *
+ * @param string $key List key.
+ * @return string
+ */
+function rad_list_default_text( $key ) {
+	$list = rad_list_definition( $key );
+
+	if ( ! $list ) {
+		return '';
+	}
+
+	$lines = array();
+	foreach ( $list['rows'] as $cells ) {
+		$lines[] = implode( ' | ', $cells );
+	}
+
+	return implode( "\n", $lines );
+}
+
+/**
+ * Rows out of the text in a list's box. Blank lines and rows with nothing in
+ * any part are skipped; a line with too few parts is padded, too many trimmed.
+ *
+ * @param string $text    One row per line, parts separated by "|".
+ * @param int    $columns How many parts a row has.
+ * @return array[]
+ */
+function rad_list_parse( $text, $columns ) {
+	$rows = array();
+
+	foreach ( preg_split( '/\r\n|\r|\n/', (string) $text ) as $line ) {
+		$cells = array_map( 'trim', explode( '|', $line ) );
+		$cells = array_slice( array_pad( $cells, $columns, '' ), 0, $columns );
+
+		if ( '' !== implode( '', $cells ) ) {
+			$rows[] = $cells;
+		}
+	}
+
+	return $rows;
+}
+
+/**
+ * Keep each line of a list to the inline formatting text fields allow.
+ *
+ * @param string $value Submitted value.
+ * @return string
+ */
+function rad_sanitize_list( $value ) {
+	$lines = preg_split( '/\r\n|\r|\n/', (string) $value );
+
+	return implode( "\n", array_map( 'wp_kses_post', $lines ) );
+}
+
+/**
+ * The rows a list shows: the saved ones, or the design's while none are saved.
+ *
+ * @param string $key List key.
+ * @return array[]
+ */
+function rad_list_rows( $key ) {
+	$list = rad_list_definition( $key );
+
+	if ( ! $list ) {
+		return array();
+	}
+
+	$saved = get_theme_mod( rad_mod_name( $key ), '' );
+	$rows  = is_string( $saved ) ? rad_list_parse( $saved, count( $list['columns'] ) ) : array();
+
+	return $rows ? $rows : $list['rows'];
+}
+
+/**
+ * The markup of every row of a list, each part in the element the design gave it.
+ *
+ * @param string $key List key.
+ * @return string
+ */
+function rad_get_list_html( $key ) {
+	$list = rad_list_definition( $key );
+
+	if ( ! $list ) {
+		return '';
+	}
+
+	$out = array();
+	foreach ( rad_list_rows( $key ) as $cells ) {
+		$parts = array();
+		foreach ( $list['cells'] as $n => $tags ) {
+			$value                   = isset( $cells[ $n ] ) ? $cells[ $n ] : '';
+			$parts[ '{{' . $n . '}}' ] = '' === $value ? '' : $tags[0] . wp_kses_post( $value ) . $tags[1];
+		}
+		$out[] = strtr( $list['template'], $parts );
+	}
+
+	return implode( "\n", $out );
+}
+
+/**
+ * Print a list. Every part of every row has been through wp_kses_post(); the
+ * markup around the parts is the design's own.
+ *
+ * @param string $key List key.
+ */
+function rad_list( $key ) {
+	echo rad_get_list_html( $key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
  * The URL for an editable image: the chosen one, or the design's original.
  *
  * @param string $key Image key.
