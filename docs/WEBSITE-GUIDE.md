@@ -999,7 +999,10 @@ buttons:
   lists; change one and the other is untouched.
 
 Click **Publish** when you are happy. **Put the original list back**, under
-each list, restores the designed rows — so the original is never lost.
+each list, restores the designed rows — the wording the site was built with,
+so the original is never lost. (Wording changed before the lists could be
+edited row by row was carried into them; putting the original back replaces
+that too.)
 
 ---
 

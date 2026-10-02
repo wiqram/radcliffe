@@ -38,6 +38,9 @@ wp theme mod set rad_summit_hero_registerUrl "" >/dev/null   # the Customizer sa
 wp theme mod set rad_summit_hero_title "Owner headline" >/dev/null
 # A homepage quotation, typed into the old field that carried the gold quote marks inside it.
 wp theme mod set rad_home_testimonial_1_quote '<span class="open-q">“</span>The owner typed this one.<span class="close-q">”</span>' >/dev/null
+# Who's Who edited the way 1.4.7 allowed: one field that sat in two lists, and a career entry's role and words.
+wp theme mod set rad_who_profile_0tgity2 'GIBC' >/dev/null
+wp theme mod set rad_who_profile_130y85p '<span class="cv-role">Owner role.</span> Owner words &amp; more.' >/dev/null
 AGENDA="$(wp post list --post_type=page --name=agenda --field=ID)"
 wp eval '
 $p = get_post((int) '"$AGENDA"');
@@ -72,6 +75,11 @@ check "the owner's posts are on the Articles page with an author and month" "$([
 home="$(curl -s "$BASE/")"
 check "the owner's own quotation is on the homepage, with one pair of quote marks" "$(echo "$home" | grep -q 'The owner typed this one.' && [ "$(echo "$home" | count '<span class="open-q">')" = 4 ] && echo 1 || echo 0)" "$(echo "$home" | count '<span class="open-q">')"
 check "and the other three quotations can now be edited as well" "$([ "$(echo "$home" | count 'data-rad="home\.testimonial\.[2-4]\.quote"')" = 3 ] && echo 1 || echo 0)"
+
+who="$(curl -s "$BASE/who/")"
+check "Who's Who keeps the owner's wording in both lists the old field sat in" "$([ "$(echo "$who" | count '>GIBC</')" = 2 ] && echo 1 || echo 0)" "$(echo "$who" | count '>GIBC</')"
+check "and splits a career entry into its role and its words" "$(echo "$who" | grep -q '<span class="cv-role">Owner role.</span> <span class="cv-note">Owner words &amp; more.</span>' && echo 1 || echo 0)"
+check "rows the owner never changed keep the design's wording" "$(echo "$who" | grep -q '<span class="k">Judge</span><span class="v">EIC Accelerator</span>' && echo 1 || echo 0)"
 
 # Deliberately clearing the address afterwards still hides the button (the migration runs once).
 wp theme mod set rad_summit_hero_registerUrl "" >/dev/null

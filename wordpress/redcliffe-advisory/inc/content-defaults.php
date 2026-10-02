@@ -383,6 +383,88 @@ return array(
 					'London School of Economics',
 				),
 			),
+			'legacy' => array(
+				array(
+					array(
+						'key' => 'who.profile.1s803t7',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1ks56qn',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0uvr00z',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.16mbh1l',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1jhobbt',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.05u8is3',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1s80g5p',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.05ld2cc',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.17vn2bf',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0jop1y2',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1uwza03',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0tgity2',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1bie6nq',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0m06fam',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0ypq7jq',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1nbz2uj',
+						'part' => 1,
+					),
+				),
+			),
 		),
 		'who.quantum' => array(
 			'columns' => array(
@@ -442,6 +524,96 @@ return array(
 					'Deepening trade and investment between the UK and India.',
 				),
 			),
+			'legacy' => array(
+				array(
+					array(
+						'key' => 'who.profile.05u8is3',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.130y85p',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.16mbh1l',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0knd0lp',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0pv7hcr',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.015neqb',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1ng5bg6',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0c6odn4',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0jop1y2',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1js7umb',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0j59epk',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.056iw9k',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0tgity2',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0q2t7cw',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+			),
 		),
 		'who.city' => array(
 			'columns' => array(
@@ -491,6 +663,64 @@ return array(
 					'Co-Founder of The Inclusion Initiative.',
 				),
 			),
+			'legacy' => array(
+				array(
+					array(
+						'key' => 'who.profile.0i9qu6j',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1p9gv65',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1gp28gz',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0p5gduu',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1nfu06q',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1r6z46h',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1ltj4qx',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.080hjfi',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1nbz2uj',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0yyqlqe',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+			),
 		),
 		'who.earlier' => array(
 			'columns' => array(
@@ -533,6 +763,54 @@ return array(
 					'Morgan Grenfell',
 					'Began her career at the merchant bank.',
 					'',
+				),
+			),
+			'legacy' => array(
+				array(
+					array(
+						'key' => 'who.profile.0p2suqb',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0lnpvc9',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.04i0oqd',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1e1d42c',
+						'part' => 1,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.0a1pz6c',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.1htjaaf',
+						'within' => array(
+							'cv-role' => 1,
+						),
+						'rest' => 2,
+					),
+				),
+				array(
+					array(
+						'key' => 'who.profile.1k6s2rr',
+						'part' => 0,
+					),
+					array(
+						'key' => 'who.profile.0xju9by',
+						'part' => 1,
+					),
 				),
 			),
 		),

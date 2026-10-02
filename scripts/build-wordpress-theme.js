@@ -31,6 +31,7 @@ const SLUG_BY_FILE = Object.fromEntries(PAGES.map((page) => [page.file, page.slu
 
 const defaults = { text: {}, images: {}, imageAlt: {}, titles: {}, links: { register: REGISTER_URL }, lists: {} };
 const listFields = {}; // group -> [{ key, label, columns }]
+const legacyListKeys = {}; // list key -> per row, the fields theme 1.4.7 kept its wording in
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -171,6 +172,9 @@ function autoTag(html, group, section, skipSection) {
       continue;
     }
 
+    const listAttr = /\sdata-cms-list="([^"]+)"/.exec(openTag);
+    if (listAttr) recordLegacyListKeys(listAttr[1], inner, group, section, skipSection);
+
     if (VOID_TAGS.has(tag) || SKIP_TAGS.has(tag) || /\sdata-cms-(key|list)=/.test(openTag) || /\sdata-cms-auto="off"/.test(openTag)) {
       out += html.slice(child.start, child.end);
       continue;
@@ -208,6 +212,62 @@ function autoTag(html, group, section, skipSection) {
 }
 
 /* ------------------------------------------------------------------- lists */
+
+/**
+ * Up to theme 1.4.7 a list was no list: each part of each row was a field of
+ * its own, keyed like any other text (autoTag), and some owners have changed
+ * those fields. Work out which fields they were, so the theme can start the
+ * list from what visitors see today rather than from the design's wording.
+ * The design has gained <span class="cv-note"> around the trailing words of a
+ * career entry since; take it away to get back the markup the keys came from.
+ */
+function recordLegacyListKeys(listKey, inner, group, section, skipSection) {
+  const legacyInner = inner.replace(/<span class="cv-note">([\s\S]*?)<\/span>/g, '$1');
+  const saved = autoFields[group] ? [...autoFields[group]] : undefined;
+  const tagged = autoTag(legacyInner, group, section, skipSection);
+  if (saved) autoFields[group] = saved;
+  else delete autoFields[group];
+
+  legacyListKeys[listKey] = childElements(tagged).map((row) => {
+    const sources = [];
+    const walk = (html) => {
+      for (const child of childElements(html)) {
+        const inside = html.slice(child.openEnd, child.innerEnd);
+        const key = /\sdata-cms-key="([^"]+)"/.exec(child.openTag);
+        if (!key) {
+          walk(inside);
+          continue;
+        }
+        const cls = /\sclass="([^"]+)"/.exec(child.openTag);
+        const within = [...inside.matchAll(/<[a-z][a-z0-9]*\b[^>]*\sclass="([^"]+)"/gi)].map((m) => m[1]);
+        sources.push({ key: key[1], name: cls ? cls[1] : '', within });
+      }
+    };
+    walk(tagged.slice(row.openEnd, row.innerEnd));
+    return sources;
+  });
+}
+
+/**
+ * The 1.4.7 fields behind each row of a list, as the parts they fill: a field
+ * that was one part, or one that held several — the role in its own element
+ * and the note as the loose words after it ('rest').
+ */
+function legacySources(listKey, names, rowCount) {
+  const rows = legacyListKeys[listKey];
+  if (!rows || rows.length !== rowCount) fail(`data-cms-list="${listKey}": could not work out its theme 1.4.7 fields`);
+  return rows.map((sources) => {
+    const claimed = new Set(sources.flatMap((s) => [s.name, ...s.within]));
+    return sources.map((source) => {
+      if (names.includes(source.name)) return { key: source.key, part: names.indexOf(source.name) };
+      const within = {};
+      for (const name of source.within) if (names.includes(name)) within[name] = names.indexOf(name);
+      const rest = names.findIndex((name) => !claimed.has(name));
+      if (rest < 0) fail(`data-cms-list="${listKey}": theme 1.4.7 field ${source.key} fills no part`);
+      return { key: source.key, within, rest };
+    });
+  });
+}
 
 /**
  * A list whose rows the owner can add, remove and reorder — the roles beside
@@ -308,7 +368,7 @@ function rewriteCmsLists(html, group) {
       return names.map((name) => byName[name] || '');
     });
 
-    defaults.lists[key] = { columns, template, cells, rows: values };
+    defaults.lists[key] = { columns, template, cells, rows: values, legacy: legacySources(key, names, rows.length) };
     listFields[group] = listFields[group] || [];
     listFields[group].push({ key, label: plainText(label[1]), columns });
 

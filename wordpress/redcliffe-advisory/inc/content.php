@@ -222,6 +222,92 @@ function rad_list_rows( $key ) {
 }
 
 /**
+ * A list's rows as theme 1.4.7 printed them, from the separate fields it kept
+ * each part in — or '' when none of those fields was ever changed.
+ *
+ * @param string $key List key.
+ * @return string One row per line, parts separated by "|".
+ */
+function rad_list_legacy_text( $key ) {
+	$list = rad_list_definition( $key );
+
+	if ( ! $list || empty( $list['legacy'] ) ) {
+		return '';
+	}
+
+	// Plain words, as typed into a list: entities back to characters (but not
+	// < and >, which would turn words into markup) and no line breaks or "|".
+	$plain = function ( $html ) {
+		$html = preg_replace_callback(
+			'/&(?!lt;|gt;)#?[a-z0-9]+;/i',
+			function ( $m ) {
+				return html_entity_decode( $m[0], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			},
+			$html
+		);
+
+		return trim( preg_replace( '/\s+/u', ' ', str_replace( '|', '&#124;', $html ) ) );
+	};
+
+	$changed = false;
+	$lines   = array();
+	foreach ( $list['legacy'] as $n => $sources ) {
+		$cells = isset( $list['rows'][ $n ] ) ? $list['rows'][ $n ] : array();
+		foreach ( $sources as $source ) {
+			$value = get_theme_mod( rad_mod_name( $source['key'] ), '' );
+			if ( ! is_string( $value ) || '' === trim( $value ) ) {
+				continue; // 1.4.7 printed the design's wording, as the list does.
+			}
+			$changed = true;
+
+			if ( isset( $source['part'] ) ) {
+				$cells[ $source['part'] ] = $plain( $value );
+				continue;
+			}
+
+			// The role in its own element, then the note as the loose words after it.
+			foreach ( $source['within'] as $class => $part ) {
+				$cells[ $part ] = '';
+				$pattern        = '#<([a-z0-9]+)\b[^>]*\bclass="' . preg_quote( $class, '#' ) . '"[^>]*>(.*?)</\1>#is';
+				if ( preg_match( $pattern, $value, $m ) ) {
+					$cells[ $part ] = $plain( $m[2] );
+					$value          = str_replace( $m[0], ' ', $value );
+				}
+			}
+			$cells[ $source['rest'] ] = $plain( $value );
+		}
+		$lines[] = implode( ' | ', $cells );
+	}
+
+	return $changed ? implode( "\n", $lines ) : '';
+}
+
+/**
+ * Once, on the first page load after updating from theme 1.4.7: start each list
+ * from the wording visitors were reading, so the update changes nothing on the
+ * page. "Put the original list back" still returns the design's rows.
+ */
+function rad_carry_over_lists() {
+	if ( get_option( 'rad_lists_carried_over' ) ) {
+		return;
+	}
+
+	$mods = get_theme_mods();
+	foreach ( array_keys( rad_defaults( 'lists' ) ) as $key ) {
+		if ( is_array( $mods ) && array_key_exists( rad_mod_name( $key ), $mods ) ) {
+			continue; // Already a list of its own.
+		}
+		$text = rad_list_legacy_text( $key );
+		if ( '' !== $text ) {
+			set_theme_mod( rad_mod_name( $key ), rad_sanitize_list( $text ) );
+		}
+	}
+
+	update_option( 'rad_lists_carried_over', RAD_VERSION );
+}
+add_action( 'init', 'rad_carry_over_lists' );
+
+/**
  * The markup of every row of a list, each part in the element the design gave it.
  *
  * @param string $key List key.
